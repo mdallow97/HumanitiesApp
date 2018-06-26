@@ -15,6 +15,7 @@
 		4172C83220E1D0580065A277 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C83120E1D0580065A277 /* main.m */; };
 		4172C83C20E1D0580065A277 /* HumanitiesAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C83B20E1D0580065A277 /* HumanitiesAppTests.m */; };
 		4172C84720E1D0580065A277 /* HumanitiesAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C84620E1D0580065A277 /* HumanitiesAppUITests.m */; };
+		4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C85520E1D2A60065A277 /* SettingsTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		4172C84220E1D0580065A277 /* HumanitiesAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HumanitiesAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4172C84620E1D0580065A277 /* HumanitiesAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HumanitiesAppUITests.m; sourceTree = "<group>"; };
 		4172C84820E1D0580065A277 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4172C85420E1D29E0065A277 /* SettingsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
+		4172C85520E1D2A60065A277 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				4172C82320E1D0570065A277 /* AppDelegate.m */,
 				4172C82520E1D0570065A277 /* ViewController.h */,
 				4172C82620E1D0570065A277 /* ViewController.m */,
+				4172C85420E1D29E0065A277 /* SettingsTableViewController.h */,
+				4172C85520E1D2A60065A277 /* SettingsTableViewController.m */,
 				4172C82820E1D0570065A277 /* Main.storyboard */,
 				4172C82B20E1D0580065A277 /* Assets.xcassets */,
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
@@ -262,6 +267,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */,
 				4172C82720E1D0570065A277 /* ViewController.m in Sources */,
 				4172C83220E1D0580065A277 /* main.m in Sources */,
 				4172C82420E1D0570065A277 /* AppDelegate.m in Sources */,

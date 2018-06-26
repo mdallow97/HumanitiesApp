@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SettingsTableViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
