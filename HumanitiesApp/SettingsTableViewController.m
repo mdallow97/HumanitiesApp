@@ -18,10 +18,15 @@
     UITableView *tv;
 }
 
+- (UITabBarItem *)tabBarItem
+{
+    UITabBarItem *item = [[UITabBarItem alloc] initWithTitle:@"Settings" image:nil tag:1];
+    return item;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.tableView.dataSource = self;
     self.tableView.dataSource = self;
     
     

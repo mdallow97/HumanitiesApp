@@ -16,6 +16,7 @@
 		4172C83C20E1D0580065A277 /* HumanitiesAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C83B20E1D0580065A277 /* HumanitiesAppTests.m */; };
 		4172C84720E1D0580065A277 /* HumanitiesAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C84620E1D0580065A277 /* HumanitiesAppUITests.m */; };
 		4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C85520E1D2A60065A277 /* SettingsTableViewController.m */; };
+		4172C85B20E1DFCF0065A277 /* ProjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C85A20E1DFCF0065A277 /* ProjectView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		4172C84820E1D0580065A277 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4172C85420E1D29E0065A277 /* SettingsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		4172C85520E1D2A60065A277 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
+		4172C85A20E1DFCF0065A277 /* ProjectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectView.m; sourceTree = "<group>"; };
+		4172C85C20E1DFDB0065A277 /* ProjectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,10 +109,12 @@
 			children = (
 				4172C82220E1D0570065A277 /* AppDelegate.h */,
 				4172C82320E1D0570065A277 /* AppDelegate.m */,
-				4172C82520E1D0570065A277 /* ViewController.h */,
-				4172C82620E1D0570065A277 /* ViewController.m */,
 				4172C85420E1D29E0065A277 /* SettingsTableViewController.h */,
 				4172C85520E1D2A60065A277 /* SettingsTableViewController.m */,
+				4172C82520E1D0570065A277 /* ViewController.h */,
+				4172C82620E1D0570065A277 /* ViewController.m */,
+				4172C85C20E1DFDB0065A277 /* ProjectView.h */,
+				4172C85A20E1DFCF0065A277 /* ProjectView.m */,
 				4172C82820E1D0570065A277 /* Main.storyboard */,
 				4172C82B20E1D0580065A277 /* Assets.xcassets */,
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
@@ -269,6 +274,7 @@
 			files = (
 				4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */,
 				4172C82720E1D0570065A277 /* ViewController.m in Sources */,
+				4172C85B20E1DFCF0065A277 /* ProjectView.m in Sources */,
 				4172C83220E1D0580065A277 /* main.m in Sources */,
 				4172C82420E1D0570065A277 /* AppDelegate.m in Sources */,
 			);

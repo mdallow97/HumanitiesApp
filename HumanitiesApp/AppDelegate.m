@@ -18,10 +18,17 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    SettingsTableViewController *tvc = [[SettingsTableViewController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:tvc];
     
-    self.window.rootViewController = nav;
+    UITabBarController *tbc = [[UITabBarController alloc] init];
+    UIViewController *mainViewController = [[ViewController alloc] init];
+    UIViewController *settingsController = [[SettingsTableViewController alloc] init];
+    
+    tbc.viewControllers = [NSArray arrayWithObjects:
+                           mainViewController,
+                           settingsController,
+                           nil];
+    
+    self.window.rootViewController = tbc;
     
     return YES;
 }
