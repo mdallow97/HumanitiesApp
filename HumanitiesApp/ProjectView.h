@@ -21,7 +21,7 @@
 - (void) showOptions;
 - (UIViewController *) currentTopViewController;
 
-@property (nonatomic, weak) id delegate;
+
 
 
 @end

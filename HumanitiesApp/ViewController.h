@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "HomeView.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITextFieldDelegate>
 
 - (void) setup;
 - (UITabBarItem *)tabBarItem;
 - (void) viewDidLoad;
 - (void) didReceiveMemoryWarning;
+- (BOOL) textFieldShouldReturn:(UITextField *)textField;
 
 @end
 

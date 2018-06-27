@@ -20,7 +20,9 @@
     int hvWidthInitial, hvWidth;
     int viewWidth, viewHeight;
     
-    
+    UITextField *searchBar;
+    CGRect searchFrame;
+    int searchHeightInitial, searchHeight;
     
 }
 
@@ -33,6 +35,11 @@
     
     hvWidth = viewWidth - (2 * hvWidthInitial);
     hvHeight = viewHeight - hvHeightInitial;
+    
+    searchHeightInitial = 30;
+    searchHeight = hvHeightInitial - (searchHeightInitial + 20);
+    
+    searchFrame = CGRectMake(10, searchHeightInitial, (viewWidth - 20), searchHeight);
     
 }
 
@@ -48,15 +55,30 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     
+    searchBar = [[UITextField alloc] initWithFrame:searchFrame];
+    searchBar.borderStyle = UITextBorderStyleRoundedRect;
+    searchBar.placeholder = @"Search...";
+    searchBar.returnKeyType = UIReturnKeyGo;
+    searchBar.delegate = self;
+    [self.view addSubview:searchBar];
+    
+    
     hv = [[HomeView alloc] initWithFrame:CGRectMake(hvWidthInitial, hvHeightInitial, hvWidth, hvHeight)];
     [self.view addSubview:hv];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    hv.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor blackColor];
+    hv.backgroundColor = [UIColor whiteColor];
     
     [hv setNeedsDisplay];
     
     
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == searchBar) [textField resignFirstResponder];
+    
+    return YES;
 }
 
 
