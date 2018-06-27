@@ -10,12 +10,29 @@
 
 @interface ViewController ()
 
+
 @end
 
 @implementation ViewController
 {
+    HomeView *hv;
+    int hvHeightInitial, hvHeight;
+    int hvWidthInitial, hvWidth;
     int viewWidth, viewHeight;
-    ProjectView *pv;
+    
+    
+    
+}
+
+- (void) setup
+{
+    hvHeightInitial = 85;
+    hvWidthInitial = 0;
+    viewWidth = self.view.frame.size.width;
+    viewHeight = self.view.frame.size.height;
+    
+    hvWidth = viewWidth - (2 * hvWidthInitial);
+    hvHeight = viewHeight - hvHeightInitial;
     
 }
 
@@ -25,25 +42,25 @@
     return item;
 }
 
-- (void)viewDidLoad {
+- (void) viewDidLoad {
     [super viewDidLoad];
+    [self setup];
     // Do any additional setup after loading the view, typically from a nib.
-    viewWidth = self.view.frame.size.width;
-    viewHeight = self.view.frame.size.height;
     
-    pv = [[ProjectView alloc] initWithFrame:CGRectMake(20, 25, (viewWidth - 40), 300)];
-    [self.view addSubview:pv];
+    
+    hv = [[HomeView alloc] initWithFrame:CGRectMake(hvWidthInitial, hvHeightInitial, hvWidth, hvHeight)];
+    [self.view addSubview:hv];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    pv.backgroundColor = [UIColor grayColor];
+    hv.backgroundColor = [UIColor blackColor];
     
-    [pv setNeedsDisplay];
+    [hv setNeedsDisplay];
     
     
 }
 
 
-- (void)didReceiveMemoryWarning {
+- (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
