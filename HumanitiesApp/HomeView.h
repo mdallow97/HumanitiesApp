@@ -1,20 +1,24 @@
 //
-//  ViewController.h
+//  HomeView.h
 //  HumanitiesApp
 //
 //  Created by Michael Dallow on 6/25/18.
 //  Copyright © 2018 Michael Dallow. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "HomeView.h"
+#ifndef HomeView_h
+#define HomeView_h
 
-@interface ViewController : UIViewController
+#import <UIKit/UIKit.h>
+#import "ProjectView.h"
+
+@interface HomeView : UIScrollView
 
 - (void) setup;
-- (UITabBarItem *)tabBarItem;
-- (void) viewDidLoad;
-- (void) didReceiveMemoryWarning;
+- (id) initWithFrame:(CGRect)frame;
+
 
 @end
 
+
+#endif /* HomeView_h */
