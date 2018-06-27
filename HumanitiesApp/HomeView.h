@@ -10,7 +10,7 @@
 #define HomeView_h
 
 #import <UIKit/UIKit.h>
-#import "ProjectView.h"
+#import "PreView.h"
 
 @interface HomeView : UIScrollView
 

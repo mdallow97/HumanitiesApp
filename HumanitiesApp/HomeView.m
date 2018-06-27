@@ -14,7 +14,7 @@
 
 @implementation HomeView
 {
-    ProjectView *pv;
+    PreView *pv;
     CGRect rect;
     int viewWidth, viewHeight;
     int pvWidthInitial, pvWidth;
@@ -40,7 +40,7 @@
     
     [self setup];
     
-    pv = [[ProjectView alloc] initWithFrame:rect];
+    pv = [[PreView alloc] initWithFrame:rect];
     [self addSubview: pv];
 
     pv.backgroundColor = [UIColor grayColor];
@@ -52,7 +52,7 @@
 //        y = i * (viewHeight / 4);
 //        NSLog(@"%f\n", y);
 //        rect = [self setup:y];
-//        pv = [[ProjectView alloc] initWithFrame:rect];
+//        pv = [[PreView alloc] initWithFrame:rect];
 //
 //        pv.backgroundColor = [UIColor grayColor];
 //        [self addSubview:pv];

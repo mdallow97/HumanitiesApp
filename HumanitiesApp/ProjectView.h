@@ -9,22 +9,18 @@
 #ifndef ProjectView_h
 #define ProjectView_h
 
+
 #import <UIKit/UIKit.h>
-#import "HomeView.h"
-#import "ViewController.h"
 
 
-@interface ProjectView : UIView
+@interface ProjectView : UIViewController
 
-- (id) initWithFrame:(CGRect)frame;
+- (void) viewDidLoad;
 - (void) setup;
-- (void) showOptions;
-- (UIViewController *) currentTopViewController;
-
+-(void) cancel;
 
 
 
 @end
-
 
 #endif /* ProjectView_h */
