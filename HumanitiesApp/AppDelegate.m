@@ -13,10 +13,52 @@
 @end
 
 @implementation AppDelegate
+{
+    LogInViewController *logInViewController;
+    int viewWidth, viewHeight;
+}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    logInViewController = [[LogInViewController alloc] init];
+    self.window.rootViewController = logInViewController;
+    
+    logInViewController.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    
+    
+    // Setup frames for ViewController
+    viewWidth = logInViewController.view.frame.size.width;
+    viewHeight = logInViewController.view.frame.size.height;
+    
+    int logInWidth = 100;
+    int x = (viewWidth / 2) - (logInWidth / 2);
+    CGRect logInFrame = CGRectMake(x, ((viewHeight / 3) * 2), logInWidth, 35);
+    
+    
+    
+    
+    // Cancel button creation
+    UIButton *logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [logInButton setTitle:@"Log In" forState:UIControlStateNormal];
+    logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    logInButton.frame = logInFrame;
+   // logInButton.backgroundColor = [UIColor lightGrayColor];
+    [logInButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    [logInViewController.view addSubview:logInButton];
+    
+    
+    
+    return YES;
+}
+
+-(void) cancel
+{
+    [logInViewController dismissViewControllerAnimated:YES completion:nil];
     
     UITabBarController *tbc = [[UITabBarController alloc] init];
     UIViewController *mainViewController = [[ViewController alloc] init];
@@ -32,9 +74,6 @@
     
     tbc.tabBar.barTintColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     tbc.selectedIndex = 0;
-    
-    
-    return YES;
 }
 
 

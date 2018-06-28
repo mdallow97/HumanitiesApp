@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		412FB06420E4697100ECECAD /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 412FB06320E4697100ECECAD /* Settings.png */; };
 		412FB06620E46B0A00ECECAD /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = 412FB06520E46B0900ECECAD /* Home.png */; };
+		412FB06B20E4733500ECECAD /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 412FB06A20E4733500ECECAD /* LogInViewController.m */; };
 		4135659320E2EDCF009050F2 /* PreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4135659220E2EDCF009050F2 /* PreView.m */; };
 		4135659820E31F68009050F2 /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 4135659720E31F68009050F2 /* preview.png */; };
 		4172C82420E1D0570065A277 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C82320E1D0570065A277 /* AppDelegate.m */; };
@@ -44,6 +45,8 @@
 /* Begin PBXFileReference section */
 		412FB06320E4697100ECECAD /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		412FB06520E46B0900ECECAD /* Home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home.png; sourceTree = "<group>"; };
+		412FB06A20E4733500ECECAD /* LogInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
+		412FB06C20E4734100ECECAD /* LogInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
 		4135659120E2EDC2009050F2 /* PreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreView.h; sourceTree = "<group>"; };
 		4135659220E2EDCF009050F2 /* PreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreView.m; sourceTree = "<group>"; };
 		4135659720E31F68009050F2 /* preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview.png; sourceTree = "<group>"; };
@@ -121,6 +124,8 @@
 			children = (
 				4172C82220E1D0570065A277 /* AppDelegate.h */,
 				4172C82320E1D0570065A277 /* AppDelegate.m */,
+				412FB06C20E4734100ECECAD /* LogInViewController.h */,
+				412FB06A20E4733500ECECAD /* LogInViewController.m */,
 				4172C85420E1D29E0065A277 /* SettingsTableViewController.h */,
 				4172C85520E1D2A60065A277 /* SettingsTableViewController.m */,
 				4172C82520E1D0570065A277 /* ViewController.h */,
@@ -294,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				412FB06B20E4733500ECECAD /* LogInViewController.m in Sources */,
 				4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */,
 				4172C82720E1D0570065A277 /* ViewController.m in Sources */,
 				4135659320E2EDCF009050F2 /* PreView.m in Sources */,

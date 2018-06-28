@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SettingsTableViewController.h"
 #import "ViewController.h"
+#import "LogInViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
