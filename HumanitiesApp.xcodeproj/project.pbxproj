@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		412FB06420E4697100ECECAD /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 412FB06320E4697100ECECAD /* Settings.png */; };
+		412FB06620E46B0A00ECECAD /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = 412FB06520E46B0900ECECAD /* Home.png */; };
 		4135659320E2EDCF009050F2 /* PreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4135659220E2EDCF009050F2 /* PreView.m */; };
 		4135659820E31F68009050F2 /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 4135659720E31F68009050F2 /* preview.png */; };
 		4172C82420E1D0570065A277 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C82320E1D0570065A277 /* AppDelegate.m */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		412FB06320E4697100ECECAD /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
+		412FB06520E46B0900ECECAD /* Home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home.png; sourceTree = "<group>"; };
 		4135659120E2EDC2009050F2 /* PreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreView.h; sourceTree = "<group>"; };
 		4135659220E2EDCF009050F2 /* PreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreView.m; sourceTree = "<group>"; };
 		4135659720E31F68009050F2 /* preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview.png; sourceTree = "<group>"; };
@@ -132,7 +136,9 @@
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
 				4172C83020E1D0580065A277 /* Info.plist */,
 				4172C83120E1D0580065A277 /* main.m */,
+				412FB06520E46B0900ECECAD /* Home.png */,
 				4135659720E31F68009050F2 /* preview.png */,
+				412FB06320E4697100ECECAD /* Settings.png */,
 			);
 			path = HumanitiesApp;
 			sourceTree = "<group>";
@@ -258,7 +264,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				412FB06620E46B0A00ECECAD /* Home.png in Resources */,
 				4135659820E31F68009050F2 /* preview.png in Resources */,
+				412FB06420E4697100ECECAD /* Settings.png in Resources */,
 				4172C82F20E1D0580065A277 /* LaunchScreen.storyboard in Resources */,
 				4172C82C20E1D0580065A277 /* Assets.xcassets in Resources */,
 				4172C82A20E1D0570065A277 /* Main.storyboard in Resources */,

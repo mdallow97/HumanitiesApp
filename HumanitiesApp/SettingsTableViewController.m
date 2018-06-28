@@ -20,7 +20,14 @@
 
 - (UITabBarItem *)tabBarItem
 {
-    UITabBarItem *item = [[UITabBarItem alloc] initWithTitle:@"Settings" image:nil tag:1];
+    UITabBarItem *item;
+    
+    UIImage *homeImage = [UIImage imageNamed:@"Settings.png"];
+    UIImage *scaled = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 13) orientation:UIImageOrientationUp];
+    
+    item = [[UITabBarItem alloc] initWithTitle:@"Settings" image:scaled tag:0];
+    
+    
     return item;
 }
 

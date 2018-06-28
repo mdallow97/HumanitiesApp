@@ -70,9 +70,11 @@
     
     [self setup];
     
+    self.backgroundColor = [UIColor whiteColor];
+    
     // Username Label Creation
     usernameLabel = [[UILabel alloc] initWithFrame:usernameFrame];
-    usernameLabel.text = @"Username";
+    usernameLabel.text = @"John Smith";
     [self addSubview:usernameLabel];
     
     // More Options Button Creation

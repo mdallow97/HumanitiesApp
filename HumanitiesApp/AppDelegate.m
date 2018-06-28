@@ -18,10 +18,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    
     UITabBarController *tbc = [[UITabBarController alloc] init];
     UIViewController *mainViewController = [[ViewController alloc] init];
     UIViewController *settingsController = [[SettingsTableViewController alloc] init];
+    
     
     tbc.viewControllers = [NSArray arrayWithObjects:
                            mainViewController,
@@ -29,6 +29,10 @@
                            nil];
     
     self.window.rootViewController = tbc;
+    
+    tbc.tabBar.barTintColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    tbc.selectedIndex = 0;
+    
     
     return YES;
 }

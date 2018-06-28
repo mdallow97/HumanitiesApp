@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) NSMutableArray *settings;
 
+- (UITabBarItem *)tabBarItem;
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;

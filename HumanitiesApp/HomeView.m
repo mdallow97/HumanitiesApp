@@ -14,24 +14,28 @@
 
 @implementation HomeView
 {
-    PreView *pv;
-    CGRect rect;
+    PreView *pv[3];
+    CGRect rect[3];
     int viewWidth, viewHeight;
     int pvWidthInitial, pvWidth;
     int pvHeightInitial, pvHeight;
+    int scrollHeight;
 }
 
 - (void) setup
 {
+    scrollHeight = 4000;
     viewWidth = self.frame.size.width;
     viewHeight = self.frame.size.height;
+    
+    self.contentSize = CGSizeMake(viewWidth, scrollHeight);
+    
+    
     pvWidthInitial = 0;
-    pvHeightInitial = 10;
+    pvHeightInitial = 351;
     pvHeight = 350;
     pvWidth = viewWidth - pvWidthInitial;
     
-    
-    rect = CGRectMake(pvWidthInitial, pvHeightInitial, pvWidth, pvHeight);
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -40,25 +44,24 @@
     
     [self setup];
     
-    pv = [[PreView alloc] initWithFrame:rect];
-    [self addSubview: pv];
-
-    pv.backgroundColor = [UIColor grayColor];
-    [pv setNeedsDisplay];
-//    CGFloat y;
-//
-//    int i;
-//    for (i = 0; i < 4; i++) {
-//        y = i * (viewHeight / 4);
-//        NSLog(@"%f\n", y);
-//        rect = [self setup:y];
-//        pv = [[PreView alloc] initWithFrame:rect];
-//
-//        pv.backgroundColor = [UIColor grayColor];
-//        [self addSubview:pv];
-//    }
+    self.backgroundColor = [UIColor blackColor];
     
-    self.contentSize = CGSizeMake(viewWidth, viewHeight);
+    int i;
+    for (i = 0; i < 4; i ++)
+    {
+        rect[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
+        
+        pv[i] = [[PreView alloc] initWithFrame:rect[i]];
+        
+        
+        [self addSubview: pv[i]];
+    }
+    
+
+    
+    
+    
+    
     
     
     return self;

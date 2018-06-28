@@ -45,7 +45,14 @@
 
 - (UITabBarItem *)tabBarItem
 {
-    UITabBarItem *item = [[UITabBarItem alloc] initWithTitle:@"Home" image:nil tag:0];
+    UITabBarItem *item;
+
+    UIImage *homeImage = [UIImage imageNamed:@"Home.png"];
+    UIImage *scaled = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 45) orientation:UIImageOrientationUp];
+
+    item = [[UITabBarItem alloc] initWithTitle:@"Home" image:scaled tag:0];
+
+
     return item;
 }
 
@@ -57,6 +64,8 @@
     
     searchBar = [[UITextField alloc] initWithFrame:searchFrame];
     searchBar.borderStyle = UITextBorderStyleRoundedRect;
+    searchBar.tintColor = [UIColor blueColor];
+    searchBar.backgroundColor = [UIColor lightGrayColor];
     searchBar.placeholder = @"Search...";
     searchBar.returnKeyType = UIReturnKeyGo;
     searchBar.delegate = self;
@@ -66,10 +75,10 @@
     hv = [[HomeView alloc] initWithFrame:CGRectMake(hvWidthInitial, hvHeightInitial, hvWidth, hvHeight)];
     [self.view addSubview:hv];
     
-    self.view.backgroundColor = [UIColor blackColor];
-    hv.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
-    [hv setNeedsDisplay];
+    
+    //[hv setNeedsDisplay];
     
     
 }
