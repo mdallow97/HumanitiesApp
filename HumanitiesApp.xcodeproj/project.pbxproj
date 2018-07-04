@@ -15,6 +15,8 @@
 		4135659820E31F68009050F2 /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 4135659720E31F68009050F2 /* preview.png */; };
 		415457C320EACE7C00B64540 /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 415457C220EACE7C00B64540 /* UserData.m */; };
 		415457C620EC764200B64540 /* Files.png in Resources */ = {isa = PBXBuildFile; fileRef = 415457C520EC764200B64540 /* Files.png */; };
+		415457C920EC79B400B64540 /* ProjectData.m in Sources */ = {isa = PBXBuildFile; fileRef = 415457C820EC79B400B64540 /* ProjectData.m */; };
+		415457CC20EC79CC00B64540 /* MyProjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 415457CB20EC79CC00B64540 /* MyProjects.m */; };
 		4172C82420E1D0570065A277 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C82320E1D0570065A277 /* AppDelegate.m */; };
 		4172C82720E1D0570065A277 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C82620E1D0570065A277 /* ViewController.m */; };
 		4172C82A20E1D0570065A277 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4172C82820E1D0570065A277 /* Main.storyboard */; };
@@ -57,6 +59,10 @@
 		415457C220EACE7C00B64540 /* UserData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserData.m; sourceTree = "<group>"; };
 		415457C420EACE8800B64540 /* UserData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserData.h; sourceTree = "<group>"; };
 		415457C520EC764200B64540 /* Files.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Files.png; sourceTree = "<group>"; };
+		415457C720EC79A900B64540 /* ProjectData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectData.h; sourceTree = "<group>"; };
+		415457C820EC79B400B64540 /* ProjectData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectData.m; sourceTree = "<group>"; };
+		415457CA20EC79C200B64540 /* MyProjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyProjects.h; sourceTree = "<group>"; };
+		415457CB20EC79CC00B64540 /* MyProjects.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyProjects.m; sourceTree = "<group>"; };
 		4172C81F20E1D0570065A277 /* HumanitiesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HumanitiesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4172C82220E1D0570065A277 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4172C82320E1D0570065A277 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -143,6 +149,10 @@
 				41AB359020E329CF001EFB5F /* ProjectView.m */,
 				415457C420EACE8800B64540 /* UserData.h */,
 				415457C220EACE7C00B64540 /* UserData.m */,
+				415457CA20EC79C200B64540 /* MyProjects.h */,
+				415457CB20EC79CC00B64540 /* MyProjects.m */,
+				415457C720EC79A900B64540 /* ProjectData.h */,
+				415457C820EC79B400B64540 /* ProjectData.m */,
 				4172C82820E1D0570065A277 /* Main.storyboard */,
 				4172C82B20E1D0580065A277 /* Assets.xcassets */,
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
@@ -317,6 +327,8 @@
 				4172C83220E1D0580065A277 /* main.m in Sources */,
 				4172C82420E1D0570065A277 /* AppDelegate.m in Sources */,
 				412FB06F20E5822D00ECECAD /* PersonalPageViewController.m in Sources */,
+				415457CC20EC79CC00B64540 /* MyProjects.m in Sources */,
+				415457C920EC79B400B64540 /* ProjectData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

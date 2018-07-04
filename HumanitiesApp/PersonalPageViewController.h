@@ -12,14 +12,18 @@
 #import <UIKit/UIKit.h>
 #import "PreView.h"
 #import "UserData.h"
+#import "MyProjects.h"
+#import "ProjectData.h"
 #import "ProjectView.h"
 
 @interface PersonalPageViewController : UIViewController
 
 - (void) viewDidLoad;
-- (void) createPreView:(int) it;
+- (void) createPreviews;
 - (void) createNewProject;
+- (void) changeScrollHeight: (int) height;
 - (UIViewController *) currentTopViewController;
+- (void) frameSetup;
 
 @end
 

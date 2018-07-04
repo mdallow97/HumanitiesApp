@@ -43,7 +43,7 @@
     
 }
 
-- (void) setup
+- (void) frameSetup
 {
     // General Variables
     viewWidth = self.view.frame.size.width;
@@ -88,7 +88,7 @@
 {
     [super viewDidLoad];
     
-    [self setup];
+    [self frameSetup];
     
     self.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
@@ -102,7 +102,7 @@
     // Project View Setup
     myProjectsView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
     myProjectsView.backgroundColor = [UIColor blackColor];
-    myProjectsView.contentSize = CGSizeMake(viewWidth, 4000);
+    myProjectsView.contentSize = CGSizeMake(viewWidth, viewHeight);
     
     
     // New Project Button Setup
@@ -118,33 +118,43 @@
     [self.view addSubview:newProjectButton];
     
     
-    
-    
-    
-    [self createPreView:3];
-    
-    
+    [self createPreviews];
 }
 
-- (void) createPreView:(int) it
+- (void)viewWillAppear:(BOOL)animated
 {
+    [self createPreviews];
+}
+
+- (void) changeScrollHeight:(int)height
+{
+    myProjectsView.contentSize = CGSizeMake(viewWidth, height);
+}
+
+- (void) createPreviews
+{
+    MyProjects *projects = [MyProjects sharedMyProjects];
+    int numberOfPreviews = (int) projects.myProjects.count;
+    
+    PreView *pv[numberOfPreviews];
+    CGRect rect[numberOfPreviews];
+    
+    [self changeScrollHeight:(pvHeightInitial * numberOfPreviews)];
+    
     int i;
     
-    PreView *pv[it];
-    CGRect rect[it];
-    NSArray *names = [[NSMutableArray alloc] initWithObjects:@"Mike", @"Ben", @"Sammy", nil];
-    // Need to make a class that contains data for a personal project
-    // Have a vector of projects
-    // Pull data from vector to display on the screen
-    
-    for (i = 0; i < it; i++)
-    {
+    for (i = 0; i < numberOfPreviews; i++) {
+        
+        ProjectData *pd = (ProjectData *) projects.myProjects[i];
+        
         rect[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         pv[i] = [[PreView alloc] initWithFrame:rect[i]];
         
-        [pv[i] setUsername:names[i]];
+        [pv[i] setUsername:pd.projectName];
         [myProjectsView addSubview: pv[i]];
+        
     }
+    
 }
 
 - (void) createNewProject

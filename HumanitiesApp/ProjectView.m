@@ -18,9 +18,14 @@
     int viewWidth, viewHeight;
     int buttonWidth, buttonHeight;
     
+    BOOL shouldAdd;
+    
+    MyProjects *projects;
+    ProjectData *data;
+    
     // Cancel Button Variable Declarations
-    UIButton *cancelButton;
-    CGRect cancelFrame;
+    UIButton *doneButton;
+    CGRect doneFrame;
     
     // Project Name Label Variable Declaration
     UILabel *projectNameLabel;
@@ -47,22 +52,24 @@
     UITextField *projectNameTextField;
     
     // New Project Name Empty Label
-    UILabel *emptyFieldLabel;
-    int emptyFieldWidth, emptyFieldHeight;
-    CGRect emptyFieldFrame;
+    UILabel *errorFieldLabel;
+    int errorFieldWidth, errorFieldHeight;
+    CGRect errorFieldFrame;
 }
 
-- (void) setup
+- (void) frameSetup
 {
     // General Variable Initialization
     viewWidth = self.view.frame.size.width;
     viewHeight = self.view.frame.size.height;
     
+    shouldAdd = false;
+    
     buttonWidth = 50;
     buttonHeight = 50;
     
     // Cancel Button Variable Initialization
-    cancelFrame = CGRectMake(10, 30, buttonWidth, buttonHeight);
+    doneFrame = CGRectMake(10, 30, buttonWidth, buttonHeight);
     
     // Add File Button Variable Initialization
     addFileX = viewWidth - (buttonWidth + 5);
@@ -78,25 +85,25 @@
     textFieldHeight = 50;
     
     // Empty Name Label Variable Initialization
-    emptyFieldWidth = 250;
-    emptyFieldHeight = 50;
-    emptyFieldFrame = CGRectMake((viewWidth / 2) - (emptyFieldWidth / 2), (viewHeight / 2), emptyFieldWidth, emptyFieldHeight);
+    errorFieldWidth = 250;
+    errorFieldHeight = 50;
+    errorFieldFrame = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
     
     // Project Name Label Variable Initialization
     projectNameWidth = 200;
-    projectNameHeight = 30;
+    projectNameHeight = 50;
     projectNameFrame = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
 }
 
 - (void) viewDidLoad
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    [self setup];
+    [self frameSetup];
     
-    cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    cancelButton.frame = cancelFrame;
-    [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [doneButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    doneButton.frame = doneFrame;
+    [doneButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     
     addFileButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
     addFileButton.frame = addFileFrame;
@@ -121,10 +128,9 @@
     
     
     // Empty Project Name Label Setup
-    emptyFieldLabel = [[UILabel alloc] initWithFrame:emptyFieldFrame];
-    emptyFieldLabel.hidden = YES;
-    emptyFieldLabel.text = @"Project name cannot be blank";
-    emptyFieldLabel.textColor = [UIColor redColor];
+    errorFieldLabel = [[UILabel alloc] initWithFrame:errorFieldFrame];
+    errorFieldLabel.hidden = YES;
+    errorFieldLabel.textColor = [UIColor redColor];
     
     // Project Name Label Setup
     projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
@@ -132,11 +138,11 @@
     projectNameLabel.textAlignment = NSTextAlignmentCenter;
     
     // Adding Subviews
-    [self.view addSubview:cancelButton];
+    [self.view addSubview:doneButton];
     [self.view addSubview:addFileButton];
     [self.view addSubview:nextButton];
     [self.view addSubview:projectNameTextField];
-    [self.view addSubview:emptyFieldLabel];
+    [self.view addSubview:errorFieldLabel];
     [self.view addSubview:projectNameLabel];
 }
 
@@ -153,19 +159,42 @@
 
 - (void) createProject
 {
-    // Must check to make sure text field is not empty !!!
-    
+    // Check to make sure text field is not empty
     if ([projectNameTextField.text isEqual:@""])
     {
-        
-        emptyFieldLabel.hidden = NO;
+        errorFieldLabel.text = @"Project name cannot be blank";
+        errorFieldLabel.hidden = NO;
         
         return;
     }
     
+    errorFieldLabel.hidden = YES;
+    
+    // Check to make sure project name doesnt conflict with own project name
+    projects = [MyProjects sharedMyProjects];
+    int i;
+    
+    for (i = 0; i < projects.myProjects.count; i++) {
+        
+        ProjectData *pd = (ProjectData *) projects.myProjects[i];
+        
+        if ([pd.projectName isEqualToString:projectNameTextField.text]) {
+            errorFieldLabel.text = @"You already have a project with same title";
+            errorFieldLabel.hidden = YES;
+            return;
+        }
+
+    }
+    
+    shouldAdd = true;
+    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    
+    data = [[ProjectData alloc] init];
+    
+    data.projectName = projectNameTextField.text;
     projectNameLabel.text = projectNameTextField.text;
     
-    emptyFieldLabel.hidden = YES;
+    errorFieldLabel.hidden = YES;
     projectNameLabel.hidden = NO;
     
     
@@ -188,6 +217,11 @@
 
 -(void) cancel
 {
+    if (shouldAdd) {
+        [projects.myProjects addObject:data];
+    }
+    
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
