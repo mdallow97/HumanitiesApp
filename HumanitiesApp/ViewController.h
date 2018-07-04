@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HomeView.h"
+#import "PreView.h"
 
 @interface ViewController : UIViewController <UITextFieldDelegate>
 
@@ -16,6 +16,7 @@
 - (void) viewDidLoad;
 - (void) didReceiveMemoryWarning;
 - (BOOL) textFieldShouldReturn:(UITextField *)textField;
+- (void) createPreView:(int) it;
 
 @end
 

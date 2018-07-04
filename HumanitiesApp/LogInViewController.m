@@ -15,9 +15,12 @@
 
 @implementation LogInViewController
 {
+    // General Variables
     int viewWidth, viewHeight;
-    UITextField *username;
-    UITextField *password;
+    
+    UITextField *usernameTextField;
+    UITextField *passwordTextField;
+    UILabel *emptyFieldLabel;
 }
 
 - (void) setup
@@ -42,35 +45,67 @@
     y += (textFieldHeight + 10);
     CGRect passwordFrame = CGRectMake(x, y, textFieldWidth, textFieldHeight);
     
-    
-    // Username text field
-    username = [[UITextField alloc] initWithFrame:usernameFrame];
-    username.borderStyle = UITextBorderStyleRoundedRect;
-    username.tintColor = [UIColor blueColor];
-    username.backgroundColor = [UIColor lightGrayColor];
-    username.placeholder = @"Username";
-    username.returnKeyType = UIReturnKeyNext;
-    username.delegate = self;
-    
-    password = [[UITextField alloc] initWithFrame:passwordFrame];
-    password.borderStyle = UITextBorderStyleRoundedRect;
-    password.tintColor = [UIColor blueColor];
-    password.backgroundColor = [UIColor lightGrayColor];
-    password.placeholder = @"Password";
-    password.returnKeyType = UIReturnKeyGo;
-    password.delegate = self;
+    y += (textFieldHeight + 10);
+    CGRect emptyFieldFrame = CGRectMake(x, y, textFieldWidth, textFieldHeight);
     
     
-    [self.view addSubview:username];
-    [self.view addSubview:password];
+    // Username Text Field Setup
+    usernameTextField = [[UITextField alloc] initWithFrame:usernameFrame];
+    usernameTextField.borderStyle = UITextBorderStyleRoundedRect;
+    usernameTextField.tintColor = [UIColor blueColor];
+    usernameTextField.backgroundColor = [UIColor lightGrayColor];
+    usernameTextField.placeholder = @"Username";
+    usernameTextField.returnKeyType = UIReturnKeyNext;
+    usernameTextField.delegate = self;
+    
+    // Password Text Field Setup
+    passwordTextField = [[UITextField alloc] initWithFrame:passwordFrame];
+    passwordTextField.borderStyle = UITextBorderStyleRoundedRect;
+    passwordTextField.tintColor = [UIColor blueColor];
+    passwordTextField.backgroundColor = [UIColor lightGrayColor];
+    passwordTextField.placeholder = @"Password";
+    passwordTextField.returnKeyType = UIReturnKeyGo;
+    passwordTextField.delegate = self;
+    passwordTextField.secureTextEntry = YES;
+    
+    // Empty password/username Label Setup
+    emptyFieldLabel = [[UILabel alloc] initWithFrame:emptyFieldFrame];
+    emptyFieldLabel.hidden = YES;
+    emptyFieldLabel.text = @"Incorrect password or username";
+    emptyFieldLabel.textColor = [UIColor redColor];
+    
+    
+    [self.view addSubview:usernameTextField];
+    [self.view addSubview:passwordTextField];
+    [self.view addSubview:emptyFieldLabel];
+    
+}
+
+-(BOOL) logIn
+{
+    UserData *ud = [UserData globalUserData];
+    
+    // Check to see if username and password match
+    //if ([usernameTextField.text isEqual:@""] || [passwordTextField.text isEqual:@""])
+    if (0)
+    {
+        emptyFieldLabel.hidden = NO;
+        return false;
+    } else {
+        emptyFieldLabel.hidden = YES;
+        ud.username = usernameTextField.text;
+        return true;
+    }
+    
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == username) {
-        textField = password;
+    
+    if (textField == usernameTextField) {
+        [passwordTextField becomeFirstResponder];
         return NO;
-    } else if (textField == password) {
+    } else if (textField == passwordTextField) {
         [textField resignFirstResponder];
     }
     

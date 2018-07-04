@@ -10,8 +10,11 @@
 		412FB06420E4697100ECECAD /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 412FB06320E4697100ECECAD /* Settings.png */; };
 		412FB06620E46B0A00ECECAD /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = 412FB06520E46B0900ECECAD /* Home.png */; };
 		412FB06B20E4733500ECECAD /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 412FB06A20E4733500ECECAD /* LogInViewController.m */; };
+		412FB06F20E5822D00ECECAD /* PersonalPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 412FB06E20E5822D00ECECAD /* PersonalPageViewController.m */; };
 		4135659320E2EDCF009050F2 /* PreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4135659220E2EDCF009050F2 /* PreView.m */; };
 		4135659820E31F68009050F2 /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 4135659720E31F68009050F2 /* preview.png */; };
+		415457C320EACE7C00B64540 /* UserData.m in Sources */ = {isa = PBXBuildFile; fileRef = 415457C220EACE7C00B64540 /* UserData.m */; };
+		415457C620EC764200B64540 /* Files.png in Resources */ = {isa = PBXBuildFile; fileRef = 415457C520EC764200B64540 /* Files.png */; };
 		4172C82420E1D0570065A277 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C82320E1D0570065A277 /* AppDelegate.m */; };
 		4172C82720E1D0570065A277 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C82620E1D0570065A277 /* ViewController.m */; };
 		4172C82A20E1D0570065A277 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4172C82820E1D0570065A277 /* Main.storyboard */; };
@@ -21,7 +24,6 @@
 		4172C83C20E1D0580065A277 /* HumanitiesAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C83B20E1D0580065A277 /* HumanitiesAppTests.m */; };
 		4172C84720E1D0580065A277 /* HumanitiesAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C84620E1D0580065A277 /* HumanitiesAppUITests.m */; };
 		4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C85520E1D2A60065A277 /* SettingsTableViewController.m */; };
-		4172C85B20E1DFCF0065A277 /* HomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C85A20E1DFCF0065A277 /* HomeView.m */; };
 		41AB359120E329CF001EFB5F /* ProjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AB359020E329CF001EFB5F /* ProjectView.m */; };
 /* End PBXBuildFile section */
 
@@ -47,9 +49,14 @@
 		412FB06520E46B0900ECECAD /* Home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home.png; sourceTree = "<group>"; };
 		412FB06A20E4733500ECECAD /* LogInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
 		412FB06C20E4734100ECECAD /* LogInViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
+		412FB06D20E5821000ECECAD /* PersonalPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalPageViewController.h; sourceTree = "<group>"; };
+		412FB06E20E5822D00ECECAD /* PersonalPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalPageViewController.m; sourceTree = "<group>"; };
 		4135659120E2EDC2009050F2 /* PreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreView.h; sourceTree = "<group>"; };
 		4135659220E2EDCF009050F2 /* PreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreView.m; sourceTree = "<group>"; };
 		4135659720E31F68009050F2 /* preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview.png; sourceTree = "<group>"; };
+		415457C220EACE7C00B64540 /* UserData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserData.m; sourceTree = "<group>"; };
+		415457C420EACE8800B64540 /* UserData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserData.h; sourceTree = "<group>"; };
+		415457C520EC764200B64540 /* Files.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Files.png; sourceTree = "<group>"; };
 		4172C81F20E1D0570065A277 /* HumanitiesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HumanitiesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4172C82220E1D0570065A277 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4172C82320E1D0570065A277 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -68,8 +75,6 @@
 		4172C84820E1D0580065A277 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4172C85420E1D29E0065A277 /* SettingsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		4172C85520E1D2A60065A277 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
-		4172C85A20E1DFCF0065A277 /* HomeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeView.m; sourceTree = "<group>"; };
-		4172C85C20E1DFDB0065A277 /* HomeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeView.h; sourceTree = "<group>"; };
 		41AB359020E329CF001EFB5F /* ProjectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectView.m; sourceTree = "<group>"; };
 		41AB359220E329D8001EFB5F /* ProjectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,16 +131,18 @@
 				4172C82320E1D0570065A277 /* AppDelegate.m */,
 				412FB06C20E4734100ECECAD /* LogInViewController.h */,
 				412FB06A20E4733500ECECAD /* LogInViewController.m */,
-				4172C85420E1D29E0065A277 /* SettingsTableViewController.h */,
-				4172C85520E1D2A60065A277 /* SettingsTableViewController.m */,
 				4172C82520E1D0570065A277 /* ViewController.h */,
 				4172C82620E1D0570065A277 /* ViewController.m */,
-				4172C85C20E1DFDB0065A277 /* HomeView.h */,
-				4172C85A20E1DFCF0065A277 /* HomeView.m */,
+				412FB06D20E5821000ECECAD /* PersonalPageViewController.h */,
+				412FB06E20E5822D00ECECAD /* PersonalPageViewController.m */,
+				4172C85420E1D29E0065A277 /* SettingsTableViewController.h */,
+				4172C85520E1D2A60065A277 /* SettingsTableViewController.m */,
 				4135659120E2EDC2009050F2 /* PreView.h */,
 				4135659220E2EDCF009050F2 /* PreView.m */,
 				41AB359220E329D8001EFB5F /* ProjectView.h */,
 				41AB359020E329CF001EFB5F /* ProjectView.m */,
+				415457C420EACE8800B64540 /* UserData.h */,
+				415457C220EACE7C00B64540 /* UserData.m */,
 				4172C82820E1D0570065A277 /* Main.storyboard */,
 				4172C82B20E1D0580065A277 /* Assets.xcassets */,
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
@@ -143,6 +150,7 @@
 				4172C83120E1D0580065A277 /* main.m */,
 				412FB06520E46B0900ECECAD /* Home.png */,
 				4135659720E31F68009050F2 /* preview.png */,
+				415457C520EC764200B64540 /* Files.png */,
 				412FB06320E4697100ECECAD /* Settings.png */,
 			);
 			path = HumanitiesApp;
@@ -275,6 +283,7 @@
 				4172C82F20E1D0580065A277 /* LaunchScreen.storyboard in Resources */,
 				4172C82C20E1D0580065A277 /* Assets.xcassets in Resources */,
 				4172C82A20E1D0570065A277 /* Main.storyboard in Resources */,
+				415457C620EC764200B64540 /* Files.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,10 +312,11 @@
 				4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */,
 				4172C82720E1D0570065A277 /* ViewController.m in Sources */,
 				4135659320E2EDCF009050F2 /* PreView.m in Sources */,
+				415457C320EACE7C00B64540 /* UserData.m in Sources */,
 				41AB359120E329CF001EFB5F /* ProjectView.m in Sources */,
-				4172C85B20E1DFCF0065A277 /* HomeView.m in Sources */,
 				4172C83220E1D0580065A277 /* main.m in Sources */,
 				4172C82420E1D0570065A277 /* AppDelegate.m in Sources */,
+				412FB06F20E5822D00ECECAD /* PersonalPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

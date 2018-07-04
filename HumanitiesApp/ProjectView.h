@@ -13,11 +13,15 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ProjectView : UIViewController
+@interface ProjectView : UIViewController <UITextFieldDelegate>
 
 - (void) viewDidLoad;
 - (void) setup;
--(void) cancel;
+- (void) cancel;
+- (void) addFile;
+- (void) enterNewProjectMode;
+- (void) createProject;
+- (void) enterEditingMode;
 
 
 

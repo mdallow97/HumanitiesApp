@@ -15,10 +15,17 @@
 
 @implementation ViewController
 {
-    HomeView *hv;
-    int hvHeightInitial, hvHeight;
-    int hvWidthInitial, hvWidth;
     int viewWidth, viewHeight;
+    
+    // Scroll View Variable Declarations
+    UIScrollView *myProjectsView;
+    int scrollHeightInitial, scrollHeight;
+    int scrollWidthInitial, scrollWidth;
+    CGRect scrollViewFrame;
+    
+    // Preview Variable Declarations
+    int pvWidthInitial, pvWidth;
+    int pvHeightInitial, pvHeight;
     
     UITextField *searchBar;
     CGRect searchFrame;
@@ -28,19 +35,32 @@
 
 - (void) setup
 {
-    hvHeightInitial = 85;
-    hvWidthInitial = 0;
+    // General Variable Initialization
     viewWidth = self.view.frame.size.width;
     viewHeight = self.view.frame.size.height;
     
-    hvWidth = viewWidth - (2 * hvWidthInitial);
-    hvHeight = viewHeight - hvHeightInitial;
+    // Scroll View Variable initialization
+    scrollHeightInitial = 85;
+    scrollWidthInitial = 0;
     
-    searchHeightInitial = 30;
-    searchHeight = hvHeightInitial - (searchHeightInitial + 20);
+    scrollWidth = viewWidth - (2 * scrollWidthInitial);
+    scrollHeight = viewHeight - scrollHeightInitial;
+    
+    scrollViewFrame = CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight);
+    
+    
+    // Search Bar Text Field Variable Initialization
+    searchHeightInitial = 35;
+    searchHeight = scrollHeightInitial - (searchHeightInitial + 20);
     
     searchFrame = CGRectMake(10, searchHeightInitial, (viewWidth - 20), searchHeight);
     
+    
+    // Preview Variable initialization
+    pvWidthInitial = 0;
+    pvHeightInitial = 351;
+    pvHeight = 350;
+    pvWidth = viewWidth - pvWidthInitial;
 }
 
 - (UITabBarItem *)tabBarItem
@@ -61,7 +81,7 @@
     [self setup];
     // Do any additional setup after loading the view, typically from a nib.
     
-    
+    // Search Bar Text Field Setup
     searchBar = [[UITextField alloc] initWithFrame:searchFrame];
     searchBar.borderStyle = UITextBorderStyleRoundedRect;
     searchBar.tintColor = [UIColor blueColor];
@@ -69,18 +89,20 @@
     searchBar.placeholder = @"Search...";
     searchBar.returnKeyType = UIReturnKeyGo;
     searchBar.delegate = self;
-    [self.view addSubview:searchBar];
     
     
-    hv = [[HomeView alloc] initWithFrame:CGRectMake(hvWidthInitial, hvHeightInitial, hvWidth, hvHeight)];
-    [self.view addSubview:hv];
+    // Project View Setup
+    myProjectsView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
+    myProjectsView.backgroundColor = [UIColor blackColor];
+    myProjectsView.contentSize = CGSizeMake(viewWidth, 4000);
     
     self.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
+    // Adding sub views
+    [self.view addSubview:myProjectsView];
+    [self.view addSubview:searchBar];
     
-    //[hv setNeedsDisplay];
-    
-    
+    [self createPreView:3];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
@@ -94,6 +116,27 @@
 - (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) createPreView:(int) it
+{
+    int i;
+    
+    PreView *pv[it];
+    CGRect rect[it];
+    NSArray *names = [[NSMutableArray alloc] initWithObjects:@"John", @"Sam", @"Bill", nil];
+    // Need to make a class that contains data for a personal project
+    // Have a vector of projects
+    // Pull data from vector to display on the screen
+    
+    for (i = 0; i < it; i++)
+    {
+        rect[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
+        pv[i] = [[PreView alloc] initWithFrame:rect[i]];
+        
+        [pv[i] setUsername:names[i]];
+        [myProjectsView addSubview: pv[i]];
+    }
 }
 
 

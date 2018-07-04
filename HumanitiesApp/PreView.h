@@ -20,6 +20,7 @@
 - (void) showOptions;
 - (UIViewController *) currentTopViewController;
 - (void) goToProject;
+- (void) setUsername:(NSString *)userID;
 
 
 

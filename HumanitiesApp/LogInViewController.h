@@ -10,10 +10,13 @@
 #define LogInViewController_h
 
 #import <UIKit/UIKit.h>
+#import "UserData.h"
 
 @interface LogInViewController : UIViewController <UITextFieldDelegate>
 
+@property (nonatomic, retain) NSString *username;
 
+- (BOOL) logIn;
 
 @end
 

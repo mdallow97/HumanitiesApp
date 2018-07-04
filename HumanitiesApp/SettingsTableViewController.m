@@ -25,7 +25,7 @@
     UIImage *homeImage = [UIImage imageNamed:@"Settings.png"];
     UIImage *scaled = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 13) orientation:UIImageOrientationUp];
     
-    item = [[UITabBarItem alloc] initWithTitle:@"Settings" image:scaled tag:0];
+    item = [[UITabBarItem alloc] initWithTitle:@"Settings" image:scaled tag:2];
     
     
     return item;

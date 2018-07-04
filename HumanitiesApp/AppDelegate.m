@@ -45,7 +45,7 @@
     logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
     logInButton.frame = logInFrame;
    // logInButton.backgroundColor = [UIColor lightGrayColor];
-    [logInButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    [logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -56,24 +56,28 @@
     return YES;
 }
 
--(void) cancel
+- (void) logIn
 {
+    if (![logInViewController logIn]) return;
+    
     [logInViewController dismissViewControllerAnimated:YES completion:nil];
     
     UITabBarController *tbc = [[UITabBarController alloc] init];
     UIViewController *mainViewController = [[ViewController alloc] init];
+    UIViewController *personalPageController = [[PersonalPageViewController alloc] init];
     UIViewController *settingsController = [[SettingsTableViewController alloc] init];
     
     
     tbc.viewControllers = [NSArray arrayWithObjects:
                            mainViewController,
+                           personalPageController,
                            settingsController,
                            nil];
     
     self.window.rootViewController = tbc;
     
     tbc.tabBar.barTintColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
-    tbc.selectedIndex = 0;
+    [tbc setSelectedIndex:0];
 }
 
 

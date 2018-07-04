@@ -18,6 +18,7 @@
     UIButton *moreButton, *goToProjectButton;
     UIImage *preview;
     CGRect usernameFrame, moreFrame, goToProjectFrame, previewFrame;
+    NSString *username;
     
     int viewHeight, viewWidth;
     
@@ -64,6 +65,12 @@
     goToProjectFrame = previewFrame;
 }
 
+- (void) setUsername:(NSString *)userID
+{
+    username = userID;
+    usernameLabel.text = username;
+}
+
 - (id) initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -74,7 +81,6 @@
     
     // Username Label Creation
     usernameLabel = [[UILabel alloc] initWithFrame:usernameFrame];
-    usernameLabel.text = @"John Smith";
     [self addSubview:usernameLabel];
     
     // More Options Button Creation
