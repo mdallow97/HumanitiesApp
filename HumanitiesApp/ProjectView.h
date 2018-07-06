@@ -19,10 +19,16 @@
 - (void) viewDidLoad;
 - (void) frameSetup;
 - (void) cancel;
-- (void) addFile;
+- (void) showEditingOptions;
 - (void) enterNewProjectMode;
 - (void) createProject;
 - (void) enterEditingMode;
+
+- (void) loadProjectWithData:(ProjectData *) project;
+
+- (UIViewController *) currentTopViewController;
+
+@property NSString *currentProjectName;
 
 
 

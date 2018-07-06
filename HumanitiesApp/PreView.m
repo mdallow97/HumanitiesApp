@@ -14,11 +14,11 @@
 
 @implementation PreView
 {
-    UILabel *usernameLabel;
+    UILabel *projectNameLabel;
     UIButton *moreButton, *goToProjectButton;
     UIImage *preview;
-    CGRect usernameFrame, moreFrame, goToProjectFrame, previewFrame;
-    NSString *username;
+    CGRect projectNameFrame, moreFrame, goToProjectFrame, previewFrame;
+    NSString *projectName;
     
     int viewHeight, viewWidth;
     
@@ -53,7 +53,7 @@
     
     
     x = 10;
-    usernameFrame = CGRectMake(x, 0, defaultLabelWidth, defaultLabelHeight);
+    projectNameFrame = CGRectMake(x, 0, defaultLabelWidth, defaultLabelHeight);
     
     
     x = viewWidth - (defaultButtonWidth + x);
@@ -65,10 +65,10 @@
     goToProjectFrame = previewFrame;
 }
 
-- (void) setUsername:(NSString *)userID
+- (void) setProjectName:(NSString *)name
 {
-    username = userID;
-    usernameLabel.text = username;
+    projectName = name;
+    projectNameLabel.text = projectName;
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -80,8 +80,8 @@
     self.backgroundColor = [UIColor whiteColor];
     
     // Username Label Creation
-    usernameLabel = [[UILabel alloc] initWithFrame:usernameFrame];
-    [self addSubview:usernameLabel];
+    projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
+    [self addSubview:projectNameLabel];
     
     // More Options Button Creation
     moreButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -103,7 +103,7 @@
     [goToProjectButton addTarget:self action:@selector(goToProject) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:goToProjectButton];
     
-    
+    _inEditingMode = false;
     
     return self;
 }
@@ -116,11 +116,21 @@
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     // Below action should be dependent on permissions
-    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:nil];
-
+    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        [self goToProject:true];
+        
+    }];
+    
+    
+    if (self->_inEditingMode) {
+        [options addAction:edit];
+    }
+    
+    
     [options addAction:cancel];
     [options addAction:share];
-    [options addAction:edit];
+    
 
     
     UIViewController *currentTopVC = [self currentTopViewController];
@@ -128,12 +138,37 @@
     
 }
 
-- (void) goToProject
+- (void) goToProject:(BOOL) canEdit
 {
     ProjectView *project = [[ProjectView alloc] init];
     
+    
+    MyProjects *projects = [MyProjects sharedMyProjects];
+    ProjectData *pd;
+    int i, numProjects = (int) projects.myProjects.count;
+    
+    for (i = 0; i < numProjects; i++) {
+        pd = (ProjectData *) projects.myProjects[i];
+        
+        if (pd.projectName == projectName) break;
+    }
+    
+    [project loadProjectWithData:pd];
+    
+    
+    
     UIViewController *currentTopVC = [self currentTopViewController];
     [currentTopVC presentViewController:project animated:YES completion:nil];
+    
+    
+    if (canEdit) {
+        [project enterEditingMode];
+    }
+}
+
+- (void) goToProject
+{
+    [self goToProject:false];
 }
 
 - (UIViewController *) currentTopViewController

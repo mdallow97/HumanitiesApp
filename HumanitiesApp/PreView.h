@@ -11,6 +11,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ProjectView.h"
+#import "PersonalPageViewController.h"
 
 
 @interface PreView : UIView
@@ -20,7 +21,11 @@
 - (void) showOptions;
 - (UIViewController *) currentTopViewController;
 - (void) goToProject;
-- (void) setUsername:(NSString *)userID;
+- (void) goToProject:(BOOL) canEdit;
+- (void) setProjectName:(NSString *)name;
+
+@property BOOL inEditingMode;
+@property NSString *name;
 
 
 

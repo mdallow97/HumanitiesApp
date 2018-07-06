@@ -134,8 +134,10 @@
         rect[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         pv[i] = [[PreView alloc] initWithFrame:rect[i]];
         
-        [pv[i] setUsername:names[i]];
+        [pv[i] setProjectName:names[i]];
         [myProjectsView addSubview: pv[i]];
+        
+        pv[i].inEditingMode = false;
     }
 }
 

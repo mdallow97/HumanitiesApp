@@ -40,6 +40,7 @@
     
     // Project Editing View Variable Declarations
     ProjectView *projectEditingView;
+    PreView *previews[100];
     
 }
 
@@ -123,6 +124,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    for (UIView *view in myProjectsView.subviews)
+        if ([view isKindOfClass:[PreView class]]) [view removeFromSuperview];
+    
     [self createPreviews];
 }
 
@@ -136,7 +140,6 @@
     MyProjects *projects = [MyProjects sharedMyProjects];
     int numberOfPreviews = (int) projects.myProjects.count;
     
-    PreView *pv[numberOfPreviews];
     CGRect rect[numberOfPreviews];
     
     [self changeScrollHeight:(pvHeightInitial * numberOfPreviews)];
@@ -148,10 +151,13 @@
         ProjectData *pd = (ProjectData *) projects.myProjects[i];
         
         rect[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
-        pv[i] = [[PreView alloc] initWithFrame:rect[i]];
+        previews[i] = [[PreView alloc] initWithFrame:rect[i]];
         
-        [pv[i] setUsername:pd.projectName];
-        [myProjectsView addSubview: pv[i]];
+        [previews[i] setProjectName:pd.projectName];
+        [myProjectsView addSubview: previews[i]];
+        
+        previews[i].inEditingMode = true;
+        previews[i].name = pd.projectName;
         
     }
     

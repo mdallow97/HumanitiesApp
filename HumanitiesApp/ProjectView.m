@@ -35,10 +35,10 @@
     // EDITING MODE Variables:
     
     // Add File Button
-    UIButton *addFileButton;
+    UIButton *editingOptionsButton;
     
-    int addFileX, addFileY;
-    CGRect addFileFrame;
+    int editingOptionsX, editingOptionsY;
+    CGRect editingOptionsFrame;
     
     // Next Button
     UIButton *nextButton;
@@ -72,13 +72,13 @@
     doneFrame = CGRectMake(10, 30, buttonWidth, buttonHeight);
     
     // Add File Button Variable Initialization
-    addFileX = viewWidth - (buttonWidth + 5);
-    addFileY = 30;
+    editingOptionsX = viewWidth - (buttonWidth + 5);
+    editingOptionsY = 30;
     
-    addFileFrame = CGRectMake(addFileX, addFileY, buttonWidth, buttonHeight);
+    editingOptionsFrame = CGRectMake(editingOptionsX, editingOptionsY, buttonWidth, buttonHeight);
     
     // Next Button Variable Initialization
-    nextFrame = addFileFrame;
+    nextFrame = editingOptionsFrame;
     
     // General Text Field Variable Initialization
     textFieldWidth = 250;
@@ -105,10 +105,11 @@
     doneButton.frame = doneFrame;
     [doneButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     
-    addFileButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-    addFileButton.frame = addFileFrame;
-    addFileButton.hidden = YES;
-    [addFileButton addTarget:self action:@selector(addFile) forControlEvents:UIControlEventTouchUpInside];
+    editingOptionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [editingOptionsButton setTitle:@"Edit" forState:UIControlStateNormal];
+    editingOptionsButton.frame = editingOptionsFrame;
+    editingOptionsButton.hidden = YES;
+    [editingOptionsButton addTarget:self action:@selector(showEditingOptions) forControlEvents:UIControlEventTouchUpInside];
     
     nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     nextButton.frame = nextFrame;
@@ -129,6 +130,7 @@
     
     // Empty Project Name Label Setup
     errorFieldLabel = [[UILabel alloc] initWithFrame:errorFieldFrame];
+    errorFieldLabel.textAlignment = NSTextAlignmentCenter;
     errorFieldLabel.hidden = YES;
     errorFieldLabel.textColor = [UIColor redColor];
     
@@ -139,16 +141,55 @@
     
     // Adding Subviews
     [self.view addSubview:doneButton];
-    [self.view addSubview:addFileButton];
+    [self.view addSubview:editingOptionsButton];
     [self.view addSubview:nextButton];
     [self.view addSubview:projectNameTextField];
     [self.view addSubview:errorFieldLabel];
     [self.view addSubview:projectNameLabel];
 }
 
-- (void) addFile
+- (void) showEditingOptions
 {
-    NSLog(@"Will add a file\n");
+    
+    UIAlertController *editOptions = [UIAlertController alertControllerWithTitle:@"Editing Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        
+        
+    }];
+    
+    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        MyProjects *projects = [MyProjects sharedMyProjects];
+        int numProjects = (int) projects.myProjects.count;
+        int i, indexOfRemoval = 0;
+        
+        for (i = 0; i < numProjects; i++) {
+            ProjectData *pd = (ProjectData *) projects.myProjects[i];
+            
+            if (pd.projectName == self->_currentProjectName) {
+                indexOfRemoval = i;
+                break;
+            }
+        }
+        
+        
+        // *** Have a fail safe delete in case of accidental removal
+        [projects.myProjects removeObjectAtIndex:indexOfRemoval];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }];
+    
+    
+    [editOptions addAction:cancel];
+    [editOptions addAction:delete];
+    [editOptions addAction:edit];
+    
+    UIViewController *currentTopVC = [self currentTopViewController];
+    [currentTopVC presentViewController:editOptions animated:YES completion:nil];
 }
 
 - (void) enterNewProjectMode
@@ -179,8 +220,8 @@
         ProjectData *pd = (ProjectData *) projects.myProjects[i];
         
         if ([pd.projectName isEqualToString:projectNameTextField.text]) {
-            errorFieldLabel.text = @"You already have a project with same title";
-            errorFieldLabel.hidden = YES;
+            errorFieldLabel.text = @"Project name taken";
+            errorFieldLabel.hidden = NO;
             return;
         }
 
@@ -191,14 +232,14 @@
     
     data = [[ProjectData alloc] init];
     
+    // Store Project Name
     data.projectName = projectNameTextField.text;
     projectNameLabel.text = projectNameTextField.text;
+    self->_currentProjectName = projectNameTextField.text;
     
     errorFieldLabel.hidden = YES;
     projectNameLabel.hidden = NO;
     
-    
-    // Save new project with name stored in projectNameTextField.text into ProjectData
     
     nextButton.hidden = YES;
     projectNameTextField.hidden = YES;
@@ -212,7 +253,7 @@
 
 - (void) enterEditingMode
 {
-    addFileButton.hidden = NO;
+    editingOptionsButton.hidden = NO;
 }
 
 -(void) cancel
@@ -223,6 +264,21 @@
     
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) loadProjectWithData:(ProjectData *) project;
+{
+    _currentProjectName = project.projectName;
+}
+
+- (UIViewController *) currentTopViewController
+{
+    UIViewController *topVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    
+    while (topVC.presentedViewController)
+        topVC = topVC.presentedViewController;
+    
+    return topVC;
 }
 
 
