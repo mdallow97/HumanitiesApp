@@ -12,6 +12,7 @@
 #import <UIKit/UIKit.h>
 #import "ProjectView.h"
 #import "PersonalPageViewController.h"
+#import "UserData.h"
 
 
 @interface PreView : UIView

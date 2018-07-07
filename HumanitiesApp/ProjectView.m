@@ -20,7 +20,7 @@
     
     BOOL shouldAdd;
     
-    MyProjects *projects;
+    UserData *projects;
     ProjectData *data;
     
     // Cancel Button Variable Declarations
@@ -163,7 +163,7 @@
     
     UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         
-        MyProjects *projects = [MyProjects sharedMyProjects];
+        UserData *projects = [UserData sharedMyProjects];
         int numProjects = (int) projects.myProjects.count;
         int i, indexOfRemoval = 0;
         
@@ -212,7 +212,7 @@
     errorFieldLabel.hidden = YES;
     
     // Check to make sure project name doesnt conflict with own project name
-    projects = [MyProjects sharedMyProjects];
+    projects = [UserData sharedMyProjects];
     int i;
     
     for (i = 0; i < projects.myProjects.count; i++) {

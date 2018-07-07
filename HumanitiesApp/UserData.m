@@ -19,5 +19,21 @@
     return data;
 }
 
++ (id) sharedMyProjects {
+    static UserData *projects = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        projects = [[self alloc] init];
+    });
+    return projects;
+}
+
+- (id)init {
+    if (self = [super init]) {
+        self.myProjects = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
 
 @end

@@ -12,7 +12,6 @@
 #import <UIKit/UIKit.h>
 #import "PreView.h"
 #import "UserData.h"
-#import "MyProjects.h"
 #import "ProjectData.h"
 #import "ProjectView.h"
 

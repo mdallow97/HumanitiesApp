@@ -137,7 +137,7 @@
 
 - (void) createPreviews
 {
-    MyProjects *projects = [MyProjects sharedMyProjects];
+    UserData *projects = [UserData sharedMyProjects];
     int numberOfPreviews = (int) projects.myProjects.count;
     
     CGRect rect[numberOfPreviews];

@@ -143,7 +143,7 @@
     ProjectView *project = [[ProjectView alloc] init];
     
     
-    MyProjects *projects = [MyProjects sharedMyProjects];
+    UserData *projects = [UserData sharedMyProjects];
     ProjectData *pd;
     int i, numProjects = (int) projects.myProjects.count;
     

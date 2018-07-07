@@ -14,10 +14,19 @@
 
 @interface UserData : NSObject
 
+// User Data
 @property NSString *username;
 @property NSString *password;
 
 + (id) globalUserData;
+
+
+// Project Data
+@property (nonatomic, retain) NSMutableArray *myProjects;
+
++ (id) sharedMyProjects;
+
+
 
 @end
 
