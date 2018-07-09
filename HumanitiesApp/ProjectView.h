@@ -18,7 +18,7 @@
 
 - (void) viewDidLoad;
 - (void) frameSetup;
-- (void) cancel;
+- (void) done;
 - (void) showEditingOptions;
 - (void) enterNewProjectMode;
 - (void) createProject;

@@ -100,10 +100,14 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self frameSetup];
     
+    projects = [UserData sharedMyProjects];
+    // Data will be nil if project does not exist
+    data = [projects projectNamed:self->_currentProjectName];
+    
     doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [doneButton setTitle:@"Cancel" forState:UIControlStateNormal];
     doneButton.frame = doneFrame;
-    [doneButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    [doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
     
     editingOptionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [editingOptionsButton setTitle:@"Edit" forState:UIControlStateNormal];
@@ -155,16 +159,11 @@
     
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
-    // ***
-    // Still crashes if deleted immediately after creation (without leaving the view)
-    // ***
-    
     UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         
-        UserData *projects = [UserData sharedMyProjects];
-        ProjectData *pd = [projects projectNamed:self->_currentProjectName];;
         
-        [projects.myProjects removeObject:pd];
+        
+        [self->projects.myProjects removeObject:self->data];
         
         // *** Have a fail safe delete in case of accidental removal
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -193,10 +192,15 @@
     
     
     [editOptions addAction:cancel];
-    [editOptions addAction:delete];
     [editOptions addAction:changeName];
     [editOptions addAction:addFile];
     [editOptions addAction:removeFile];
+    
+    ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];
+    
+    if ([doesExist.projectName isEqualToString:data.projectName]) {
+        [editOptions addAction:delete];
+    }
     
     
     UIViewController *currentTopVC = [self currentTopViewController];
@@ -252,10 +256,6 @@
     nextButton.hidden = YES;
     projectNameTextField.hidden = YES;
     
-    // Code to save a new blank project with given name
-    
-    // ...
-    
     [self enterEditingMode];
 }
 
@@ -264,7 +264,7 @@
     editingOptionsButton.hidden = NO;
 }
 
--(void) cancel
+-(void) done
 {
     if (shouldAdd) {
         [projects.myProjects addObject:data];
