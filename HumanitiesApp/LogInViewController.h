@@ -12,7 +12,7 @@
 #import <UIKit/UIKit.h>
 #import "UserData.h"
 
-@interface LogInViewController : UIViewController <UITextFieldDelegate>
+@interface LogInViewController : UIViewController <UITextFieldDelegate, UITabBarDelegate>
 
 @property (nonatomic, retain) NSString *username;
 

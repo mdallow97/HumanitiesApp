@@ -44,7 +44,6 @@
     [logInButton setTitle:@"Log In" forState:UIControlStateNormal];
     logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
     logInButton.frame = logInFrame;
-   // logInButton.backgroundColor = [UIColor lightGrayColor];
     [logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -74,10 +73,10 @@
                            settingsController,
                            nil];
     
-    self.window.rootViewController = tbc;
     
+    tbc.tabBar.tintColor = [UIColor blackColor];
     tbc.tabBar.barTintColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
-    [tbc setSelectedIndex:0];
+    self.window.rootViewController = tbc;
 }
 
 

@@ -45,7 +45,7 @@
     
     // Prepare frame for displaying more options button
     defaultButtonWidth = 50;
-    defaultButtonHeight = 25;
+    defaultButtonHeight = 35;
     
     // Prepare frame for displaying preview image
     defaultPreviewHeight = viewHeight - defaultLabelHeight;
@@ -53,7 +53,7 @@
     
     
     x = 10;
-    projectNameFrame = CGRectMake(x, 0, defaultLabelWidth, defaultLabelHeight);
+    projectNameFrame = CGRectMake(x, 5, defaultLabelWidth, defaultLabelHeight);
     
     
     x = viewWidth - (defaultButtonWidth + x);
@@ -81,7 +81,8 @@
     
     // Username Label Creation
     projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
-    [self addSubview:projectNameLabel];
+    projectNameLabel.font = [UIFont fontWithName:@"DamascusBold" size:16];
+    
     
     // More Options Button Creation
     moreButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -89,21 +90,27 @@
     [moreButton setTitle:@"..." forState:UIControlStateNormal];
     moreButton.titleLabel.font = [UIFont systemFontOfSize:35];
     [moreButton addTarget:self action:@selector(showOptions) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:moreButton];
+    
     
     // Preview image setup
     UIImageView *previewView = [[UIImageView alloc] initWithFrame:previewFrame];
     [previewView setImage:preview];
     [previewView setContentMode:UIViewContentModeScaleAspectFit];
-    [self addSubview:previewView];
     
     // Go To Project Button setup
     goToProjectButton = [UIButton buttonWithType:UIButtonTypeCustom];
     goToProjectButton.frame = goToProjectFrame;
     [goToProjectButton addTarget:self action:@selector(goToProject) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:goToProjectButton];
+    
     
     _inEditingMode = false;
+    
+    // Add Subviews
+    [self addSubview:projectNameLabel];
+    [self addSubview:moreButton];
+    [self addSubview:previewView];
+    [self addSubview:goToProjectButton];
+    
     
     return self;
 }
@@ -144,18 +151,9 @@
     
     
     UserData *projects = [UserData sharedMyProjects];
-    ProjectData *pd;
-    int i, numProjects = (int) projects.myProjects.count;
-    
-    for (i = 0; i < numProjects; i++) {
-        pd = (ProjectData *) projects.myProjects[i];
-        
-        if (pd.projectName == projectName) break;
-    }
+    ProjectData *pd = [projects projectNamed:projectName];
     
     [project loadProjectWithData:pd];
-    
-    
     
     UIViewController *currentTopVC = [self currentTopViewController];
     [currentTopVC presentViewController:project animated:YES completion:nil];
@@ -168,7 +166,9 @@
 
 - (void) goToProject
 {
-    [self goToProject:false];
+    
+    if (self->_inEditingMode) [self goToProject:true];
+    else [self goToProject:false];
 }
 
 - (UIViewController *) currentTopViewController

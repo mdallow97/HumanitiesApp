@@ -102,7 +102,7 @@
     
     // Project View Setup
     myProjectsView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
-    myProjectsView.backgroundColor = [UIColor blackColor];
+    myProjectsView.backgroundColor = [UIColor whiteColor];
     myProjectsView.contentSize = CGSizeMake(viewWidth, viewHeight);
     
     

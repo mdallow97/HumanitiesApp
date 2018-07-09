@@ -35,5 +35,21 @@
     return self;
 }
 
+- (ProjectData *) projectNamed:(NSString *)name
+{
+    ProjectData *pd = nil;
+    
+    int numProjects = (int) self.myProjects.count;
+    int i;
+    
+    for (i = 0; i < numProjects; i++) {
+        pd = (ProjectData *) self.myProjects[i];
+        
+        if (pd.projectName == name) break;
+    }
+    
+    return pd;
+}
+
 
 @end

@@ -63,19 +63,6 @@
     pvWidth = viewWidth - pvWidthInitial;
 }
 
-- (UITabBarItem *)tabBarItem
-{
-    UITabBarItem *item;
-
-    UIImage *homeImage = [UIImage imageNamed:@"Home.png"];
-    UIImage *scaled = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 45) orientation:UIImageOrientationUp];
-
-    item = [[UITabBarItem alloc] initWithTitle:@"Home" image:scaled tag:0];
-
-
-    return item;
-}
-
 - (void) viewDidLoad {
     [super viewDidLoad];
     [self setup];
@@ -93,7 +80,7 @@
     
     // Project View Setup
     myProjectsView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
-    myProjectsView.backgroundColor = [UIColor blackColor];
+    myProjectsView.backgroundColor = [UIColor whiteColor];
     myProjectsView.contentSize = CGSizeMake(viewWidth, 4000);
     
     self.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
@@ -139,7 +126,28 @@
         
         pv[i].inEditingMode = false;
     }
+    
+    [self changeScrollHeight:(pvHeightInitial * it)];
 }
 
+- (void) changeScrollHeight:(int)height
+{
+    myProjectsView.contentSize = CGSizeMake(viewWidth, height);
+}
+
+- (UITabBarItem *)tabBarItem
+{
+    UITabBarItem *item;
+    
+    UIImage *homeImage = [UIImage imageNamed:@"Home.png"];
+    UIImage *scaled = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 45) orientation:UIImageOrientationUp];
+    
+    
+    item = [[UITabBarItem alloc] initWithTitle:@"Home" image:scaled tag:0];
+    
+    
+    return item;
+}
+ 
 
 @end

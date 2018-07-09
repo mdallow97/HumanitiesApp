@@ -17,6 +17,7 @@
 - (void) didReceiveMemoryWarning;
 - (BOOL) textFieldShouldReturn:(UITextField *)textField;
 - (void) createPreView:(int) it;
+- (void) changeScrollHeight:(int)height;
 
 @end
 

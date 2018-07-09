@@ -155,38 +155,49 @@
     
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
-    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        
-        
-    }];
+    // ***
+    // Still crashes if deleted immediately after creation (without leaving the view)
+    // ***
     
     UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         
         UserData *projects = [UserData sharedMyProjects];
-        int numProjects = (int) projects.myProjects.count;
-        int i, indexOfRemoval = 0;
+        ProjectData *pd = [projects projectNamed:self->_currentProjectName];;
         
-        for (i = 0; i < numProjects; i++) {
-            ProjectData *pd = (ProjectData *) projects.myProjects[i];
-            
-            if (pd.projectName == self->_currentProjectName) {
-                indexOfRemoval = i;
-                break;
-            }
-        }
-        
+        [projects.myProjects removeObject:pd];
         
         // *** Have a fail safe delete in case of accidental removal
-        [projects.myProjects removeObjectAtIndex:indexOfRemoval];
         [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }];
+    
+    
+    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Change Project Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // Will present a view controller with text field and appropriate buttons
+        // Just need to change _currentProjectName and pd.projectName
+        
+    }];
+    
+    UIAlertAction *addFile = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        
+    }];
+    
+    UIAlertAction *removeFile = [UIAlertAction actionWithTitle:@"Remove File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // Will remove a file, may have to move this action into the file view itself
+        // Otherwise, will have to have user pick which file to delete
         
     }];
     
     
     [editOptions addAction:cancel];
     [editOptions addAction:delete];
-    [editOptions addAction:edit];
+    [editOptions addAction:changeName];
+    [editOptions addAction:addFile];
+    [editOptions addAction:removeFile];
+    
     
     UIViewController *currentTopVC = [self currentTopViewController];
     [currentTopVC presentViewController:editOptions animated:YES completion:nil];
@@ -213,19 +224,16 @@
     
     // Check to make sure project name doesnt conflict with own project name
     projects = [UserData sharedMyProjects];
-    int i;
     
-    for (i = 0; i < projects.myProjects.count; i++) {
-        
-        ProjectData *pd = (ProjectData *) projects.myProjects[i];
-        
-        if ([pd.projectName isEqualToString:projectNameTextField.text]) {
-            errorFieldLabel.text = @"Project name taken";
-            errorFieldLabel.hidden = NO;
-            return;
-        }
-
+    ProjectData *pd = [projects projectNamed:projectNameTextField.text];
+    
+    if ([pd.projectName isEqualToString:projectNameTextField.text]) {
+        errorFieldLabel.text = @"Project name taken";
+        errorFieldLabel.hidden = NO;
+        return;
     }
+    
+    
     
     shouldAdd = true;
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
