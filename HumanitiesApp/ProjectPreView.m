@@ -6,13 +6,13 @@
 //  Copyright © 2018 Michael Dallow. All rights reserved.
 //
 
-#import "PreView.h"
+#import "ProjectPreView.h"
 
-@interface PreView ()
+@interface ProjectPreView ()
 
 @end
 
-@implementation PreView
+@implementation ProjectPreView
 {
     UILabel *projectNameLabel;
     UIButton *moreButton, *goToProjectButton;
@@ -80,15 +80,15 @@
     self.backgroundColor = [UIColor whiteColor];
     
     // Username Label Creation
-    projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
+    projectNameLabel      = [[UILabel alloc] initWithFrame:projectNameFrame];
     projectNameLabel.font = [UIFont fontWithName:@"DamascusBold" size:16];
     
     
     // More Options Button Creation
-    moreButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    moreButton.frame = moreFrame;
-    [moreButton setTitle:@"..." forState:UIControlStateNormal];
+    moreButton                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    moreButton.frame           = moreFrame;
     moreButton.titleLabel.font = [UIFont systemFontOfSize:35];
+    [moreButton setTitle:@"..." forState:UIControlStateNormal];
     [moreButton addTarget:self action:@selector(showOptions) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -98,7 +98,7 @@
     [previewView setContentMode:UIViewContentModeScaleAspectFit];
     
     // Go To Project Button setup
-    goToProjectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToProjectButton       = [UIButton buttonWithType:UIButtonTypeCustom];
     goToProjectButton.frame = goToProjectFrame;
     [goToProjectButton addTarget:self action:@selector(goToProject) forControlEvents:UIControlEventTouchUpInside];
     

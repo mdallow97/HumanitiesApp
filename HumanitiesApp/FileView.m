@@ -61,39 +61,39 @@
 - (void) frameSetup
 {
     // General Variable Initialization
-    viewWidth = self.view.frame.size.width;
-    viewHeight = self.view.frame.size.height;
+    viewWidth           = self.view.frame.size.width;
+    viewHeight          = self.view.frame.size.height;
     
-    shouldAddFile = false;
+    shouldAddFile       = false;
     
-    buttonWidth = 50;
-    buttonHeight = 50;
+    buttonWidth         = 50;
+    buttonHeight        = 50;
     
     // Cancel Button Variable Initialization
-    cancelFrame = CGRectMake(10, 30, buttonWidth, buttonHeight);
+    cancelFrame         = CGRectMake(10, 30, buttonWidth, buttonHeight);
     
     // Add File Button Variable Initialization
-    cancelX = viewWidth - (buttonWidth + 5);
-    cancelY = 30;
+    cancelX             = viewWidth - (buttonWidth + 5);
+    cancelY             = 30;
     
-    saveFrame = CGRectMake(cancelX, cancelY, buttonWidth, buttonHeight);
+    saveFrame           = CGRectMake(cancelX, cancelY, buttonWidth, buttonHeight);
     
     // Next Button Variable Initialization
-    nextFrame = saveFrame;
+    nextFrame           = saveFrame;
     
     // General Text Field Variable Initialization
-    textFieldWidth = 250;
-    textFieldHeight = 50;
+    textFieldWidth      = 250;
+    textFieldHeight     = 50;
     
     // Empty Name Label Variable Initialization
-    errorFieldWidth = 250;
-    errorFieldHeight = 50;
-    errorFieldFrame = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
+    errorFieldWidth     = 250;
+    errorFieldHeight    = 50;
+    errorFieldFrame     = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
     
     // Project Name Label Variable Initialization
-    projectNameWidth = 200;
-    projectNameHeight = 50;
-    projectNameFrame = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
+    projectNameWidth    = 200;
+    projectNameHeight   = 50;
+    projectNameFrame    = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
 }
 
 - (void) inProject:(ProjectData *) project
@@ -110,41 +110,41 @@
     // Data will be nil if file does not exist
     fileData = [projectData fileNamed:self->_currentFileName];
     
-    saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    saveButton          = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    saveButton.hidden   = YES;
+    saveButton.frame    = saveFrame;
     [saveButton setTitle:@"Save" forState:UIControlStateNormal];
-    saveButton.hidden = YES;
-    saveButton.frame = saveFrame;
     [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
     
-    cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    cancelButton.frame = cancelFrame;
+    cancelButton        = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    cancelButton.frame  = cancelFrame;
     cancelButton.hidden = YES;
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     
-    nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    nextButton.frame = nextFrame;
+    nextButton          = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    nextButton.frame    = nextFrame;
+    nextButton.hidden   = YES;
     [nextButton setTitle:@"Next" forState:UIControlStateNormal];
-    nextButton.hidden = YES;
     // nextButton target is dependent on file type
     
     
-    nameTextField = [[UITextField alloc] initWithFrame:CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight)];
+    nameTextField                   = [[UITextField alloc] initWithFrame:CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight)];
     self->nameTextField.placeholder = @"New File Name";
-    nameTextField.hidden = YES;
-    nameTextField.borderStyle = UITextBorderStyleRoundedRect;
-    nameTextField.tintColor = [UIColor blueColor];
-    nameTextField.backgroundColor = [UIColor lightGrayColor];
-    nameTextField.returnKeyType = UIReturnKeyDone;
-    nameTextField.textAlignment = NSTextAlignmentCenter;
-    nameTextField.delegate = self;
+    nameTextField.hidden            = YES;
+    nameTextField.borderStyle       = UITextBorderStyleRoundedRect;
+    nameTextField.tintColor         = [UIColor blueColor];
+    nameTextField.backgroundColor   = [UIColor lightGrayColor];
+    nameTextField.returnKeyType     = UIReturnKeyDone;
+    nameTextField.textAlignment     = NSTextAlignmentCenter;
+    nameTextField.delegate          = self;
     
     
     // Empty Project Name Label Setup
-    errorFieldLabel = [[UILabel alloc] initWithFrame:errorFieldFrame];
-    errorFieldLabel.textAlignment = NSTextAlignmentCenter;
-    errorFieldLabel.hidden = YES;
-    errorFieldLabel.textColor = [UIColor redColor];
+    errorFieldLabel                 = [[UILabel alloc] initWithFrame:errorFieldFrame];
+    errorFieldLabel.textAlignment   = NSTextAlignmentCenter;
+    errorFieldLabel.hidden          = YES;
+    errorFieldLabel.textColor       = [UIColor redColor];
     
     [self hideAll];
     
@@ -172,11 +172,11 @@
 
 - (void) hideAll
 {
-    saveButton.hidden = YES;
-    cancelButton.hidden = YES;
-    nextButton.hidden = YES;
-    nameTextField.hidden = YES;
-    errorFieldLabel.hidden = YES;
+    saveButton.hidden       = YES;
+    cancelButton.hidden     = YES;
+    nextButton.hidden       = YES;
+    nameTextField.hidden    = YES;
+    errorFieldLabel.hidden  = YES;
 }
 
 
@@ -186,9 +186,9 @@
 - (void) createFileOfType:(int) type
 {
     [self hideAll];
-    cancelButton.hidden        = NO;
-    nextButton.hidden    = NO;
-    nameTextField.hidden = NO;
+    cancelButton.hidden         = NO;
+    nextButton.hidden           = NO;
+    nameTextField.hidden        = NO;
     
     nameTextField.text = @"";
     
@@ -206,8 +206,8 @@
     // Check to make sure text field is not empty
     if ([nameTextField.text isEqual:@""])
     {
-        errorFieldLabel.text = @"File name cannot be blank";
-        errorFieldLabel.hidden = NO;
+        errorFieldLabel.text    = @"File name cannot be blank";
+        errorFieldLabel.hidden  = NO;
         
         return true;
     }
@@ -219,8 +219,8 @@
     fileData = [projectData fileNamed:nameTextField.text];
     
     if ([fileData.fileName isEqualToString:nameTextField.text]) {
-        errorFieldLabel.text = @"File name taken";
-        errorFieldLabel.hidden = NO;
+        errorFieldLabel.text    = @"File name taken";
+        errorFieldLabel.hidden  = NO;
         return true;
     }
     
@@ -236,14 +236,14 @@
 
 - (void) saveFileWithName:(NSString *)name
 {
-    shouldAddFile = true;
+    shouldAddFile       = true;
+    saveButton.hidden   = NO;
     
-    saveButton.hidden = NO;
-    
-    fileData = [[FileData alloc] init];
+    // Create file
+    fileData            = [[FileData alloc] init];
     
     // Store File Name
-    fileData.fileName = name;
+    fileData.fileName   = name;
     
 }
 

@@ -181,13 +181,14 @@
     
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
-    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         
         [self deleteProject];
         
         [self dismissViewControllerAnimated:YES completion:nil];
         
     }];
+    
     
     
     UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Change Project Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -208,9 +209,9 @@
     
     
     [editOptions addAction:cancel];
-    [editOptions addAction:changeName];
     [editOptions addAction:addFile];
     [editOptions addAction:removeFile];
+    [editOptions addAction:changeName];
     
     ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];
     

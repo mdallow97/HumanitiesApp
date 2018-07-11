@@ -6,8 +6,8 @@
 //  Copyright © 2018 Michael Dallow. All rights reserved.
 //
 
-#ifndef PreView_h
-#define PreView_h
+#ifndef ProjectPreView_h
+#define ProjectPreView_h
 
 #import <UIKit/UIKit.h>
 #import "ProjectView.h"
@@ -15,7 +15,7 @@
 #import "UserData.h"
 
 
-@interface PreView : UIView
+@interface ProjectPreView : UIView
 
 - (id) initWithFrame:(CGRect)frame;
 - (void) setup;
@@ -34,4 +34,4 @@
 @end
 
 
-#endif /* PreView_h */
+#endif /* ProjectPreView_h */
