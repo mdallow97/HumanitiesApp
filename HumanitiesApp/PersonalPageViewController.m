@@ -40,7 +40,7 @@
     
     // Project Editing View Variable Declarations
     ProjectView *projectEditingView;
-    ProjectPreView *previews[100];
+    ProjectPreView *previews[100]; //***
     
 }
 
@@ -157,7 +157,6 @@
         [myProjectsView addSubview: previews[i]];
         
         previews[i].inEditingMode   = true;
-        previews[i].name            = pd.projectName;
         
     }
     

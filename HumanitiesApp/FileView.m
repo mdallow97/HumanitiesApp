@@ -156,6 +156,11 @@
     [self.view addSubview:errorFieldLabel];
 }
 
+- (void) loadFileWithData: (FileData *) file
+{
+    _currentFileName = file.fileName;
+}
+
 - (void) save
 {
     if (shouldAddFile) {
@@ -289,6 +294,11 @@
 {
     if ([self isFileNameEmptyOrTaken]) return;
     
+}
+
+- (void) enterEditingMode
+{
+    cancelButton.hidden = NO;
 }
 
 @end

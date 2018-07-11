@@ -28,6 +28,7 @@
 		4191960220F3E1E500439A41 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960120F3E1E500439A41 /* FileData.m */; };
 		4191960520F3FDC000439A41 /* FileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960420F3FDC000439A41 /* FileView.m */; };
 		41AB359120E329CF001EFB5F /* ProjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AB359020E329CF001EFB5F /* ProjectView.m */; };
+		41F5A6EC20F6B4FC00D976D1 /* FilePreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41F5A6EB20F6B4FC00D976D1 /* FilePreView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,8 @@
 		4191960420F3FDC000439A41 /* FileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileView.m; sourceTree = "<group>"; };
 		41AB359020E329CF001EFB5F /* ProjectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectView.m; sourceTree = "<group>"; };
 		41AB359220E329D8001EFB5F /* ProjectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectView.h; sourceTree = "<group>"; };
+		41F5A6EA20F6B4DB00D976D1 /* FilePreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilePreView.h; sourceTree = "<group>"; };
+		41F5A6EB20F6B4FC00D976D1 /* FilePreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilePreView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,12 +149,14 @@
 				412FB06E20E5822D00ECECAD /* PersonalPageViewController.m */,
 				4172C85420E1D29E0065A277 /* SettingsTableViewController.h */,
 				4172C85520E1D2A60065A277 /* SettingsTableViewController.m */,
-				4135659120E2EDC2009050F2 /* ProjectPreView.h */,
-				4135659220E2EDCF009050F2 /* ProjectPreView.m */,
 				41AB359220E329D8001EFB5F /* ProjectView.h */,
 				41AB359020E329CF001EFB5F /* ProjectView.m */,
 				4191960320F3FD5900439A41 /* FileView.h */,
 				4191960420F3FDC000439A41 /* FileView.m */,
+				4135659120E2EDC2009050F2 /* ProjectPreView.h */,
+				4135659220E2EDCF009050F2 /* ProjectPreView.m */,
+				41F5A6EA20F6B4DB00D976D1 /* FilePreView.h */,
+				41F5A6EB20F6B4FC00D976D1 /* FilePreView.m */,
 				415457C420EACE8800B64540 /* UserData.h */,
 				415457C220EACE7C00B64540 /* UserData.m */,
 				415457C720EC79A900B64540 /* ProjectData.h */,
@@ -332,6 +337,7 @@
 				41AB359120E329CF001EFB5F /* ProjectView.m in Sources */,
 				4172C83220E1D0580065A277 /* main.m in Sources */,
 				4172C82420E1D0570065A277 /* AppDelegate.m in Sources */,
+				41F5A6EC20F6B4FC00D976D1 /* FilePreView.m in Sources */,
 				412FB06F20E5822D00ECECAD /* PersonalPageViewController.m in Sources */,
 				4191960220F3E1E500439A41 /* FileData.m in Sources */,
 				415457C920EC79B400B64540 /* ProjectData.m in Sources */,

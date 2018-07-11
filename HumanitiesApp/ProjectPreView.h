@@ -26,7 +26,7 @@
 - (void) setProjectName:(NSString *)name;
 
 @property BOOL inEditingMode;
-@property NSString *name;
+//@property NSString *name;
 
 
 

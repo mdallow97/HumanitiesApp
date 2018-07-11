@@ -14,13 +14,17 @@
 #import "ProjectData.h"
 #import "UserData.h"
 #import "FileView.h"
+#import "FilePreView.h"
 
 @interface ProjectView : UIViewController <UITextFieldDelegate>
 
 // General Functions
 - (void) viewDidLoad;
+- (void)viewWillAppear:(BOOL)animated;
 - (void) frameSetup;
 - (void) done;
+- (void) createPreviews;
+- (void) changeScrollHeight:(int)height;
 - (UIViewController *) currentTopViewController;
 
 // Project Functions

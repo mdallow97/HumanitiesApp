@@ -22,11 +22,16 @@
     
     UserData *projects;
     ProjectData *projectData;
+    FilePreView *previews[100];
     
     // Scroll View Variable Declarations
     UIScrollView *myFilesView;
     int scrollHeightInitial, scrollHeight;
     int scrollWidthInitial, scrollWidth;
+    
+    // Preview Variable Declarations
+    int pvWidthInitial, pvWidth;
+    int pvHeightInitial, pvHeight;
     
     // Cancel Button Variable Declarations
     UIButton *doneButton;
@@ -77,6 +82,12 @@
     
     buttonWidth         = 50;
     buttonHeight        = 50;
+    
+    // Preview Variable initialization
+    pvWidthInitial      = 0;
+    pvHeightInitial     = 351;
+    pvHeight            = 350;
+    pvWidth             = viewWidth - pvWidthInitial;
     
     // Cancel Button Variable Initialization
     doneFrame           = CGRectMake(10, 30, buttonWidth, buttonHeight);
@@ -156,7 +167,7 @@
     // Project Name Label Setup
     projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
     projectNameLabel.textAlignment = NSTextAlignmentCenter;
-    projectNameLabel.hidden        = YES;
+    projectNameLabel.text = _currentProjectName;
     
     // Project View Setup
     myFilesView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
@@ -172,6 +183,45 @@
     [self.view addSubview:errorFieldLabel];
     [self.view addSubview:projectNameLabel];
     [self.view addSubview:myFilesView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    for (UIView *view in myFilesView.subviews)
+        if ([view isKindOfClass:[FilePreView class]]) [view removeFromSuperview];
+    
+    [self createPreviews];
+}
+
+- (void) changeScrollHeight:(int)height
+{
+    myFilesView.contentSize = CGSizeMake(viewWidth, height);
+}
+
+- (void) createPreviews
+{
+    int numberOfPreviews = (int) projectData.files.count;
+    
+    CGRect rect[numberOfPreviews];
+    
+    [self changeScrollHeight:(pvHeightInitial * numberOfPreviews)];
+    
+    int i;
+    
+    for (i = 0; i < numberOfPreviews; i++) {
+        
+        FileData *fd = (FileData *) projectData.files[i];
+        
+        rect[i]         = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
+        previews[i]     = [[FilePreView alloc] initWithFrame:rect[i]];
+        
+        [previews[i] setFileName:fd.fileName inProject:projectData];
+        [myFilesView addSubview: previews[i]];
+        
+        previews[i].inEditingMode   = true;
+        
+    }
+    
 }
 
 - (void) showEditingOptions
@@ -249,14 +299,16 @@
 
 - (void) loadProjectWithData:(ProjectData *) project;
 {
-    _currentProjectName = project.projectName;
+    _currentProjectName     = project.projectName;
 }
 
 - (void) enterNewProjectMode
 {
-    nextButton.hidden    = NO;
-    nameTextField.hidden = NO;
-    nameTextField.placeholder = @"New Project Name";
+    nextButton.hidden           = NO;
+    nameTextField.hidden        = NO;
+    nameTextField.placeholder   = @"New Project Name";
+    
+    projectData = [[ProjectData alloc] init];
     
     [doneButton setTitle:@"Cancel" forState:UIControlStateNormal];
 }
@@ -275,6 +327,7 @@
     errorFieldLabel.hidden = YES;
     
     // Check to make sure project name doesnt conflict with own project name
+    
     projects = [UserData sharedMyProjects];
     
     ProjectData *pd = [projects projectNamed:nameTextField.text];

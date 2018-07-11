@@ -32,8 +32,11 @@
 - (void) createVideo;
 - (void) createAR;
 
+- (void) enterEditingMode;
+
 - (BOOL) isFileNameEmptyOrTaken;
 - (void) saveFileWithName:(NSString *) name;
+- (void) loadFileWithData: (FileData *) file;
 
 
 @property enum {
