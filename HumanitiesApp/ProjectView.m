@@ -47,7 +47,6 @@
     
     // Next Button
     UIButton *nextButton;
-    UIButton *fileNextButton;
     CGRect nextFrame;
     
     
@@ -70,21 +69,21 @@
 - (void) frameSetup
 {
     // General Variable Initialization
-    viewWidth = self.view.frame.size.width;
-    viewHeight = self.view.frame.size.height;
+    viewWidth           = self.view.frame.size.width;
+    viewHeight          = self.view.frame.size.height;
     
-    shouldAddProject = false;
-    shouldAddFile = false;
+    shouldAddProject    = false;
+    shouldAddFile       = false;
     
-    buttonWidth = 50;
-    buttonHeight = 50;
+    buttonWidth         = 50;
+    buttonHeight        = 50;
     
     // Cancel Button Variable Initialization
-    doneFrame = CGRectMake(10, 30, buttonWidth, buttonHeight);
+    doneFrame           = CGRectMake(10, 30, buttonWidth, buttonHeight);
     
     // Add File Button Variable Initialization
-    editingOptionsX = viewWidth - (buttonWidth + 5);
-    editingOptionsY = 30;
+    editingOptionsX     = viewWidth - (buttonWidth + 5);
+    editingOptionsY     = 30;
     
     editingOptionsFrame = CGRectMake(editingOptionsX, editingOptionsY, buttonWidth, buttonHeight);
     
@@ -92,24 +91,24 @@
     nextFrame = editingOptionsFrame;
     
     // General Text Field Variable Initialization
-    textFieldWidth = 250;
-    textFieldHeight = 50;
+    textFieldWidth      = 250;
+    textFieldHeight     = 50;
     
     // Empty Name Label Variable Initialization
-    errorFieldWidth = 250;
-    errorFieldHeight = 50;
-    errorFieldFrame = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
+    errorFieldWidth     = 250;
+    errorFieldHeight    = 50;
+    errorFieldFrame     = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
     
     // Project Name Label Variable Initialization
-    projectNameWidth = 200;
-    projectNameHeight = 50;
-    projectNameFrame = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
+    projectNameWidth    = 200;
+    projectNameHeight   = 50;
+    projectNameFrame    = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
     
     // Scroll View Variable initialization
     scrollHeightInitial = 85;
-    scrollWidthInitial = 0;
-    scrollWidth = viewWidth - (2 * scrollWidthInitial);
-    scrollHeight = viewHeight - scrollHeightInitial;
+    scrollWidthInitial  = 0;
+    scrollWidth         = viewWidth - (2 * scrollWidthInitial);
+    scrollHeight        = viewHeight - scrollHeightInitial;
 }
 
 - (void) viewDidLoad
@@ -117,65 +116,58 @@
     self.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     [self frameSetup];
     
-    projects = [UserData sharedMyProjects];
-    // Data will be nil if project does not exist
-    projectData = [projects projectNamed:self->_currentProjectName];
+    projects    = [UserData sharedMyProjects];
+    projectData = [projects projectNamed:self->_currentProjectName]; // Data will be nil if project does not exist
     
     doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-    doneButton.frame = doneFrame;
     [doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
+    doneButton.frame = doneFrame;
     
     editingOptionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [editingOptionsButton setTitle:@"Edit" forState:UIControlStateNormal];
-    editingOptionsButton.frame = editingOptionsFrame;
-    editingOptionsButton.hidden = YES;
     [editingOptionsButton addTarget:self action:@selector(showEditingOptions) forControlEvents:UIControlEventTouchUpInside];
+    editingOptionsButton.frame  = editingOptionsFrame;
+    editingOptionsButton.hidden = YES;
     
     nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    nextButton.frame = nextFrame;
     [nextButton setTitle:@"Next" forState:UIControlStateNormal];
-    nextButton.hidden = YES;
     [nextButton addTarget:self action:@selector(createProject) forControlEvents:UIControlEventTouchUpInside];
-    
-    fileNextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    fileNextButton.frame = nextFrame;
-    [fileNextButton setTitle:@"Next" forState:UIControlStateNormal];
-    fileNextButton.hidden = YES;
+    nextButton.frame  = nextFrame;
+    nextButton.hidden = YES;
     
     
     nameTextField = [[UITextField alloc] initWithFrame:CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight)];
-    nameTextField.hidden = YES;
-    nameTextField.borderStyle = UITextBorderStyleRoundedRect;
-    nameTextField.tintColor = [UIColor blueColor];
+    nameTextField.borderStyle     = UITextBorderStyleRoundedRect;
+    nameTextField.tintColor       = [UIColor blueColor];
     nameTextField.backgroundColor = [UIColor lightGrayColor];
-    nameTextField.returnKeyType = UIReturnKeyDone;
-    nameTextField.textAlignment = NSTextAlignmentCenter;
-    nameTextField.delegate = self;
+    nameTextField.returnKeyType   = UIReturnKeyDone;
+    nameTextField.textAlignment   = NSTextAlignmentCenter;
+    nameTextField.delegate        = self;
+    nameTextField.hidden          = YES;
     
     
     // Empty Project Name Label Setup
-    errorFieldLabel = [[UILabel alloc] initWithFrame:errorFieldFrame];
+    errorFieldLabel               = [[UILabel alloc] initWithFrame:errorFieldFrame];
     errorFieldLabel.textAlignment = NSTextAlignmentCenter;
-    errorFieldLabel.hidden = YES;
-    errorFieldLabel.textColor = [UIColor redColor];
+    errorFieldLabel.textColor     = [UIColor redColor];
+    errorFieldLabel.hidden        = YES;
     
     // Project Name Label Setup
     projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
-    projectNameLabel.hidden = YES;
     projectNameLabel.textAlignment = NSTextAlignmentCenter;
+    projectNameLabel.hidden        = YES;
     
     // Project View Setup
     myFilesView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
     myFilesView.backgroundColor = [UIColor whiteColor];
-    myFilesView.contentSize = CGSizeMake(viewWidth, (viewHeight - 85));
-    myFilesView.hidden = YES;
+    myFilesView.contentSize     = CGSizeMake(viewWidth, (viewHeight - 85));
+    myFilesView.hidden          = YES;
     
     // Adding Subviews
     [self.view addSubview:doneButton];
     [self.view addSubview:editingOptionsButton];
     [self.view addSubview:nextButton];
-    [self.view addSubview:fileNextButton];
     [self.view addSubview:nameTextField];
     [self.view addSubview:errorFieldLabel];
     [self.view addSubview:projectNameLabel];
@@ -261,9 +253,11 @@
 
 - (void) enterNewProjectMode
 {
-    nextButton.hidden = NO;
+    nextButton.hidden    = NO;
     nameTextField.hidden = NO;
     nameTextField.placeholder = @"New Project Name";
+    
+    [doneButton setTitle:@"Cancel" forState:UIControlStateNormal];
 }
 
 - (void) createProject
@@ -271,7 +265,7 @@
     // Check to make sure text field is not empty
     if ([nameTextField.text isEqual:@""])
     {
-        errorFieldLabel.text = @"Project name cannot be blank";
+        errorFieldLabel.text   = @"Project name cannot be blank";
         errorFieldLabel.hidden = NO;
         
         return;
@@ -298,16 +292,14 @@
     projectData = [[ProjectData alloc] init];
     
     // Store Project Name
-    projectData.projectName = nameTextField.text;
-    projectNameLabel.text = nameTextField.text;
+    projectData.projectName   = nameTextField.text;
+    projectNameLabel.text     = nameTextField.text;
     self->_currentProjectName = nameTextField.text;
     
-    errorFieldLabel.hidden = YES;
+    errorFieldLabel.hidden  = YES;
     projectNameLabel.hidden = NO;
-    
-    
-    nextButton.hidden = YES;
-    nameTextField.hidden = YES;
+    nextButton.hidden       = YES;
+    nameTextField.hidden    = YES;
     
     [self enterEditingMode];
 }
@@ -315,7 +307,7 @@
 - (void) enterEditingMode
 {
     editingOptionsButton.hidden = NO;
-    myFilesView.hidden = NO;
+    myFilesView.hidden          = NO;
 }
 
 - (void) deleteProject
