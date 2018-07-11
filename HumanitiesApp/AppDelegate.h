@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "SettingsTableViewController.h"
 #import "ViewController.h"
+#import "LogInViewController.h"
+#import "PersonalPageViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+- (void) logIn;
 
 
 @end

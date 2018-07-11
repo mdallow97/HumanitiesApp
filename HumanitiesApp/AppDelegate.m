@@ -13,24 +13,70 @@
 @end
 
 @implementation AppDelegate
+{
+    LogInViewController *logInViewController;
+    int viewWidth, viewHeight;
+}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    logInViewController = [[LogInViewController alloc] init];
+    self.window.rootViewController = logInViewController;
+    
+    logInViewController.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    
+    
+    // Setup frames for ViewController
+    viewWidth = logInViewController.view.frame.size.width;
+    viewHeight = logInViewController.view.frame.size.height;
+    
+    int logInWidth = 100;
+    int x = (viewWidth / 2) - (logInWidth / 2);
+    CGRect logInFrame = CGRectMake(x, ((viewHeight / 3) * 2), logInWidth, 35);
+    
+    
+    
+    
+    // Cancel button creation
+    UIButton *logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [logInButton setTitle:@"Log In" forState:UIControlStateNormal];
+    logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    logInButton.frame = logInFrame;
+    [logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    [logInViewController.view addSubview:logInButton];
+    
+    
+    
+    return YES;
+}
+
+- (void) logIn
+{
+    if (![logInViewController logIn]) return;
+    
+    [logInViewController dismissViewControllerAnimated:YES completion:nil];
     
     UITabBarController *tbc = [[UITabBarController alloc] init];
     UIViewController *mainViewController = [[ViewController alloc] init];
+    UIViewController *personalPageController = [[PersonalPageViewController alloc] init];
     UIViewController *settingsController = [[SettingsTableViewController alloc] init];
+    
     
     tbc.viewControllers = [NSArray arrayWithObjects:
                            mainViewController,
+                           personalPageController,
                            settingsController,
                            nil];
     
-    self.window.rootViewController = tbc;
     
-    return YES;
+    tbc.tabBar.tintColor = [UIColor blackColor];
+    tbc.tabBar.barTintColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    self.window.rootViewController = tbc;
 }
 
 

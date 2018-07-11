@@ -9,22 +9,34 @@
 #ifndef ProjectView_h
 #define ProjectView_h
 
+
 #import <UIKit/UIKit.h>
-#import "HomeView.h"
-#import "ViewController.h"
+#import "ProjectData.h"
+#import "UserData.h"
+#import "FileView.h"
 
+@interface ProjectView : UIViewController <UITextFieldDelegate>
 
-@interface ProjectView : UIView
-
-- (id) initWithFrame:(CGRect)frame;
-- (void) setup;
-- (void) showOptions;
+// General Functions
+- (void) viewDidLoad;
+- (void) frameSetup;
+- (void) done;
 - (UIViewController *) currentTopViewController;
 
-@property (nonatomic, weak) id delegate;
+// Project Functions
+- (void) enterNewProjectMode;
+- (void) createProject;
+- (void) deleteProject;
+- (void) showEditingOptions;
+- (void) enterEditingMode;
+- (void) loadProjectWithData:(ProjectData *) project;
+
+@property NSString *currentProjectName;
+
+
+- (void) createFileOfType:(int) type;
 
 
 @end
-
 
 #endif /* ProjectView_h */
