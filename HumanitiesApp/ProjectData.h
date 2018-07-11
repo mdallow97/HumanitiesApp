@@ -11,11 +11,16 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "FileData.h"
 
 @interface ProjectData : NSObject
 
 @property NSString *projectName;
 @property UIImage *previewImage;
+@property (nonatomic, retain) NSMutableArray *files;
+
++ (id) sharedFiles;
+- (FileData *) fileNamed:(NSString *)name;
 
 @end
 

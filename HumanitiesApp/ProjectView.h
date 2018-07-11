@@ -13,23 +13,28 @@
 #import <UIKit/UIKit.h>
 #import "ProjectData.h"
 #import "UserData.h"
+#import "FileView.h"
 
 @interface ProjectView : UIViewController <UITextFieldDelegate>
 
+// General Functions
 - (void) viewDidLoad;
 - (void) frameSetup;
 - (void) done;
-- (void) showEditingOptions;
+- (UIViewController *) currentTopViewController;
+
+// Project Functions
 - (void) enterNewProjectMode;
 - (void) createProject;
+- (void) deleteProject;
+- (void) showEditingOptions;
 - (void) enterEditingMode;
-
 - (void) loadProjectWithData:(ProjectData *) project;
-
-- (UIViewController *) currentTopViewController;
 
 @property NSString *currentProjectName;
 
+
+- (void) createFileOfType:(int) type;
 
 
 @end

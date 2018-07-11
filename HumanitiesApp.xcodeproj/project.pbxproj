@@ -25,6 +25,8 @@
 		4172C83C20E1D0580065A277 /* HumanitiesAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C83B20E1D0580065A277 /* HumanitiesAppTests.m */; };
 		4172C84720E1D0580065A277 /* HumanitiesAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C84620E1D0580065A277 /* HumanitiesAppUITests.m */; };
 		4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4172C85520E1D2A60065A277 /* SettingsTableViewController.m */; };
+		4191960220F3E1E500439A41 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960120F3E1E500439A41 /* FileData.m */; };
+		4191960520F3FDC000439A41 /* FileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960420F3FDC000439A41 /* FileView.m */; };
 		41AB359120E329CF001EFB5F /* ProjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AB359020E329CF001EFB5F /* ProjectView.m */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +80,10 @@
 		4172C84820E1D0580065A277 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4172C85420E1D29E0065A277 /* SettingsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		4172C85520E1D2A60065A277 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
+		4191960020F3E11900439A41 /* FileData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
+		4191960120F3E1E500439A41 /* FileData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileData.m; sourceTree = "<group>"; };
+		4191960320F3FD5900439A41 /* FileView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileView.h; sourceTree = "<group>"; };
+		4191960420F3FDC000439A41 /* FileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileView.m; sourceTree = "<group>"; };
 		41AB359020E329CF001EFB5F /* ProjectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectView.m; sourceTree = "<group>"; };
 		41AB359220E329D8001EFB5F /* ProjectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,10 +150,14 @@
 				4135659220E2EDCF009050F2 /* PreView.m */,
 				41AB359220E329D8001EFB5F /* ProjectView.h */,
 				41AB359020E329CF001EFB5F /* ProjectView.m */,
+				4191960320F3FD5900439A41 /* FileView.h */,
+				4191960420F3FDC000439A41 /* FileView.m */,
 				415457C420EACE8800B64540 /* UserData.h */,
 				415457C220EACE7C00B64540 /* UserData.m */,
 				415457C720EC79A900B64540 /* ProjectData.h */,
 				415457C820EC79B400B64540 /* ProjectData.m */,
+				4191960020F3E11900439A41 /* FileData.h */,
+				4191960120F3E1E500439A41 /* FileData.m */,
 				4172C82820E1D0570065A277 /* Main.storyboard */,
 				4172C82B20E1D0580065A277 /* Assets.xcassets */,
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
@@ -313,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4191960520F3FDC000439A41 /* FileView.m in Sources */,
 				412FB06B20E4733500ECECAD /* LogInViewController.m in Sources */,
 				4172C85620E1D2A60065A277 /* SettingsTableViewController.m in Sources */,
 				4172C82720E1D0570065A277 /* ViewController.m in Sources */,
@@ -322,6 +333,7 @@
 				4172C83220E1D0580065A277 /* main.m in Sources */,
 				4172C82420E1D0570065A277 /* AppDelegate.m in Sources */,
 				412FB06F20E5822D00ECECAD /* PersonalPageViewController.m in Sources */,
+				4191960220F3E1E500439A41 /* FileData.m in Sources */,
 				415457C920EC79B400B64540 /* ProjectData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -111,7 +111,7 @@
     
     PreView *pv[it];
     CGRect rect[it];
-    NSArray *names = [[NSMutableArray alloc] initWithObjects:@"John", @"Sam", @"Bill", nil];
+    NSArray *names = [[NSMutableArray alloc] initWithObjects:@"Example1", @"Example2", @"Example3", nil];
     // Need to make a class that contains data for a personal project
     // Have a vector of projects
     // Pull data from vector to display on the screen

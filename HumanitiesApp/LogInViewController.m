@@ -20,7 +20,7 @@
     
     UITextField *usernameTextField;
     UITextField *passwordTextField;
-    UILabel *emptyFieldLabel;
+    UILabel *incorrectInfoLabel;
 }
 
 - (void) setup
@@ -69,15 +69,15 @@
     passwordTextField.secureTextEntry = YES;
     
     // Empty password/username Label Setup
-    emptyFieldLabel = [[UILabel alloc] initWithFrame:emptyFieldFrame];
-    emptyFieldLabel.hidden = YES;
-    emptyFieldLabel.text = @"Incorrect password or username";
-    emptyFieldLabel.textColor = [UIColor redColor];
+    incorrectInfoLabel = [[UILabel alloc] initWithFrame:emptyFieldFrame];
+    incorrectInfoLabel.hidden = YES;
+    incorrectInfoLabel.text = @"Incorrect password or username";
+    incorrectInfoLabel.textColor = [UIColor redColor];
     
     
     [self.view addSubview:usernameTextField];
     [self.view addSubview:passwordTextField];
-    [self.view addSubview:emptyFieldLabel];
+    [self.view addSubview:incorrectInfoLabel];
     
 }
 
@@ -89,10 +89,10 @@
     //if ([usernameTextField.text isEqual:@""] || [passwordTextField.text isEqual:@""])
     if (0)
     {
-        emptyFieldLabel.hidden = NO;
+        incorrectInfoLabel.hidden = NO;
         return false;
     } else {
-        emptyFieldLabel.hidden = YES;
+        incorrectInfoLabel.hidden = YES;
         ud.username = usernameTextField.text;
         return true;
     }
