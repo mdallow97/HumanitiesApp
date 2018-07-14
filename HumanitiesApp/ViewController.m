@@ -118,7 +118,7 @@
         rect[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         pv[i]   = [[ProjectPreView alloc] initWithFrame:rect[i]];
         
-        [pv[i] setProjectName:names[i]];
+        [pv[i] setProjectName:names[i] withParentView:self];
         [myProjectsView addSubview: pv[i]];
         
         pv[i].inEditingMode = false;

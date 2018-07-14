@@ -118,15 +118,11 @@
     [self.view addSubview:usernameLabel];
     [self.view addSubview:newProjectButton];
     
-    
     [self createPreviews];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    for (UIView *view in myProjectsView.subviews)
-        if ([view isKindOfClass:[ProjectPreView class]]) [view removeFromSuperview];
-    
     [self createPreviews];
 }
 
@@ -137,6 +133,9 @@
 
 - (void) createPreviews
 {
+    for (UIView *view in myProjectsView.subviews)
+        if ([view isKindOfClass:[ProjectPreView class]]) [view removeFromSuperview];
+    
     UserData *projects   = [UserData sharedMyProjects];
     int numberOfPreviews = (int) projects.myProjects.count;
     
@@ -153,7 +152,7 @@
         rect[i]         = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         previews[i]     = [[ProjectPreView alloc] initWithFrame:rect[i]];
         
-        [previews[i] setProjectName:pd.projectName];
+        [previews[i] setProjectName:pd.projectName withParentView:self];
         [myProjectsView addSubview: previews[i]];
         
         previews[i].inEditingMode   = true;

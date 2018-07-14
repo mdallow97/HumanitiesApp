@@ -11,6 +11,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FileView.h"
+#import "ProjectView.h"
 
 @interface FilePreView : UIView
 
@@ -20,7 +21,9 @@
 - (UIViewController *) currentTopViewController;
 - (void) goToFile;
 - (void) goToFile:(BOOL) canEdit;
-- (void) setFileName:(NSString *)name inProject: (ProjectData *) project;
+- (void) setFileName:(NSString *)name inProject: (ProjectData *) project withParentView:(UIViewController *) parentView;
+- (void) deleteFile;
+- (void) enterEditingMode;
 
 @property BOOL inEditingMode;
 

@@ -187,9 +187,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    for (UIView *view in myFilesView.subviews)
-        if ([view isKindOfClass:[FilePreView class]]) [view removeFromSuperview];
-    
     [self createPreviews];
 }
 
@@ -200,6 +197,10 @@
 
 - (void) createPreviews
 {
+    for (UIView *view in myFilesView.subviews)
+        if ([view isKindOfClass:[FilePreView class]]) [view removeFromSuperview];
+    
+    
     int numberOfPreviews = (int) projectData.files.count;
     
     CGRect rect[numberOfPreviews];
@@ -215,10 +216,10 @@
         rect[i]         = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         previews[i]     = [[FilePreView alloc] initWithFrame:rect[i]];
         
-        [previews[i] setFileName:fd.fileName inProject:projectData];
+        [previews[i] setFileName:fd.fileName inProject:projectData withParentView:self];
         [myFilesView addSubview: previews[i]];
         
-        previews[i].inEditingMode   = true;
+        [previews[i] enterEditingMode];
         
     }
     
@@ -250,17 +251,9 @@
     
     UIAlertAction *addFile = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self addFile];}];
     
-    UIAlertAction *removeFile = [UIAlertAction actionWithTitle:@"Remove File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // Will remove a file, may have to move this action into the file view itself
-        // Otherwise, will have to have user pick which file to delete
-        
-    }];
-    
     
     [editOptions addAction:cancel];
     [editOptions addAction:addFile];
-    [editOptions addAction:removeFile];
     [editOptions addAction:changeName];
     
     ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];

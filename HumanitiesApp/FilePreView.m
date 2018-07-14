@@ -15,6 +15,7 @@
 @implementation FilePreView
 {
     ProjectData *currentProject;
+    ProjectView *parentView;
     
     UILabel *fileNameLabel;
     UIButton *moreButton, *goToFileButton;
@@ -68,10 +69,12 @@
     goToFileFrame = previewFrame;
 }
 
-- (void) setFileName:(NSString *)name inProject: (ProjectData *) project
+- (void) setFileName:(NSString *)name inProject: (ProjectData *) project withParentView: (ProjectView *) parentView
 {
     fileName = name;
     currentProject = project;
+    self->parentView = (ProjectView *) parentView;
+    
     fileNameLabel.text = fileName;
 }
 
@@ -111,7 +114,6 @@
     
     // Add Subviews
     [self addSubview:fileNameLabel];
-    [self addSubview:moreButton];
     [self addSubview:previewView];
     [self addSubview:goToFileButton];
     
@@ -123,30 +125,32 @@
 {
     UIAlertController *options = [UIAlertController alertControllerWithTitle:@"Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *share = [UIAlertAction actionWithTitle:@"Share" style:UIAlertActionStyleDefault handler:nil];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     // Below action should be dependent on permissions
-    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        [self goToFile:true];
-        
-    }];
+    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self goToFile:true];}];
     
-    
-    if (self->_inEditingMode) {
-        [options addAction:edit];
-    }
+    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self deleteFile];}];
     
     
     [options addAction:cancel];
-    [options addAction:share];
+    [options addAction:edit];
+    [options addAction:delete];
     
-    
+    if (self->_inEditingMode) NSLog(@"In editing mode\n");
     
     UIViewController *currentTopVC = [self currentTopViewController];
     [currentTopVC presentViewController:options animated:YES completion:nil];
     
+}
+
+- (void) deleteFile
+{
+    FileData *fileToRemove = [currentProject fileNamed:fileName];
+    [currentProject.files removeObject:fileToRemove];
+    [self removeFromSuperview];
+    
+    [parentView createPreviews];
 }
 
 - (void) goToFile:(BOOL) canEdit
@@ -171,6 +175,12 @@
     
     if (self->_inEditingMode) [self goToFile:true];
     else [self goToFile:false];
+}
+
+- (void) enterEditingMode
+{
+    self->_inEditingMode = true;
+    [self addSubview:moreButton];
 }
 
 - (UIViewController *) currentTopViewController

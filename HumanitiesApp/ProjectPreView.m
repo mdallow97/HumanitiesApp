@@ -14,6 +14,8 @@
 
 @implementation ProjectPreView
 {
+    PersonalPageViewController *parentView;
+    
     UILabel *projectNameLabel;
     UIButton *moreButton, *goToProjectButton;
     UIImage *preview;
@@ -65,9 +67,11 @@
     goToProjectFrame = previewFrame;
 }
 
-- (void) setProjectName:(NSString *)name
+- (void) setProjectName:(NSString *)name withParentView:(PersonalPageViewController *) parentView
 {
     projectName = name;
+    self->parentView = parentView;
+    
     projectNameLabel.text = projectName;
 }
 
@@ -123,15 +127,14 @@
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     // Below action should be dependent on permissions
-    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        [self goToProject:true];
-        
-    }];
+    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self goToProject:true];}];
+    
+    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self deleteProject];}];
     
     
     if (self->_inEditingMode) {
         [options addAction:edit];
+        [options addAction:delete];
     }
     
     
@@ -143,6 +146,18 @@
     UIViewController *currentTopVC = [self currentTopViewController];
     [currentTopVC presentViewController:options animated:YES completion:nil];
     
+}
+
+- (void) deleteProject
+{
+    UserData *ud = [UserData sharedMyProjects];
+    
+    ProjectData *projectToRemove = [ud projectNamed:projectName];
+    [ud.myProjects removeObject:projectToRemove];
+    
+    [self removeFromSuperview];
+    
+    [parentView createPreviews];
 }
 
 - (void) goToProject:(BOOL) canEdit

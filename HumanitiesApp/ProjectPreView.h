@@ -20,10 +20,11 @@
 - (id) initWithFrame:(CGRect)frame;
 - (void) setup;
 - (void) showOptions;
+- (void) deleteProject;
 - (UIViewController *) currentTopViewController;
 - (void) goToProject;
 - (void) goToProject:(BOOL) canEdit;
-- (void) setProjectName:(NSString *)name;
+- (void) setProjectName:(NSString *)name withParentView:(UIViewController *) parentView;
 
 @property BOOL inEditingMode;
 //@property NSString *name;
