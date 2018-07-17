@@ -131,16 +131,14 @@
     
     UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self deleteProject];}];
     
+    [options addAction:share];
     
     if (self->_inEditingMode) {
         [options addAction:edit];
         [options addAction:delete];
     }
     
-    
     [options addAction:cancel];
-    [options addAction:share];
-    
 
     
     UIViewController *currentTopVC = [self currentTopViewController];

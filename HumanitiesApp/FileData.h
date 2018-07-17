@@ -14,8 +14,16 @@
 
 @interface FileData : NSObject
 
+@property int fileType;
 @property NSString *fileName;
 @property UIImage *previewImage;
+
+// store document
+// store presentation
+@property UIImage *image;
+// store audio
+// store video
+// store AR
 
 @end
 

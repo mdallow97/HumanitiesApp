@@ -15,6 +15,7 @@
 @implementation FilePreView
 {
     ProjectData *currentProject;
+    FileData *file;
     ProjectView *parentView;
     
     UILabel *fileNameLabel;
@@ -22,6 +23,7 @@
     UIImage *preview;
     CGRect fileNameFrame, moreFrame, goToFileFrame, previewFrame;
     NSString *fileName;
+    UIImageView *previewView;
     
     int viewHeight, viewWidth;
     
@@ -71,11 +73,13 @@
 
 - (void) setFileName:(NSString *)name inProject: (ProjectData *) project withParentView: (ProjectView *) parentView
 {
-    fileName = name;
-    currentProject = project;
-    self->parentView = (ProjectView *) parentView;
+    fileName            = name;
+    currentProject      = project;
+    file                = [project fileNamed:fileName];
+    self->parentView    = (ProjectView *) parentView;
     
-    fileNameLabel.text = fileName;
+    fileNameLabel.text  = fileName;
+    if (file.image) [previewView setImage:file.image];
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -100,7 +104,7 @@
     
     
     // Preview image setup
-    UIImageView *previewView = [[UIImageView alloc] initWithFrame:previewFrame];
+    previewView = [[UIImageView alloc] initWithFrame:previewFrame];
     [previewView setImage:preview];
     [previewView setContentMode:UIViewContentModeScaleAspectFit];
     
@@ -136,8 +140,6 @@
     [options addAction:cancel];
     [options addAction:edit];
     [options addAction:delete];
-    
-    if (self->_inEditingMode) NSLog(@"In editing mode\n");
     
     UIViewController *currentTopVC = [self currentTopViewController];
     [currentTopVC presentViewController:options animated:YES completion:nil];

@@ -242,7 +242,7 @@
 - (void) saveFileWithName:(NSString *)name
 {
     shouldAddFile       = true;
-    saveButton.hidden   = NO;
+    saveButton.hidden   = NO; // *** should only be unhidden once file is changed/created
     
     // Create file
     fileData            = [[FileData alloc] init];
@@ -261,6 +261,7 @@
  
 - (void) createDocument
 {
+    fileData.fileType = DOCUMENT;
     
     if ([self isFileNameEmptyOrTaken]) return;
     
@@ -268,30 +269,88 @@
 
 - (void) createPresentation
 {
+    fileData.fileType = PRESENTATION;
+    
     if ([self isFileNameEmptyOrTaken]) return;
     
 }
 
 - (void) createImage
 {
+    fileData.fileType = IMAGE;
+    
     if ([self isFileNameEmptyOrTaken]) return;
     
+    
+    UIButton *takePhotoButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    takePhotoButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight);
+    takePhotoButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    [takePhotoButton setTitle:@"Take a Photo" forState:UIControlStateNormal];
+    [takePhotoButton addTarget:self action:@selector(openCamera) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *openPhotosButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    openPhotosButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), 2 * (viewHeight / 3), textFieldWidth, textFieldHeight);
+    openPhotosButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    [openPhotosButton setTitle:@"Open Photo Roll" forState:UIControlStateNormal];
+    [openPhotosButton addTarget:self action:@selector(openPhotos) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:takePhotoButton];
+    [self.view addSubview:openPhotosButton];
+    
+}
+
+- (void) openCamera
+{
+    UIImagePickerController *camera = [[UIImagePickerController alloc] init];
+    camera.sourceType               = UIImagePickerControllerSourceTypeCamera;
+    camera.delegate                 = self;
+    
+    [self presentViewController:camera animated:YES completion:nil];
+}
+
+- (void) openPhotos
+{
+    UIImagePickerController *photoRoll  = [[UIImagePickerController alloc] init];
+    photoRoll.sourceType                = UIImagePickerControllerSourceTypePhotoLibrary;
+    photoRoll.delegate                  = self;
+    
+    [self presentViewController:photoRoll animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    
+    fileData.image = image;
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self save];
+}
+
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) createAudio
 {
+    fileData.fileType = AUDIO;
     if ([self isFileNameEmptyOrTaken]) return;
     
 }
 
 - (void) createVideo
 {
+    fileData.fileType = VIDEO;
+    
     if ([self isFileNameEmptyOrTaken]) return;
     
 }
 
 - (void) createAR
 {
+    fileData.fileType = AUGMENTED_REALITY;
+    
     if ([self isFileNameEmptyOrTaken]) return;
     
 }

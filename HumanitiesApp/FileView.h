@@ -13,7 +13,7 @@
 #import "ProjectData.h"
 #import "FileData.h"
 
-@interface FileView : UIViewController <UITextFieldDelegate>
+@interface FileView : UIViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 // General Functions
 - (void) viewDidLoad;
@@ -25,9 +25,16 @@
 
 // File Functions
 - (void) createFileOfType:(int) type;
+
 - (void) createDocument;
 - (void) createPresentation;
+
 - (void) createImage;
+- (void) openCamera;
+- (void) openPhotos;
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info;
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker;
+
 - (void) createAudio;
 - (void) createVideo;
 - (void) createAR;
