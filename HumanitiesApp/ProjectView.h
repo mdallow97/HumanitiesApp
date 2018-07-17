@@ -46,6 +46,8 @@
 
 - (void) createFileOfType:(int) type;
 
+- (BOOL) textFieldShouldReturn:(UITextField *)textField;
+
 
 @end
 

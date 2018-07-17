@@ -299,6 +299,7 @@
     nextButton.hidden           = NO;
     nameTextField.hidden        = NO;
     nameTextField.placeholder   = @"New Project Name";
+    [nameTextField becomeFirstResponder];
     
     projectData = [[ProjectData alloc] init];
     
@@ -307,6 +308,8 @@
 
 - (void) createProject
 {
+    [nameTextField resignFirstResponder];
+    
     // Check to make sure text field is not empty
     if ([nameTextField.text isEqual:@""])
     {
@@ -480,6 +483,17 @@
     [currentTopVC presentViewController:fileViewController animated:YES completion:nil];
     
     [fileViewController createFileOfType:type];
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    
+    if (textField == nameTextField) {
+        [textField resignFirstResponder];
+        [self createProject];
+    }
+    
+    return YES;
 }
 
 

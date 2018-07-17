@@ -55,6 +55,8 @@ VIDEO,
 AUGMENTED_REALITY
 };
 
+- (BOOL) textFieldShouldReturn:(UITextField *)textField;
+
 
 @end
 

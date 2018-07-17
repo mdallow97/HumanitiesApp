@@ -196,18 +196,34 @@
     nameTextField.hidden        = NO;
     
     nameTextField.text = @"";
+    fileData.fileType = type;
+    [nameTextField becomeFirstResponder];
     
-    if (type == DOCUMENT) [nextButton addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventTouchUpInside)];
-    else if (type == PRESENTATION) [nextButton addTarget:self action:@selector(createPresentation) forControlEvents:(UIControlEventTouchUpInside)];
-    else if (type == IMAGE) [nextButton addTarget:self action:@selector(createImage) forControlEvents:(UIControlEventTouchUpInside)];
-    else if (type == AUDIO) [nextButton addTarget:self action:@selector(createAudio) forControlEvents:(UIControlEventTouchUpInside)];
-    else if (type == VIDEO) [nextButton addTarget:self action:@selector(createVideo) forControlEvents:(UIControlEventTouchUpInside)];
-    else if (type == AUGMENTED_REALITY) [nextButton addTarget:self action:@selector(createAR) forControlEvents:(UIControlEventTouchUpInside)];
+    if (type == DOCUMENT) {
+        [nextButton addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventTouchUpInside)];
+        [nameTextField addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventEditingDidEnd)];
+    } else if (type == PRESENTATION) {
+        [nextButton addTarget:self action:@selector(createPresentation) forControlEvents:(UIControlEventTouchUpInside)];
+        [nameTextField addTarget:self action:@selector(createPresentation) forControlEvents:(UIControlEventEditingDidEnd)];
+    } else if (type == IMAGE) {
+        [nextButton addTarget:self action:@selector(createImage) forControlEvents:(UIControlEventTouchUpInside)];
+        [nameTextField addTarget:self action:@selector(createImage) forControlEvents:(UIControlEventEditingDidEnd)];
+    } else if (type == AUDIO) {
+        [nextButton addTarget:self action:@selector(createAudio) forControlEvents:(UIControlEventTouchUpInside)];
+        [nameTextField addTarget:self action:@selector(createAudio) forControlEvents:(UIControlEventEditingDidEnd)];
+    } else if (type == VIDEO) {
+        [nextButton addTarget:self action:@selector(createVideo) forControlEvents:(UIControlEventTouchUpInside)];
+        [nameTextField addTarget:self action:@selector(createVideo) forControlEvents:(UIControlEventEditingDidEnd)];
+    } else if (type == AUGMENTED_REALITY) {
+        [nextButton addTarget:self action:@selector(createAR) forControlEvents:(UIControlEventTouchUpInside)];
+        [nameTextField addTarget:self action:@selector(createAR) forControlEvents:(UIControlEventEditingDidEnd)];
+    }
 }
 
 
 - (BOOL) isFileNameEmptyOrTaken
 {
+    [nameTextField resignFirstResponder];
     // Check to make sure text field is not empty
     if ([nameTextField.text isEqual:@""])
     {
@@ -261,7 +277,6 @@
  
 - (void) createDocument
 {
-    fileData.fileType = DOCUMENT;
     
     if ([self isFileNameEmptyOrTaken]) return;
     
@@ -269,7 +284,6 @@
 
 - (void) createPresentation
 {
-    fileData.fileType = PRESENTATION;
     
     if ([self isFileNameEmptyOrTaken]) return;
     
@@ -277,8 +291,6 @@
 
 - (void) createImage
 {
-    fileData.fileType = IMAGE;
-    
     if ([self isFileNameEmptyOrTaken]) return;
     
     
@@ -334,14 +346,12 @@
 
 - (void) createAudio
 {
-    fileData.fileType = AUDIO;
     if ([self isFileNameEmptyOrTaken]) return;
     
 }
 
 - (void) createVideo
 {
-    fileData.fileType = VIDEO;
     
     if ([self isFileNameEmptyOrTaken]) return;
     
@@ -349,7 +359,6 @@
 
 - (void) createAR
 {
-    fileData.fileType = AUGMENTED_REALITY;
     
     if ([self isFileNameEmptyOrTaken]) return;
     
@@ -359,5 +368,18 @@
 {
     cancelButton.hidden = NO;
 }
+
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    
+    if (textField == nameTextField) {
+        
+        [textField resignFirstResponder];
+    }
+    
+    return YES;
+}
+
 
 @end
