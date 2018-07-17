@@ -54,6 +54,8 @@
     UIButton *nextButton;
     CGRect nextFrame;
     
+    UIViewController *previewOptions;
+    
     
     // NEW PROJECT MODE Variable Declarations:
     
@@ -232,13 +234,7 @@
     
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
-    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-        
-        [self deleteProject];
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-        
-    }];
+    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self deleteProject];}];
     
     
     
@@ -251,10 +247,13 @@
     
     UIAlertAction *addFile = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self addFile];}];
     
+    UIAlertAction *changePreview = [UIAlertAction actionWithTitle:@"Change Preview Image" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self changePreviewImage];}];
+    
     
     [editOptions addAction:cancel];
     [editOptions addAction:addFile];
     [editOptions addAction:changeName];
+    [editOptions addAction:changePreview];
     
     ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];
     
@@ -362,8 +361,78 @@
     [self->projects.myProjects removeObject:self->projectData];
     
     // *** Have a fail safe delete in case of accidental removal
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void) changePreviewImage
+{
+    
+    previewOptions = [[UIViewController alloc] init];
+    previewOptions.view.backgroundColor = [UIColor whiteColor];
+    
+    UIButton *takePhotoButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    takePhotoButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight);
+    takePhotoButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    [takePhotoButton setTitle:@"Take a Photo" forState:UIControlStateNormal];
+    [takePhotoButton addTarget:self action:@selector(openCamera) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *openPhotosButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    openPhotosButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), 2 * (viewHeight / 3), textFieldWidth, textFieldHeight);
+    openPhotosButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    [openPhotosButton setTitle:@"Open Photo Roll" forState:UIControlStateNormal];
+    [openPhotosButton addTarget:self action:@selector(openPhotos) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    cancelButton.frame = doneFrame;
+    
+    [previewOptions.view addSubview:takePhotoButton];
+    [previewOptions.view addSubview:openPhotosButton];
+    [previewOptions.view addSubview:cancelButton];
+    
+    [self presentViewController:previewOptions animated:YES completion:nil];
+}
+
+- (void) openCamera
+{
+    UIImagePickerController *camera = [[UIImagePickerController alloc] init];
+    camera.sourceType               = UIImagePickerControllerSourceTypeCamera;
+    camera.delegate                 = self;
+    
+    [previewOptions presentViewController:camera animated:YES completion:nil];
+}
+
+- (void) openPhotos
+{
+    UIImagePickerController *photoRoll  = [[UIImagePickerController alloc] init];
+    photoRoll.sourceType                = UIImagePickerControllerSourceTypePhotoLibrary;
+    photoRoll.delegate                  = self;
+    
+    [previewOptions presentViewController:photoRoll animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    
+    projectData.previewImage = image;
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) cancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 

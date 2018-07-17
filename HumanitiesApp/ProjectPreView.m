@@ -15,12 +15,14 @@
 @implementation ProjectPreView
 {
     PersonalPageViewController *parentView;
+    ProjectData *project;
     
     UILabel *projectNameLabel;
     UIButton *moreButton, *goToProjectButton;
     UIImage *preview;
     CGRect projectNameFrame, moreFrame, goToProjectFrame, previewFrame;
     NSString *projectName;
+    UIImageView *previewView;
     
     int viewHeight, viewWidth;
     
@@ -69,10 +71,16 @@
 
 - (void) setProjectName:(NSString *)name withParentView:(PersonalPageViewController *) parentView
 {
-    projectName = name;
-    self->parentView = parentView;
+    projectName         = name;
+    self->parentView    = parentView;
+    
+    UserData *projects  = [UserData sharedMyProjects];
+    project             = [projects projectNamed:projectName];
+    if (project.previewImage) [previewView setImage:project.previewImage];
     
     projectNameLabel.text = projectName;
+    
+    
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -97,7 +105,7 @@
     
     
     // Preview image setup
-    UIImageView *previewView = [[UIImageView alloc] initWithFrame:previewFrame];
+    previewView = [[UIImageView alloc] initWithFrame:previewFrame];
     [previewView setImage:preview];
     [previewView setContentMode:UIViewContentModeScaleAspectFit];
     

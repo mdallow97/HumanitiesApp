@@ -16,7 +16,7 @@
 #import "FileView.h"
 #import "FilePreView.h"
 
-@interface ProjectView : UIViewController <UITextFieldDelegate>
+@interface ProjectView : UIViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 // General Functions
 - (void) viewDidLoad;
@@ -31,6 +31,12 @@
 - (void) enterNewProjectMode;
 - (void) createProject;
 - (void) deleteProject;
+- (void) changePreviewImage;
+- (void) openCamera;
+- (void) openPhotos;
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info;
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker;
+- (void) cancel;
 - (void) showEditingOptions;
 - (void) enterEditingMode;
 - (void) loadProjectWithData:(ProjectData *) project;
