@@ -10,5 +10,11 @@
 
 @implementation FileData
 
+- (void) storeImage: (UIImage *) image
+{
+    self->_image = image;
+    self->_previewImage = image;
+}
+
 
 @end

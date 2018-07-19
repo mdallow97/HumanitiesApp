@@ -168,11 +168,9 @@
 
 - (void) goToProject:(BOOL) canEdit
 {
-    ProjectView *project = [[ProjectView alloc] init];
-    
-    
-    UserData *projects = [UserData sharedMyProjects];
-    ProjectData *pd = [projects projectNamed:projectName];
+    ProjectView *project    = [[ProjectView alloc] init];
+    UserData *projects      = [UserData sharedMyProjects];
+    ProjectData *pd         = [projects projectNamed:projectName];
     
     [project loadProjectWithData:pd];
     

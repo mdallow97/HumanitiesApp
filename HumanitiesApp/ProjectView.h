@@ -42,6 +42,7 @@
 - (void) loadProjectWithData:(ProjectData *) project;
 
 @property NSString *currentProjectName;
+@property BOOL inEditingMode;
 
 
 - (void) createFileOfType:(int) type;

@@ -119,6 +119,7 @@
         pv[i]   = [[ProjectPreView alloc] initWithFrame:rect[i]];
         
         [pv[i] setProjectName:names[i] withParentView:self];
+        
         [myProjectsView addSubview: pv[i]];
         
         pv[i].inEditingMode = false;

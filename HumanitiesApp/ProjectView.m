@@ -175,7 +175,6 @@
     myFilesView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
     myFilesView.backgroundColor = [UIColor whiteColor];
     myFilesView.contentSize     = CGSizeMake(viewWidth, (viewHeight - 85));
-    myFilesView.hidden          = YES;
     
     // Adding Subviews
     [self.view addSubview:doneButton];
@@ -185,16 +184,13 @@
     [self.view addSubview:errorFieldLabel];
     [self.view addSubview:projectNameLabel];
     [self.view addSubview:myFilesView];
+    
+    self.inEditingMode = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [self createPreviews];
-}
-
-- (void) changeScrollHeight:(int)height
-{
-    myFilesView.contentSize = CGSizeMake(viewWidth, height);
 }
 
 - (void) createPreviews
@@ -221,50 +217,18 @@
         [previews[i] setFileName:fd.fileName inProject:projectData withParentView:self];
         [myFilesView addSubview: previews[i]];
         
-        [previews[i] enterEditingMode];
+        // File previews can be edited once tapped on, only if project can also be edited
+        if (self.inEditingMode) [previews[i] enterEditingMode];
         
     }
     
 }
 
-- (void) showEditingOptions
+- (void) changeScrollHeight:(int)height
 {
-    
-    UIAlertController *editOptions = [UIAlertController alertControllerWithTitle:@"Editing Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-    
-    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self deleteProject];}];
-    
-    
-    
-    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Change Project Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // Will present a view controller with text field and appropriate buttons
-        // Just need to change _currentProjectName and pd.projectName
-        
-    }];
-    
-    UIAlertAction *addFile = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self addFile];}];
-    
-    UIAlertAction *changePreview = [UIAlertAction actionWithTitle:@"Change Preview Image" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self changePreviewImage];}];
-    
-    
-    [editOptions addAction:cancel];
-    [editOptions addAction:addFile];
-    [editOptions addAction:changeName];
-    [editOptions addAction:changePreview];
-    
-    ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];
-    
-    if ([doesExist.projectName isEqualToString:projectData.projectName]) {
-        [editOptions addAction:delete];
-    }
-    
-    
-    UIViewController *currentTopVC = [self currentTopViewController];
-    [currentTopVC presentViewController:editOptions animated:YES completion:nil];
+    myFilesView.contentSize = CGSizeMake(viewWidth, height);
 }
+
 
 -(void) done
 {
@@ -285,25 +249,33 @@
     return topVC;
 }
 
-
-
-// Project Function Definitions
-
 - (void) loadProjectWithData:(ProjectData *) project;
 {
     _currentProjectName     = project.projectName;
 }
 
+
+
+// Functions available only in editing mode
+
 - (void) enterNewProjectMode
 {
     nextButton.hidden           = NO;
     nameTextField.hidden        = NO;
+    myFilesView.hidden          = YES;
     nameTextField.placeholder   = @"New Project Name";
     [nameTextField becomeFirstResponder];
     
     projectData = [[ProjectData alloc] init];
     
     [doneButton setTitle:@"Cancel" forState:UIControlStateNormal];
+}
+
+- (void) enterEditingMode
+{
+    self.inEditingMode          = YES;
+    editingOptionsButton.hidden = NO;
+    myFilesView.hidden          = NO;
 }
 
 - (void) createProject
@@ -353,10 +325,44 @@
     [self enterEditingMode];
 }
 
-- (void) enterEditingMode
+
+- (void) showEditingOptions
 {
-    editingOptionsButton.hidden = NO;
-    myFilesView.hidden          = NO;
+    
+    UIAlertController *editOptions = [UIAlertController alertControllerWithTitle:@"Editing Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self deleteProject];}];
+    
+    
+    
+    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Change Project Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // Will present a view controller with text field and appropriate buttons
+        // Just need to change _currentProjectName and pd.projectName
+        
+    }];
+    
+    UIAlertAction *addFile = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self addFile];}];
+    
+    UIAlertAction *changePreview = [UIAlertAction actionWithTitle:@"Change Preview Image" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self changePreviewImage];}];
+    
+    
+    [editOptions addAction:cancel];
+    [editOptions addAction:addFile];
+    [editOptions addAction:changeName];
+    [editOptions addAction:changePreview];
+    
+    ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];
+    
+    if ([doesExist.projectName isEqualToString:projectData.projectName]) {
+        [editOptions addAction:delete];
+    }
+    
+    
+    UIViewController *currentTopVC = [self currentTopViewController];
+    [currentTopVC presentViewController:editOptions animated:YES completion:nil];
 }
 
 - (void) deleteProject

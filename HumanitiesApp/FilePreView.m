@@ -79,7 +79,7 @@
     self->parentView    = (ProjectView *) parentView;
     
     fileNameLabel.text  = fileName;
-    if (file.image) [previewView setImage:file.image];
+    if (file.previewImage) [previewView setImage:file.previewImage];
 }
 
 - (id) initWithFrame:(CGRect)frame

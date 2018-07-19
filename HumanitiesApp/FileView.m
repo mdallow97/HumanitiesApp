@@ -333,7 +333,7 @@
 {
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     
-    fileData.image = image;
+    [fileData storeImage:image];
     
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self save];

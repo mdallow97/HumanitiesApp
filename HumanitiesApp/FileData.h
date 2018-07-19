@@ -21,6 +21,7 @@
 // store document
 // store presentation
 @property UIImage *image;
+- (void) storeImage: (UIImage *) image;
 // store audio
 // store video
 // store AR
