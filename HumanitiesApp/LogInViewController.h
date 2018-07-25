@@ -23,7 +23,7 @@
 -(BOOL) registerNow;
 - (void) hasParent: (UIResponder *) parent;
 - (BOOL) logIn;
-//-(BOOL) createRegistration;
+- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at: (NSString *)path;
 
 
 @end
