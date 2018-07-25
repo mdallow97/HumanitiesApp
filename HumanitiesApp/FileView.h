@@ -29,7 +29,7 @@
 
 - (void) createFileOfType:(int) type;
 - (BOOL) isFileNameEmptyOrTaken;
-- (void) saveFileWithName:(NSString *) name;
+- (void) saveFileName:(NSString *) name;
 
 
 - (void) createDocument;

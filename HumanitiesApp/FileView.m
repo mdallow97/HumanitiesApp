@@ -302,16 +302,16 @@
     
     NSString *name = nameTextField.text;
     [self hideAll];
-    [self saveFileWithName:name];
+    [self saveFileName:name];
     
     
     return false;
 }
 
-- (void) saveFileWithName:(NSString *)name
+- (void) saveFileName:(NSString *)name
 {
     shouldAddFile       = true;
-    saveButton.hidden   = NO; // *** should only be unhidden once file is changed/created
+    cancelButton.hidden = NO;
     
     // Store File Name
     fileData.fileName   = name;
