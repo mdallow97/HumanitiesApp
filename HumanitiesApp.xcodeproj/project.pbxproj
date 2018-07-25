@@ -30,7 +30,6 @@
 		41AB359120E329CF001EFB5F /* ProjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AB359020E329CF001EFB5F /* ProjectView.m */; };
 		B575692220FFDD9300C37BF1 /* appDB.sql in Resources */ = {isa = PBXBuildFile; fileRef = B575692120FFDD9200C37BF1 /* appDB.sql */; };
 		B5B32AE520F6A4C300EF8580 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B32AE420F6A4C300EF8580 /* libsqlite3.tbd */; };
-		B5B32AEA20F6A71700EF8580 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B32AE920F6A71700EF8580 /* DBManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,8 +90,6 @@
 		41AB359220E329D8001EFB5F /* ProjectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectView.h; sourceTree = "<group>"; };
 		B575692120FFDD9200C37BF1 /* appDB.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = appDB.sql; sourceTree = "<group>"; };
 		B5B32AE420F6A4C300EF8580 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		B5B32AE820F6A71700EF8580 /* DBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
-		B5B32AE920F6A71700EF8580 /* DBManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,8 +142,6 @@
 		4172C82120E1D0570065A277 /* HumanitiesApp */ = {
 			isa = PBXGroup;
 			children = (
-				B5B32AE820F6A71700EF8580 /* DBManager.h */,
-				B5B32AE920F6A71700EF8580 /* DBManager.m */,
 				4172C82220E1D0570065A277 /* AppDelegate.h */,
 				4172C82320E1D0570065A277 /* AppDelegate.m */,
 				412FB06C20E4734100ECECAD /* LogInViewController.h */,
@@ -356,7 +351,6 @@
 				412FB06F20E5822D00ECECAD /* PersonalPageViewController.m in Sources */,
 				4191960220F3E1E500439A41 /* FileData.m in Sources */,
 				415457C920EC79B400B64540 /* ProjectData.m in Sources */,
-				B5B32AEA20F6A71700EF8580 /* DBManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

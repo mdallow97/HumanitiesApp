@@ -12,11 +12,6 @@
 
 @interface LogInViewController ()
 
-//@property (nonatomic, strong) DBManager *dbManager;
-
-//@property (nonatomic, strong) NSArray *arrUserInfo;
-
-//-(void)loadData;
 
 @end
 
@@ -178,18 +173,24 @@
     parentController = parent;
 }
 
--(BOOL) logIn
+- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at:(NSString *)path
 {
-    UserData *ud = [UserData globalUserData];
-    
-    userCreated.hidden = YES;
-    
-    // Create your request string with parameter name as defined in PHP file
-    NSString *myRequestString = [NSString stringWithFormat:@"username=%@",usernameTextField.text];
-    
+    NSString *response;
+    NSString *myRequestString;
+    if(password == nil)
+    {
+        // Create your request string with parameter name as defined in PHP file
+        myRequestString = [NSString stringWithFormat:@"username=%@",username];
+    }
+    else
+    {
+        // Create your request string with parameter name as defined in PHP file
+        myRequestString = [NSString stringWithFormat:@"username=%@&password=%@",username,password];
+    }
     // Create Data from request
     NSData *myRequestData = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: @"http://humanitiesapp.atwebpages.com/login.php"]];
+    NSString *url = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
     // set Request Type
     [request setHTTPMethod: @"POST"];
     // Set content-type
@@ -199,7 +200,17 @@
     // Now send a request and get Response
     NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     // Log Response
-    NSString *response = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    response = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    return response;
+}
+
+-(BOOL) logIn
+{
+    UserData *ud = [UserData globalUserData];
+    
+    userCreated.hidden = YES;
+    
+    NSString *response = [self interactWithDatabase:usernameTextField.text with:nil at:@"login.php"];
     NSLog(@"%@",response);
     
     // Check to see if username and password match
@@ -217,57 +228,17 @@
     }
     
 }
-/*
--(BOOL) createRegistration
-{
-    newPasswordTF.hidden = NO;
-    regist.hidden = NO;
-    finished = false;
-    while(true)
-    {
-        if(finished)
-        {
-            break;
-        }
-        usleep(10000);
-    }
-    
-    return true;
-}
- */
-/*
--(NSString) accessDatabase: (NSString *) username
-{
-    
-}
- */
 
 //FIX THIS
 -(BOOL) registerNow
 {
-    usernameTextField.text = nil;
-    passwordTextField.text=nil;
-    
     int length = 8;
     newPasswordTF.hidden = NO;
     regist.hidden = NO;
     
-    NSString *RequestString = [NSString stringWithFormat:@"username=%@&password=%@",usernameTextField.text,passwordTextField.text];
-    
-    // Create Data from request
-    NSData *RequestData = [NSData dataWithBytes: [RequestString UTF8String] length: [RequestString length]];
-    NSMutableURLRequest *requestS = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: @"http://humanitiesapp.atwebpages.com/checkuser.php"]];
-    // set Request Type
-    [requestS setHTTPMethod: @"POST"];
-    // Set content-type
-    [requestS setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-    // Set Request Body
-    [requestS setHTTPBody: RequestData];
-    // Now send a request and get Response
-    NSData *returnD = [NSURLConnection sendSynchronousRequest: requestS returningResponse: nil error: nil];
-    // Log Response
-    NSString *responseS = [[NSString alloc] initWithBytes:[returnD bytes] length:[returnD length] encoding:NSUTF8StringEncoding];
+    NSString *responseS = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"checkuser.php"];
     NSLog(@"%@",responseS);
+    
     
     BOOL used = NO;
     
@@ -309,23 +280,9 @@
     }
     else
     {
+        NSLog(@"here.");
         
-        // Create your request string with parameter name as defined in PHP file
-        NSString *myRequestString = [NSString stringWithFormat:@"username=%@&password=%@",usernameTextField.text,passwordTextField.text];
-        
-        // Create Data from request
-        NSData *myRequestData = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: @"http://humanitiesapp.atwebpages.com/register.php"]];
-        // set Request Type
-        [request setHTTPMethod: @"POST"];
-        // Set content-type
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-        // Set Request Body
-        [request setHTTPBody: myRequestData];
-        // Now send a request and get Response
-        NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
-        // Log Response
-        NSString *response = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+        NSString *response = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"register.php"];
         NSLog(@"%@",response);
         
         uniqueUsernameLabel.hidden = YES;
@@ -340,6 +297,9 @@
         parentController.logInButton.hidden = NO;
         parentController.regButton.hidden = NO;
     }
+    
+    usernameTextField.text = nil;
+    passwordTextField.text=nil;
     
     return false;
     
