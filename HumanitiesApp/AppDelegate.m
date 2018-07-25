@@ -36,23 +36,47 @@
     int x = (viewWidth / 2) - (logInWidth / 2);
     CGRect logInFrame = CGRectMake(x, ((viewHeight / 3) * 2), logInWidth, 35);
     
+    int regWidth = 200;
+    int regX = (viewWidth / 2) - (regWidth / 2);
+    CGRect regFrame = CGRectMake(regX, ((viewHeight / 15) * 11), regWidth, 35);
     
     
     
-    // Cancel button creation
-    UIButton *logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [logInButton setTitle:@"Log In" forState:UIControlStateNormal];
-    logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
-    logInButton.frame = logInFrame;
-    [logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
+    // Login button creation
+    self.logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.logInButton setTitle:@"Log In" forState:UIControlStateNormal];
+    self.logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    self.logInButton.frame = logInFrame;
+    [self.logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
     
+    // new User button creation
+    self.regButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.regButton setTitle:@"New User? Register." forState:UIControlStateNormal];
+    self.regButton.titleLabel.font = [UIFont systemFontOfSize:10];
+    self.regButton.frame = regFrame;
+    [self.regButton addTarget:self action:@selector(reg) forControlEvents:UIControlEventTouchUpInside];
     
+    self.logInButton.hidden = NO;
+    self.regButton.hidden = NO;
     
-    [logInViewController.view addSubview:logInButton];
+    [logInViewController hasParent:self];
+    
+    [logInViewController.view addSubview:self.logInButton];
+    [logInViewController.view addSubview:self.regButton];
     
     
     
     return YES;
+}
+
+- (void) reg
+{
+    self.logInButton.hidden = YES;
+    self.regButton.hidden = YES;
+    if (![logInViewController registerNow])
+    {
+        return;
+    }
 }
 
 - (void) logIn
