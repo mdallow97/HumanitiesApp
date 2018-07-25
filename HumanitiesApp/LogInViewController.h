@@ -11,6 +11,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UserData.h"
+#import "AppDelegate.h"
 
 
 @interface LogInViewController : UIViewController <UITextFieldDelegate, UITabBarDelegate>
@@ -20,6 +21,7 @@
 @property (nonatomic, retain) NSString *username;
 
 -(BOOL) registerNow;
+- (void) hasParent: (UIResponder *) parent;
 - (BOOL) logIn;
 //-(BOOL) createRegistration;
 

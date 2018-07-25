@@ -33,10 +33,11 @@
     UILabel *notFullLabel;
     UILabel *passwordNoMatchLabel;
     UILabel *passLength;
+    UILabel *userCreated;
     UIButton *regist;
     
   
-    
+    AppDelegate *parentController;
     
 }
 
@@ -140,6 +141,12 @@
     uniqueUsernameLabel.text = @"Username is already being used.";
     uniqueUsernameLabel.textColor = [UIColor redColor];
     
+    //unique username set up
+    userCreated = [[UILabel alloc] initWithFrame:emptyFieldFrame];
+    userCreated.hidden = YES;
+    userCreated.text = @"New User Created.";
+    userCreated.textColor = [UIColor redColor];
+    
     
     //registration button creation
     regist = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -160,14 +167,22 @@
     [self.view addSubview:notFullLabel];
     [self.view addSubview:passwordNoMatchLabel];
     [self.view addSubview:passLength];
+    [self.view addSubview:userCreated];
     
     //self.dbManager = [[DBManager alloc] initWithDatabaseFilename:@"appDB.sql"];
     
 }
 
+- (void) hasParent: (AppDelegate *) parent
+{
+    parentController = parent;
+}
+
 -(BOOL) logIn
 {
     UserData *ud = [UserData globalUserData];
+    
+    userCreated.hidden = YES;
     
     // Create your request string with parameter name as defined in PHP file
     NSString *myRequestString = [NSString stringWithFormat:@"username=%@",usernameTextField.text];
@@ -230,6 +245,9 @@
 //FIX THIS
 -(BOOL) registerNow
 {
+    usernameTextField.text = nil;
+    passwordTextField.text=nil;
+    
     int length = 8;
     newPasswordTF.hidden = NO;
     regist.hidden = NO;
@@ -262,6 +280,7 @@
         notFullLabel.hidden = NO;
         passwordNoMatchLabel.hidden = YES;
         passLength.hidden = YES;
+        userCreated.hidden = YES;
     }
     else if(used)
     {
@@ -269,13 +288,15 @@
         notFullLabel.hidden = YES;
         passwordNoMatchLabel.hidden = YES;
         passLength.hidden = YES;
+        userCreated.hidden = YES;
     }
     else if(![passwordTextField.text isEqual:newPasswordTF.text])
     {
         uniqueUsernameLabel.hidden = YES;
         notFullLabel.hidden = YES;
         passwordNoMatchLabel.hidden = NO;
-            passLength.hidden = YES;
+        passLength.hidden = YES;
+        userCreated.hidden = YES;
         
     }
     else if(passwordTextField.text.length < length)
@@ -284,6 +305,7 @@
         notFullLabel.hidden = YES;
         passwordNoMatchLabel.hidden = YES;
         passLength.hidden = NO;
+        userCreated.hidden = YES;
     }
     else
     {
@@ -311,6 +333,12 @@
         passwordNoMatchLabel.hidden = YES;
         newPasswordTF.hidden = YES;
         regist.hidden = YES;
+        userCreated.hidden = NO;
+        usernameTextField.text = nil;
+        passwordTextField.text = nil;
+        newPasswordTF.text = nil;
+        parentController.logInButton.hidden = NO;
+        parentController.regButton.hidden = NO;
     }
     
     return false;

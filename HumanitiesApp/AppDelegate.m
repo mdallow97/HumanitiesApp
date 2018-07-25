@@ -16,7 +16,6 @@
 {
     LogInViewController *logInViewController;
     int viewWidth, viewHeight;
-    UIButton *logInButton, *regButton;
 }
 
 
@@ -44,24 +43,26 @@
     
     
     // Login button creation
-    logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [logInButton setTitle:@"Log In" forState:UIControlStateNormal];
-    logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
-    logInButton.frame = logInFrame;
-    [logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
+    self.logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.logInButton setTitle:@"Log In" forState:UIControlStateNormal];
+    self.logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    self.logInButton.frame = logInFrame;
+    [self.logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
     
     // new User button creation
-    regButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [regButton setTitle:@"New User? Register." forState:UIControlStateNormal];
-    regButton.titleLabel.font = [UIFont systemFontOfSize:10];
-    regButton.frame = regFrame;
-    [regButton addTarget:self action:@selector(reg) forControlEvents:UIControlEventTouchUpInside];
+    self.regButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.regButton setTitle:@"New User? Register." forState:UIControlStateNormal];
+    self.regButton.titleLabel.font = [UIFont systemFontOfSize:10];
+    self.regButton.frame = regFrame;
+    [self.regButton addTarget:self action:@selector(reg) forControlEvents:UIControlEventTouchUpInside];
     
-    logInButton.hidden = NO;
-    regButton.hidden = NO;
+    self.logInButton.hidden = NO;
+    self.regButton.hidden = NO;
     
-    [logInViewController.view addSubview:logInButton];
-    [logInViewController.view addSubview:regButton];
+    [logInViewController hasParent:self];
+    
+    [logInViewController.view addSubview:self.logInButton];
+    [logInViewController.view addSubview:self.regButton];
     
     
     
@@ -70,8 +71,8 @@
 
 - (void) reg
 {
-    logInButton.hidden = YES;
-    regButton.hidden = YES;
+    self.logInButton.hidden = YES;
+    self.regButton.hidden = YES;
     if (![logInViewController registerNow])
     {
         return;
