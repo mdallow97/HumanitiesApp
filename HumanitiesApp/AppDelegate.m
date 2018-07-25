@@ -16,6 +16,7 @@
 {
     LogInViewController *logInViewController;
     int viewWidth, viewHeight;
+    UIButton *logInButton, *regButton;
 }
 
 
@@ -36,23 +37,45 @@
     int x = (viewWidth / 2) - (logInWidth / 2);
     CGRect logInFrame = CGRectMake(x, ((viewHeight / 3) * 2), logInWidth, 35);
     
+    int regWidth = 200;
+    int regX = (viewWidth / 2) - (regWidth / 2);
+    CGRect regFrame = CGRectMake(regX, ((viewHeight / 15) * 11), regWidth, 35);
     
     
     
-    // Cancel button creation
-    UIButton *logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    // Login button creation
+    logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [logInButton setTitle:@"Log In" forState:UIControlStateNormal];
     logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
     logInButton.frame = logInFrame;
     [logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
     
+    // new User button creation
+    regButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [regButton setTitle:@"New User? Register." forState:UIControlStateNormal];
+    regButton.titleLabel.font = [UIFont systemFontOfSize:10];
+    regButton.frame = regFrame;
+    [regButton addTarget:self action:@selector(reg) forControlEvents:UIControlEventTouchUpInside];
     
+    logInButton.hidden = NO;
+    regButton.hidden = NO;
     
     [logInViewController.view addSubview:logInButton];
+    [logInViewController.view addSubview:regButton];
     
     
     
     return YES;
+}
+
+- (void) reg
+{
+    logInButton.hidden = YES;
+    regButton.hidden = YES;
+    if (![logInViewController registerNow])
+    {
+        return;
+    }
 }
 
 - (void) logIn

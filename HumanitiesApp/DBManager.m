@@ -36,6 +36,7 @@
         
         //Copy file into directory
         [self copyDatabaseIntoDocumentsDirectory];
+
         
     }
     return self;
@@ -70,6 +71,7 @@
             NSLog(@"%@", [error localizedDescription]);
         }
     }
+    
 }
 
 -(void)runQuery:(const char*)query isQueryExecutable:(BOOL)queryExecutable
@@ -94,7 +96,7 @@
     
     //connect to database
     BOOL openDatabaseResult = sqlite3_open([databasepath UTF8String], &sqlite3DB);
-    if(!openDatabaseResult == SQLITE_OK)
+    if(openDatabaseResult == SQLITE_OK)
     {
         sqlite3_stmt *compiledStatement;
     
@@ -136,8 +138,7 @@
             }
             else
             {
-                BOOL executeQueryResults = sqlite3_step(compiledStatement);
-                if (executeQueryResults == SQLITE_DONE)
+                if (sqlite3_step(compiledStatement) == SQLITE_DONE)
                 {
                     self.affectedRows = sqlite3_changes(sqlite3DB);
                     self.lastInsertedRowID = sqlite3_last_insert_rowid(sqlite3DB);

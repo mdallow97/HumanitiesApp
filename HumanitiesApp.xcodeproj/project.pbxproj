@@ -28,6 +28,7 @@
 		4191960220F3E1E500439A41 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960120F3E1E500439A41 /* FileData.m */; };
 		4191960520F3FDC000439A41 /* FileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960420F3FDC000439A41 /* FileView.m */; };
 		41AB359120E329CF001EFB5F /* ProjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AB359020E329CF001EFB5F /* ProjectView.m */; };
+		B575692220FFDD9300C37BF1 /* appDB.sql in Resources */ = {isa = PBXBuildFile; fileRef = B575692120FFDD9200C37BF1 /* appDB.sql */; };
 		B5B32AE520F6A4C300EF8580 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B32AE420F6A4C300EF8580 /* libsqlite3.tbd */; };
 		B5B32AEA20F6A71700EF8580 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B32AE920F6A71700EF8580 /* DBManager.m */; };
 /* End PBXBuildFile section */
@@ -88,6 +89,7 @@
 		4191960420F3FDC000439A41 /* FileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileView.m; sourceTree = "<group>"; };
 		41AB359020E329CF001EFB5F /* ProjectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectView.m; sourceTree = "<group>"; };
 		41AB359220E329D8001EFB5F /* ProjectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectView.h; sourceTree = "<group>"; };
+		B575692120FFDD9200C37BF1 /* appDB.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = appDB.sql; sourceTree = "<group>"; };
 		B5B32AE420F6A4C300EF8580 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		B5B32AE820F6A71700EF8580 /* DBManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
 		B5B32AE920F6A71700EF8580 /* DBManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
 				4172C83020E1D0580065A277 /* Info.plist */,
 				4172C83120E1D0580065A277 /* main.m */,
+				B575692120FFDD9200C37BF1 /* appDB.sql */,
 				412FB06520E46B0900ECECAD /* Home.png */,
 				4135659720E31F68009050F2 /* preview.png */,
 				415457C520EC764200B64540 /* Files.png */,
@@ -315,6 +318,7 @@
 				4172C82F20E1D0580065A277 /* LaunchScreen.storyboard in Resources */,
 				4172C82C20E1D0580065A277 /* Assets.xcassets in Resources */,
 				4172C82A20E1D0570065A277 /* Main.storyboard in Resources */,
+				B575692220FFDD9300C37BF1 /* appDB.sql in Resources */,
 				415457C620EC764200B64540 /* Files.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

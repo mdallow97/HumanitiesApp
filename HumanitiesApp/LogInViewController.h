@@ -12,11 +12,17 @@
 #import <UIKit/UIKit.h>
 #import "UserData.h"
 
-@interface LogInViewController : UIViewController <UITextFieldDelegate, UITabBarDelegate>
 
+@interface LogInViewController : UIViewController <UITextFieldDelegate, UITabBarDelegate>
+{
+    BOOL finished;
+}
 @property (nonatomic, retain) NSString *username;
 
+-(BOOL) registerNow;
 - (BOOL) logIn;
+//-(BOOL) createRegistration;
+
 
 @end
 
