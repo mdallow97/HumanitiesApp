@@ -161,7 +161,7 @@
     
     FileData *fileData = [currentProject fileNamed:fileName];
     
-    [fileView loadFileWithData:fileData];
+    [fileView loadFileWithData:fileData inProject:currentProject];
     
     UIViewController *currentTopVC = [self currentTopViewController];
     [currentTopVC presentViewController:fileView animated:YES completion:nil];
@@ -169,7 +169,7 @@
     
     if (canEdit) {
         [fileView enterEditingMode];
-    }
+    } //else [fileView enterViewingMode];
 }
 
 - (void) goToFile

@@ -156,9 +156,10 @@
     [self.view addSubview:errorFieldLabel];
 }
 
-- (void) loadFileWithData: (FileData *) file
+- (void) loadFileWithData:(FileData *) file inProject:(ProjectData *) project
 {
     _currentFileName = file.fileName;
+    projectData = project;
 }
 
 - (void) save
@@ -184,8 +185,56 @@
     errorFieldLabel.hidden  = YES;
 }
 
+- (void) enterEditingMode
+{
+    cancelButton.hidden = NO;
+    
+    // Edit file of a certain type
+    if (fileData.fileType == DOCUMENT) {
+        
+    } else if (fileData.fileType == PRESENTATION) {
+        
+    } else if (fileData.fileType == IMAGE) {
+        // Add change button in upper right corner
+    } else if (fileData.fileType == AUDIO) {
+        
+    } else if (fileData.fileType == VIDEO) {
+        
+    } else if (fileData.fileType == AUGMENTED_REALITY) {
+        
+    }
+    
+    [self enterViewingMode];
+}
 
-
+- (void) enterViewingMode
+{
+    CGRect fileViewFrame = CGRectMake(0, 85, viewWidth, ((viewHeight - 85) / 2));
+    
+    
+    // Open file of a certain type
+    if (fileData.fileType == DOCUMENT) {
+        
+    } else if (fileData.fileType == PRESENTATION) {
+        
+    } else if (fileData.fileType == IMAGE) {
+        
+        UIImageView *fileView = [[UIImageView alloc] initWithFrame:fileViewFrame];
+        [fileView setImage:fileData.image];
+        [fileView setContentMode:UIViewContentModeScaleAspectFit];
+        
+        [self.view addSubview:fileView];
+        
+    } else if (fileData.fileType == AUDIO) {
+        
+    } else if (fileData.fileType == VIDEO) {
+        
+    } else if (fileData.fileType == AUGMENTED_REALITY) {
+        
+    }
+    
+    
+}
 
 
 - (void) createFileOfType:(int) type
@@ -195,10 +244,14 @@
     nextButton.hidden           = NO;
     nameTextField.hidden        = NO;
     
-    nameTextField.text = @"";
-    fileData.fileType = type;
+    // create file with type
+    fileData            = [[FileData alloc] init];
+    nameTextField.text  = @"";
+    fileData.fileType   = type;
+    
     [nameTextField becomeFirstResponder];
     
+    // start creation of file, dependent on type of file
     if (type == DOCUMENT) {
         [nextButton addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventTouchUpInside)];
         [nameTextField addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventEditingDidEnd)];
@@ -237,9 +290,9 @@
     
     // Check to make sure file name doesnt conflict with another file name within same project
     
-    fileData = [projectData fileNamed:nameTextField.text];
+    FileData *test = [projectData fileNamed:nameTextField.text];
     
-    if ([fileData.fileName isEqualToString:nameTextField.text]) {
+    if ([test.fileName isEqualToString:nameTextField.text]) {
         errorFieldLabel.text    = @"File name taken";
         errorFieldLabel.hidden  = NO;
         return true;
@@ -259,9 +312,6 @@
 {
     shouldAddFile       = true;
     saveButton.hidden   = NO; // *** should only be unhidden once file is changed/created
-    
-    // Create file
-    fileData            = [[FileData alloc] init];
     
     // Store File Name
     fileData.fileName   = name;
@@ -362,11 +412,6 @@
     
     if ([self isFileNameEmptyOrTaken]) return;
     
-}
-
-- (void) enterEditingMode
-{
-    cancelButton.hidden = NO;
 }
 
 

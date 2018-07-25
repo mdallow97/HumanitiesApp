@@ -20,11 +20,17 @@
 - (void) frameSetup;
 - (void) hideAll;
 - (void) inProject:(ProjectData *) project;
+- (void) loadFileWithData:(FileData *) file inProject:(ProjectData *) project;
 
 @property NSString *currentFileName;
 
-// File Functions
+// Functions only available in editing mode
+- (void) enterEditingMode;
+
 - (void) createFileOfType:(int) type;
+- (BOOL) isFileNameEmptyOrTaken;
+- (void) saveFileWithName:(NSString *) name;
+
 
 - (void) createDocument;
 - (void) createPresentation;
@@ -39,11 +45,11 @@
 - (void) createVideo;
 - (void) createAR;
 
-- (void) enterEditingMode;
 
-- (BOOL) isFileNameEmptyOrTaken;
-- (void) saveFileWithName:(NSString *) name;
-- (void) loadFileWithData: (FileData *) file;
+// Functions only available in viewing mode
+- (void) enterViewingMode;
+
+
 
 
 @property enum {
