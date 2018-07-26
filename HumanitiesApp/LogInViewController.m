@@ -165,7 +165,6 @@
     [self.view addSubview:passLength];
     [self.view addSubview:userCreated];
     
-    //self.dbManager = [[DBManager alloc] initWithDatabaseFilename:@"appDB.sql"];
     
 }
 
@@ -212,7 +211,6 @@
     userCreated.hidden = YES;
     
     NSString *response = [self interactWithDatabase:usernameTextField.text with:nil at:@"login.php"];
-    NSLog(@"%@",response);
     
     // Check to see if username and password match
     //if ([usernameTextField.text isEqual:@""] || [passwordTextField.text isEqual:@""])
@@ -240,7 +238,6 @@
     regist.hidden           = NO;
     
     NSString *responseS = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"checkuser.php"];
-    NSLog(@"%@",responseS);
     
     
     BOOL used = NO;
@@ -283,10 +280,6 @@
     }
     else
     {
-        NSLog(@"here.");
-        
-        NSString *response = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"register.php"];
-        NSLog(@"%@",response);
         
         uniqueUsernameLabel.hidden            = YES;
         notFullLabel.hidden                   = YES;
