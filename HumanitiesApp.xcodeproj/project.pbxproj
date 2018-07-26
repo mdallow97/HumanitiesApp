@@ -29,6 +29,8 @@
 		4191960520F3FDC000439A41 /* FileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960420F3FDC000439A41 /* FileView.m */; };
 		41AB359120E329CF001EFB5F /* ProjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AB359020E329CF001EFB5F /* ProjectView.m */; };
 		41F5A6EC20F6B4FC00D976D1 /* FilePreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41F5A6EB20F6B4FC00D976D1 /* FilePreView.m */; };
+		B575692220FFDD9300C37BF1 /* appDB.sql in Resources */ = {isa = PBXBuildFile; fileRef = B575692120FFDD9200C37BF1 /* appDB.sql */; };
+		B5B32AE520F6A4C300EF8580 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B32AE420F6A4C300EF8580 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +91,8 @@
 		41AB359220E329D8001EFB5F /* ProjectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectView.h; sourceTree = "<group>"; };
 		41F5A6EA20F6B4DB00D976D1 /* FilePreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilePreView.h; sourceTree = "<group>"; };
 		41F5A6EB20F6B4FC00D976D1 /* FilePreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilePreView.m; sourceTree = "<group>"; };
+		B575692120FFDD9200C37BF1 /* appDB.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = appDB.sql; sourceTree = "<group>"; };
+		B5B32AE420F6A4C300EF8580 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5B32AE520F6A4C300EF8580 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +128,7 @@
 				4172C83A20E1D0580065A277 /* HumanitiesAppTests */,
 				4172C84520E1D0580065A277 /* HumanitiesAppUITests */,
 				4172C82020E1D0570065A277 /* Products */,
+				B5B32AE320F6A4C200EF8580 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -168,6 +174,7 @@
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
 				4172C83020E1D0580065A277 /* Info.plist */,
 				4172C83120E1D0580065A277 /* main.m */,
+				B575692120FFDD9200C37BF1 /* appDB.sql */,
 				412FB06520E46B0900ECECAD /* Home.png */,
 				4135659720E31F68009050F2 /* preview.png */,
 				415457C520EC764200B64540 /* Files.png */,
@@ -192,6 +199,14 @@
 				4172C84820E1D0580065A277 /* Info.plist */,
 			);
 			path = HumanitiesAppUITests;
+			sourceTree = "<group>";
+		};
+		B5B32AE320F6A4C200EF8580 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B5B32AE420F6A4C300EF8580 /* libsqlite3.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,6 +318,7 @@
 				4172C82F20E1D0580065A277 /* LaunchScreen.storyboard in Resources */,
 				4172C82C20E1D0580065A277 /* Assets.xcassets in Resources */,
 				4172C82A20E1D0570065A277 /* Main.storyboard in Resources */,
+				B575692220FFDD9300C37BF1 /* appDB.sql in Resources */,
 				415457C620EC764200B64540 /* Files.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

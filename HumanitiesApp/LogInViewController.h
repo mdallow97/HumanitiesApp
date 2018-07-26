@@ -11,12 +11,20 @@
 
 #import <UIKit/UIKit.h>
 #import "UserData.h"
+#import "AppDelegate.h"
+
 
 @interface LogInViewController : UIViewController <UITextFieldDelegate, UITabBarDelegate>
-
+{
+    BOOL finished;
+}
 @property (nonatomic, retain) NSString *username;
 
+-(BOOL) registerNow;
+- (void) hasParent: (UIResponder *) parent;
 - (BOOL) logIn;
+- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at: (NSString *)path;
+
 
 @end
 
