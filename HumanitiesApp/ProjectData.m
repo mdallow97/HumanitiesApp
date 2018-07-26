@@ -35,9 +35,12 @@
     int i;
     
     for (i = 0; i < numProjects; i++) {
-        fd = (FileData *) self.files[i];
+        FileData *test = (FileData *) self.files[i];
         
-        if (fd.fileName == name) break;
+        if ([test.fileName isEqualToString:name]) {
+            fd = test;
+            break;
+        }
     }
     
     return fd;

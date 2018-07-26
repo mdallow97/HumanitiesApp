@@ -22,11 +22,16 @@
     
     UserData *projects;
     ProjectData *projectData;
+    FilePreView *previews[100];
     
     // Scroll View Variable Declarations
     UIScrollView *myFilesView;
     int scrollHeightInitial, scrollHeight;
     int scrollWidthInitial, scrollWidth;
+    
+    // Preview Variable Declarations
+    int pvWidthInitial, pvWidth;
+    int pvHeightInitial, pvHeight;
     
     // Cancel Button Variable Declarations
     UIButton *doneButton;
@@ -47,8 +52,9 @@
     
     // Next Button
     UIButton *nextButton;
-    UIButton *fileNextButton;
     CGRect nextFrame;
+    
+    UIViewController *previewOptions;
     
     
     // NEW PROJECT MODE Variable Declarations:
@@ -70,21 +76,27 @@
 - (void) frameSetup
 {
     // General Variable Initialization
-    viewWidth = self.view.frame.size.width;
-    viewHeight = self.view.frame.size.height;
+    viewWidth           = self.view.frame.size.width;
+    viewHeight          = self.view.frame.size.height;
     
-    shouldAddProject = false;
-    shouldAddFile = false;
+    shouldAddProject    = false;
+    shouldAddFile       = false;
     
-    buttonWidth = 50;
-    buttonHeight = 50;
+    buttonWidth         = 50;
+    buttonHeight        = 50;
+    
+    // Preview Variable initialization
+    pvWidthInitial      = 0;
+    pvHeightInitial     = 351;
+    pvHeight            = 350;
+    pvWidth             = viewWidth - pvWidthInitial;
     
     // Cancel Button Variable Initialization
-    doneFrame = CGRectMake(10, 30, buttonWidth, buttonHeight);
+    doneFrame           = CGRectMake(10, 30, buttonWidth, buttonHeight);
     
     // Add File Button Variable Initialization
-    editingOptionsX = viewWidth - (buttonWidth + 5);
-    editingOptionsY = 30;
+    editingOptionsX     = viewWidth - (buttonWidth + 5);
+    editingOptionsY     = 30;
     
     editingOptionsFrame = CGRectMake(editingOptionsX, editingOptionsY, buttonWidth, buttonHeight);
     
@@ -92,24 +104,24 @@
     nextFrame = editingOptionsFrame;
     
     // General Text Field Variable Initialization
-    textFieldWidth = 250;
-    textFieldHeight = 50;
+    textFieldWidth      = 250;
+    textFieldHeight     = 50;
     
     // Empty Name Label Variable Initialization
-    errorFieldWidth = 250;
-    errorFieldHeight = 50;
-    errorFieldFrame = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
+    errorFieldWidth     = 250;
+    errorFieldHeight    = 50;
+    errorFieldFrame     = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
     
     // Project Name Label Variable Initialization
-    projectNameWidth = 200;
-    projectNameHeight = 50;
-    projectNameFrame = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
+    projectNameWidth    = 200;
+    projectNameHeight   = 50;
+    projectNameFrame    = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
     
     // Scroll View Variable initialization
     scrollHeightInitial = 85;
-    scrollWidthInitial = 0;
-    scrollWidth = viewWidth - (2 * scrollWidthInitial);
-    scrollHeight = viewHeight - scrollHeightInitial;
+    scrollWidthInitial  = 0;
+    scrollWidth         = viewWidth - (2 * scrollWidthInitial);
+    scrollHeight        = viewHeight - scrollHeightInitial;
 }
 
 - (void) viewDidLoad
@@ -117,119 +129,106 @@
     self.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     [self frameSetup];
     
-    projects = [UserData sharedMyProjects];
-    // Data will be nil if project does not exist
-    projectData = [projects projectNamed:self->_currentProjectName];
+    projects    = [UserData sharedMyProjects];
+    projectData = [projects projectNamed:self->_currentProjectName]; // Data will be nil if project does not exist
     
     doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-    doneButton.frame = doneFrame;
     [doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
+    doneButton.frame = doneFrame;
     
     editingOptionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [editingOptionsButton setTitle:@"Edit" forState:UIControlStateNormal];
-    editingOptionsButton.frame = editingOptionsFrame;
-    editingOptionsButton.hidden = YES;
     [editingOptionsButton addTarget:self action:@selector(showEditingOptions) forControlEvents:UIControlEventTouchUpInside];
+    editingOptionsButton.frame  = editingOptionsFrame;
+    editingOptionsButton.hidden = YES;
     
     nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    nextButton.frame = nextFrame;
     [nextButton setTitle:@"Next" forState:UIControlStateNormal];
-    nextButton.hidden = YES;
     [nextButton addTarget:self action:@selector(createProject) forControlEvents:UIControlEventTouchUpInside];
-    
-    fileNextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    fileNextButton.frame = nextFrame;
-    [fileNextButton setTitle:@"Next" forState:UIControlStateNormal];
-    fileNextButton.hidden = YES;
+    nextButton.frame  = nextFrame;
+    nextButton.hidden = YES;
     
     
     nameTextField = [[UITextField alloc] initWithFrame:CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight)];
-    nameTextField.hidden = YES;
-    nameTextField.borderStyle = UITextBorderStyleRoundedRect;
-    nameTextField.tintColor = [UIColor blueColor];
+    nameTextField.borderStyle     = UITextBorderStyleRoundedRect;
+    nameTextField.tintColor       = [UIColor blueColor];
     nameTextField.backgroundColor = [UIColor lightGrayColor];
-    nameTextField.returnKeyType = UIReturnKeyDone;
-    nameTextField.textAlignment = NSTextAlignmentCenter;
-    nameTextField.delegate = self;
+    nameTextField.returnKeyType   = UIReturnKeyDone;
+    nameTextField.textAlignment   = NSTextAlignmentCenter;
+    nameTextField.delegate        = self;
+    nameTextField.hidden          = YES;
     
     
     // Empty Project Name Label Setup
-    errorFieldLabel = [[UILabel alloc] initWithFrame:errorFieldFrame];
+    errorFieldLabel               = [[UILabel alloc] initWithFrame:errorFieldFrame];
     errorFieldLabel.textAlignment = NSTextAlignmentCenter;
-    errorFieldLabel.hidden = YES;
-    errorFieldLabel.textColor = [UIColor redColor];
+    errorFieldLabel.textColor     = [UIColor redColor];
+    errorFieldLabel.hidden        = YES;
     
     // Project Name Label Setup
     projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
-    projectNameLabel.hidden = YES;
     projectNameLabel.textAlignment = NSTextAlignmentCenter;
+    projectNameLabel.text = _currentProjectName;
     
     // Project View Setup
     myFilesView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
     myFilesView.backgroundColor = [UIColor whiteColor];
-    myFilesView.contentSize = CGSizeMake(viewWidth, (viewHeight - 85));
-    myFilesView.hidden = YES;
+    myFilesView.contentSize     = CGSizeMake(viewWidth, (viewHeight - 85));
     
     // Adding Subviews
     [self.view addSubview:doneButton];
     [self.view addSubview:editingOptionsButton];
     [self.view addSubview:nextButton];
-    [self.view addSubview:fileNextButton];
     [self.view addSubview:nameTextField];
     [self.view addSubview:errorFieldLabel];
     [self.view addSubview:projectNameLabel];
     [self.view addSubview:myFilesView];
+    
+    self.inEditingMode = NO;
 }
 
-- (void) showEditingOptions
+- (void)viewWillAppear:(BOOL)animated
 {
+    [self createPreviews];
+}
+
+- (void) createPreviews
+{
+    for (UIView *view in myFilesView.subviews)
+        if ([view isKindOfClass:[FilePreView class]]) [view removeFromSuperview];
     
-    UIAlertController *editOptions = [UIAlertController alertControllerWithTitle:@"Editing Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    int numberOfPreviews = (int) projectData.files.count;
     
-    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    CGRect rect[numberOfPreviews];
+    
+    [self changeScrollHeight:(pvHeightInitial * numberOfPreviews)];
+    
+    int i;
+    
+    for (i = 0; i < numberOfPreviews; i++) {
         
-        [self deleteProject];
+        FileData *fd = (FileData *) projectData.files[i];
         
-        [self dismissViewControllerAnimated:YES completion:nil];
+        rect[i]         = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
+        previews[i]     = [[FilePreView alloc] initWithFrame:rect[i]];
         
-    }];
-    
-    
-    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Change Project Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [previews[i] setFileName:fd.fileName inProject:projectData withParentView:self];
+        [myFilesView addSubview: previews[i]];
         
-        // Will present a view controller with text field and appropriate buttons
-        // Just need to change _currentProjectName and pd.projectName
+        // File previews can be edited once tapped on, only if project can also be edited
+        if (self.inEditingMode) [previews[i] enterEditingMode];
         
-    }];
-    
-    UIAlertAction *addFile = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self addFile];}];
-    
-    UIAlertAction *removeFile = [UIAlertAction actionWithTitle:@"Remove File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        // Will remove a file, may have to move this action into the file view itself
-        // Otherwise, will have to have user pick which file to delete
-        
-    }];
-    
-    
-    [editOptions addAction:cancel];
-    [editOptions addAction:changeName];
-    [editOptions addAction:addFile];
-    [editOptions addAction:removeFile];
-    
-    ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];
-    
-    if ([doesExist.projectName isEqualToString:projectData.projectName]) {
-        [editOptions addAction:delete];
     }
     
-    
-    UIViewController *currentTopVC = [self currentTopViewController];
-    [currentTopVC presentViewController:editOptions animated:YES completion:nil];
 }
+
+- (void) changeScrollHeight:(int)height
+{
+    myFilesView.contentSize = CGSizeMake(viewWidth, height);
+}
+
 
 -(void) done
 {
@@ -250,28 +249,43 @@
     return topVC;
 }
 
-
-
-// Project Function Definitions
-
 - (void) loadProjectWithData:(ProjectData *) project;
 {
-    _currentProjectName = project.projectName;
+    _currentProjectName     = project.projectName;
 }
+
+
+
+// Functions available only in editing mode
 
 - (void) enterNewProjectMode
 {
-    nextButton.hidden = NO;
-    nameTextField.hidden = NO;
-    nameTextField.placeholder = @"New Project Name";
+    nextButton.hidden           = NO;
+    nameTextField.hidden        = NO;
+    myFilesView.hidden          = YES;
+    nameTextField.placeholder   = @"New Project Name";
+    [nameTextField becomeFirstResponder];
+    
+    projectData = [[ProjectData alloc] init];
+    
+    [doneButton setTitle:@"Cancel" forState:UIControlStateNormal];
+}
+
+- (void) enterEditingMode
+{
+    self.inEditingMode          = YES;
+    editingOptionsButton.hidden = NO;
+    myFilesView.hidden          = NO;
 }
 
 - (void) createProject
 {
+    [nameTextField resignFirstResponder];
+    
     // Check to make sure text field is not empty
     if ([nameTextField.text isEqual:@""])
     {
-        errorFieldLabel.text = @"Project name cannot be blank";
+        errorFieldLabel.text   = @"Project name cannot be blank";
         errorFieldLabel.hidden = NO;
         
         return;
@@ -280,6 +294,7 @@
     errorFieldLabel.hidden = YES;
     
     // Check to make sure project name doesnt conflict with own project name
+    
     projects = [UserData sharedMyProjects];
     
     ProjectData *pd = [projects projectNamed:nameTextField.text];
@@ -298,24 +313,56 @@
     projectData = [[ProjectData alloc] init];
     
     // Store Project Name
-    projectData.projectName = nameTextField.text;
-    projectNameLabel.text = nameTextField.text;
+    projectData.projectName   = nameTextField.text;
+    projectNameLabel.text     = nameTextField.text;
     self->_currentProjectName = nameTextField.text;
     
-    errorFieldLabel.hidden = YES;
+    errorFieldLabel.hidden  = YES;
     projectNameLabel.hidden = NO;
-    
-    
-    nextButton.hidden = YES;
-    nameTextField.hidden = YES;
+    nextButton.hidden       = YES;
+    nameTextField.hidden    = YES;
     
     [self enterEditingMode];
 }
 
-- (void) enterEditingMode
+
+- (void) showEditingOptions
 {
-    editingOptionsButton.hidden = NO;
-    myFilesView.hidden = NO;
+    
+    UIAlertController *editOptions = [UIAlertController alertControllerWithTitle:@"Editing Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete Project" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self deleteProject];}];
+    
+    
+    
+    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Change Project Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // Will present a view controller with text field and appropriate buttons
+        // Just need to change _currentProjectName and pd.projectName
+        
+    }];
+    
+    UIAlertAction *addFile = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self addFile];}];
+    
+    UIAlertAction *changePreview = [UIAlertAction actionWithTitle:@"Change Preview Image" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self changePreviewImage];}];
+    
+    
+    [editOptions addAction:cancel];
+    [editOptions addAction:addFile];
+    [editOptions addAction:changeName];
+    [editOptions addAction:changePreview];
+    
+    ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];
+    
+    if ([doesExist.projectName isEqualToString:projectData.projectName]) {
+        [editOptions addAction:delete];
+    }
+    
+    
+    UIViewController *currentTopVC = [self currentTopViewController];
+    [currentTopVC presentViewController:editOptions animated:YES completion:nil];
 }
 
 - (void) deleteProject
@@ -323,8 +370,78 @@
     [self->projects.myProjects removeObject:self->projectData];
     
     // *** Have a fail safe delete in case of accidental removal
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void) changePreviewImage
+{
+    
+    previewOptions = [[UIViewController alloc] init];
+    previewOptions.view.backgroundColor = [UIColor whiteColor];
+    
+    UIButton *takePhotoButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    takePhotoButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight);
+    takePhotoButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    [takePhotoButton setTitle:@"Take a Photo" forState:UIControlStateNormal];
+    [takePhotoButton addTarget:self action:@selector(openCamera) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *openPhotosButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    openPhotosButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), 2 * (viewHeight / 3), textFieldWidth, textFieldHeight);
+    openPhotosButton.titleLabel.font = [UIFont systemFontOfSize:30];
+    [openPhotosButton setTitle:@"Open Photo Roll" forState:UIControlStateNormal];
+    [openPhotosButton addTarget:self action:@selector(openPhotos) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    cancelButton.frame = doneFrame;
+    
+    [previewOptions.view addSubview:takePhotoButton];
+    [previewOptions.view addSubview:openPhotosButton];
+    [previewOptions.view addSubview:cancelButton];
+    
+    [self presentViewController:previewOptions animated:YES completion:nil];
+}
+
+- (void) openCamera
+{
+    UIImagePickerController *camera = [[UIImagePickerController alloc] init];
+    camera.sourceType               = UIImagePickerControllerSourceTypeCamera;
+    camera.delegate                 = self;
+    
+    [previewOptions presentViewController:camera animated:YES completion:nil];
+}
+
+- (void) openPhotos
+{
+    UIImagePickerController *photoRoll  = [[UIImagePickerController alloc] init];
+    photoRoll.sourceType                = UIImagePickerControllerSourceTypePhotoLibrary;
+    photoRoll.delegate                  = self;
+    
+    [previewOptions presentViewController:photoRoll animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    
+    projectData.previewImage = image;
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) cancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 
@@ -372,6 +489,17 @@
     [currentTopVC presentViewController:fileViewController animated:YES completion:nil];
     
     [fileViewController createFileOfType:type];
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    
+    if (textField == nameTextField) {
+        [textField resignFirstResponder];
+        [self createProject];
+    }
+    
+    return YES;
 }
 
 
