@@ -62,7 +62,7 @@ AUGMENTED_REALITY
 };
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField;
-
+- (UIViewController *) currentTopViewController;
 
 @end
 

@@ -363,7 +363,22 @@
 
 - (void) openCamera
 {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"ERROR" message:@"Device does not have camera" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *alert = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:nil];
+        
+        [alertController addAction:alert];
+        
+        UIViewController *currentTopVC = [self currentTopViewController];
+        [currentTopVC presentViewController:alertController animated:YES completion:nil];
+        
+        return;
+    }
+    
+    
     UIImagePickerController *camera = [[UIImagePickerController alloc] init];
+    camera.allowsEditing            = YES;
     camera.sourceType               = UIImagePickerControllerSourceTypeCamera;
     camera.delegate                 = self;
     
@@ -424,6 +439,21 @@
     }
     
     return YES;
+}
+
+
+
+
+
+
+- (UIViewController *) currentTopViewController
+{
+    UIViewController *topVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    
+    while (topVC.presentedViewController)
+        topVC = topVC.presentedViewController;
+    
+    return topVC;
 }
 
 
