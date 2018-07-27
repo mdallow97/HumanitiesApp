@@ -388,6 +388,7 @@
 - (void) openPhotos
 {
     UIImagePickerController *photoRoll  = [[UIImagePickerController alloc] init];
+    photoRoll.allowsEditing             = YES;
     photoRoll.sourceType                = UIImagePickerControllerSourceTypePhotoLibrary;
     photoRoll.delegate                  = self;
     
@@ -397,8 +398,10 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
     UIImage *image = info[UIImagePickerControllerOriginalImage];
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     
-    [fileData storeImage:image];
+    if (editedImage)    [fileData storeImage:editedImage];
+    else                [fileData storeImage:image];
     
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self save];
