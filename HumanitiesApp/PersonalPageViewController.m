@@ -128,7 +128,7 @@
 
 - (void) changeScrollHeight:(int)height
 {
-    myProjectsView.contentSize = CGSizeMake(viewWidth, height);
+    myProjectsView.contentSize = CGSizeMake(viewWidth, (height + 40));
 }
 
 - (void) createPreviews
