@@ -10,8 +10,10 @@
 #define FileView_h
 
 #import <UIKit/UIKit.h>
+#import "UserData.h"
 #import "ProjectData.h"
 #import "FileData.h"
+
 
 @interface FileView : UIViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -30,7 +32,7 @@
 - (void) createFileOfType:(int) type;
 - (BOOL) isFileNameEmptyOrTaken;
 - (void) saveFileName:(NSString *) name;
-
+- (void) changeFileDescription;
 
 - (void) createDocument;
 - (void) createPresentation;

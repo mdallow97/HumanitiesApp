@@ -17,11 +17,13 @@
 @property int fileType;
 @property NSString *fileName;
 @property UIImage *previewImage;
+@property NSString *fileDescription;
 
 // store document
 // store presentation
 @property UIImage *image;
 - (void) storeImage: (UIImage *) image;
+- (void) storeDescription: (NSString *) description;
 // store audio
 // store video
 // store AR

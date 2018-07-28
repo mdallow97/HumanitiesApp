@@ -167,9 +167,9 @@
     errorFieldLabel.hidden        = YES;
     
     // Project Name Label Setup
-    projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
-    projectNameLabel.textAlignment = NSTextAlignmentCenter;
-    projectNameLabel.text = _currentProjectName;
+    projectNameLabel                    = [[UILabel alloc] initWithFrame:projectNameFrame];
+    projectNameLabel.textAlignment      = NSTextAlignmentCenter;
+    projectNameLabel.text               = _currentProjectName;
     
     // Project View Setup
     myFilesView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
@@ -226,7 +226,7 @@
 
 - (void) changeScrollHeight:(int)height
 {
-    myFilesView.contentSize = CGSizeMake(viewWidth, height);
+    myFilesView.contentSize = CGSizeMake(viewWidth, (height + 30));
 }
 
 

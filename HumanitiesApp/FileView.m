@@ -27,7 +27,7 @@
     int cancelX, cancelY;
     CGRect cancelFrame;
     
-    // Project Name Label Variable Declaration
+    // File Name Label Variable Declaration
     UILabel *projectNameLabel;
     int projectNameWidth, projectNameHeight;
     CGRect projectNameFrame;
@@ -45,14 +45,21 @@
     
     // NEW PROJECT MODE Variable Declarations:
     
-    // New Project Name Text Field
+    // New File Name Text Field
     int textFieldWidth, textFieldHeight;
     UITextField *nameTextField;
     
-    // New Project Name Empty Label
+    // New File Name Empty Label
     UILabel *errorFieldLabel;
     int errorFieldWidth, errorFieldHeight;
     CGRect errorFieldFrame;
+    
+    // File Type: Image
+    UIButton *takePhotoButton;
+    UIButton *openPhotosButton;
+    
+    // Description Text View Input
+    UITextView *descriptionTV;
 }
 
 
@@ -164,9 +171,9 @@
 
 - (void) save
 {
-    if (shouldAddFile) {
-        [projectData.files addObject:fileData];
-    }
+    if (shouldAddFile) [projectData.files addObject:fileData];
+    if (descriptionTV.text) [fileData storeDescription:descriptionTV.text];
+    if ([descriptionTV isFirstResponder]) [descriptionTV resignFirstResponder];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -183,6 +190,8 @@
     nextButton.hidden       = YES;
     nameTextField.hidden    = YES;
     errorFieldLabel.hidden  = YES;
+    openPhotosButton.hidden = YES;
+    takePhotoButton.hidden  = YES;
 }
 
 - (void) enterEditingMode
@@ -209,7 +218,22 @@
 
 - (void) enterViewingMode
 {
-    CGRect fileViewFrame = CGRectMake(0, 85, viewWidth, ((viewHeight - 85) / 2));
+    UserData *currentUser   = [UserData globalUserData];
+    
+    int y                   = ((viewHeight - 85) / 2);
+    CGRect fileViewFrame    = CGRectMake(0, 85, viewWidth, y);
+    
+    y                       += 100;
+    CGRect usernameFrame    = CGRectMake(10, y, 50, 30);
+    UILabel *usernameLabel  = [[UILabel alloc] initWithFrame:usernameFrame];
+    usernameLabel.text      = currentUser.username;
+    usernameLabel.font      = [UIFont fontWithName:@"DamascusBold" size:16];
+    
+    y                                   += 20;
+    CGRect descriptionFrame             = CGRectMake(10, y, (viewWidth - 20), 125);
+    UITextView *fileDescription         = [[UITextView alloc] initWithFrame:descriptionFrame];
+    fileDescription.font                = [UIFont systemFontOfSize:16];
+    fileDescription.text                = fileData.fileDescription;
     
     
     // Open file of a certain type
@@ -233,7 +257,8 @@
         
     }
     
-    
+    [self.view addSubview:usernameLabel];
+    [self.view addSubview:fileDescription];
 }
 
 
@@ -318,6 +343,25 @@
     
 }
 
+// File description not necessary (user can skip adding a description)
+- (void) changeFileDescription
+{
+    [self hideAll];
+    
+    // Unhide necessary objects
+    saveButton.hidden = NO;
+    
+    // Create Description Text Field
+    CGRect descriptionFrame         = CGRectMake(30, (viewHeight / 3), (viewWidth - 60), 200);
+    
+    descriptionTV                   = [[UITextView alloc] initWithFrame:descriptionFrame];
+    descriptionTV.editable          = YES;
+    descriptionTV.font              = [UIFont systemFontOfSize:16];
+    descriptionTV.backgroundColor   = [UIColor lightGrayColor];
+    
+    [self.view addSubview:descriptionTV];
+}
+
 /*
  Functions below will store the data pertaining to the kind of file
 
@@ -344,13 +388,13 @@
     if ([self isFileNameEmptyOrTaken]) return;
     
     
-    UIButton *takePhotoButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    takePhotoButton                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     takePhotoButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight);
     takePhotoButton.titleLabel.font = [UIFont systemFontOfSize:30];
     [takePhotoButton setTitle:@"Take a Photo" forState:UIControlStateNormal];
     [takePhotoButton addTarget:self action:@selector(openCamera) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *openPhotosButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    openPhotosButton                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     openPhotosButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), 2 * (viewHeight / 3), textFieldWidth, textFieldHeight);
     openPhotosButton.titleLabel.font = [UIFont systemFontOfSize:30];
     [openPhotosButton setTitle:@"Open Photo Roll" forState:UIControlStateNormal];
@@ -404,7 +448,9 @@
     else                [fileData storeImage:image];
     
     [picker dismissViewControllerAnimated:YES completion:nil];
-    [self save];
+//    [self save];
+    
+    [self changeFileDescription];
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -443,7 +489,6 @@
     
     return YES;
 }
-
 
 
 
