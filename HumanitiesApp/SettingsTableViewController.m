@@ -22,10 +22,10 @@
 {
     UITabBarItem *item;
     
-    UIImage *homeImage = [UIImage imageNamed:@"Settings.png"];
-    UIImage *scaled = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 13) orientation:UIImageOrientationUp];
+    UIImage *homeImage  = [UIImage imageNamed:@"Settings.png"];
+    UIImage *scaled     = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 13) orientation:UIImageOrientationUp];
     
-    item = [[UITabBarItem alloc] initWithTitle:@"Settings" image:scaled tag:2];
+    item                = [[UITabBarItem alloc] initWithTitle:@"Settings" image:scaled tag:2];
     
     
     return item;
@@ -38,8 +38,8 @@
     
     
     
-    self.settings = [[NSMutableArray alloc] init];
-    self.settings = [NSMutableArray new];
+    self.settings    = [[NSMutableArray alloc] init];
+    self.settings    = [NSMutableArray new];
     self.settings[0] = @"General";
     self.settings[1] = @"Permissions";
     self.settings[2] = @"Other";

@@ -35,20 +35,29 @@
     return self;
 }
 
+// returns a project with given "name". Searches through every project
 - (ProjectData *) projectNamed:(NSString *)name
 {
     ProjectData *pd = nil;
+    
     
     int numProjects = (int) self.myProjects.count;
     int i;
     
     for (i = 0; i < numProjects; i++) {
-        pd = (ProjectData *) self.myProjects[i];
+        ProjectData *test = (ProjectData *) self.myProjects[i];
         
-        if (pd.projectName == name) break;
+        if ([test.projectName isEqualToString:name]) {
+            
+            pd = test;
+            
+            break;
+        }
     }
     
-    return pd;
+    // Double check
+    if (![pd.projectName isEqualToString:name]) return nil;
+    else return pd;
 }
 
 

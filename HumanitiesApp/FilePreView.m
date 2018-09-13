@@ -1,24 +1,29 @@
 //
-//  PreView.m
+//  FilePreView.m
 //  HumanitiesApp
 //
-//  Created by Michael Dallow on 6/26/18.
+//  Created by Michael Dallow on 7/11/18.
 //  Copyright © 2018 Michael Dallow. All rights reserved.
 //
 
-#import "PreView.h"
+#import "FilePreView.h"
 
-@interface PreView ()
+@interface FilePreView ()
 
 @end
 
-@implementation PreView
+@implementation FilePreView
 {
-    UILabel *projectNameLabel;
-    UIButton *moreButton, *goToProjectButton;
+    ProjectData *currentProject;
+    FileData *file;
+    ProjectView *parentView;
+    
+    UILabel *fileNameLabel;
+    UIButton *moreButton, *goToFileButton;
     UIImage *preview;
-    CGRect projectNameFrame, moreFrame, goToProjectFrame, previewFrame;
-    NSString *projectName;
+    CGRect fileNameFrame, moreFrame, goToFileFrame, previewFrame;
+    NSString *fileName;
+    UIImageView *previewView;
     
     int viewHeight, viewWidth;
     
@@ -31,6 +36,7 @@
     // Preview variables
     int defaultPreviewHeight;
 }
+
 
 - (void) setup
 {
@@ -53,7 +59,7 @@
     
     
     x = 10;
-    projectNameFrame = CGRectMake(x, 5, defaultLabelWidth, defaultLabelHeight);
+    fileNameFrame = CGRectMake(x, 5, defaultLabelWidth, defaultLabelHeight);
     
     
     x = viewWidth - (defaultButtonWidth + x);
@@ -62,13 +68,18 @@
     x = 0;
     previewFrame = CGRectMake(x, defaultLabelHeight, viewWidth, defaultPreviewHeight);
     
-    goToProjectFrame = previewFrame;
+    goToFileFrame = previewFrame;
 }
 
-- (void) setProjectName:(NSString *)name
+- (void) setFileName:(NSString *)name inProject: (ProjectData *) project withParentView: (ProjectView *) parentView
 {
-    projectName = name;
-    projectNameLabel.text = projectName;
+    fileName            = name;
+    currentProject      = project;
+    file                = [project fileNamed:fileName];
+    self->parentView    = (ProjectView *) parentView;
+    
+    fileNameLabel.text  = fileName;
+    if (file.previewImage) [previewView setImage:file.previewImage];
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -80,36 +91,35 @@
     self.backgroundColor = [UIColor whiteColor];
     
     // Username Label Creation
-    projectNameLabel = [[UILabel alloc] initWithFrame:projectNameFrame];
-    projectNameLabel.font = [UIFont fontWithName:@"DamascusBold" size:16];
+    fileNameLabel      = [[UILabel alloc] initWithFrame:fileNameFrame];
+    fileNameLabel.font = [UIFont fontWithName:@"DamascusBold" size:16];
     
     
     // More Options Button Creation
-    moreButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    moreButton.frame = moreFrame;
-    [moreButton setTitle:@"..." forState:UIControlStateNormal];
+    moreButton                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    moreButton.frame           = moreFrame;
     moreButton.titleLabel.font = [UIFont systemFontOfSize:35];
+    [moreButton setTitle:@"..." forState:UIControlStateNormal];
     [moreButton addTarget:self action:@selector(showOptions) forControlEvents:UIControlEventTouchUpInside];
     
     
     // Preview image setup
-    UIImageView *previewView = [[UIImageView alloc] initWithFrame:previewFrame];
+    previewView = [[UIImageView alloc] initWithFrame:previewFrame];
     [previewView setImage:preview];
     [previewView setContentMode:UIViewContentModeScaleAspectFit];
     
     // Go To Project Button setup
-    goToProjectButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToProjectButton.frame = goToProjectFrame;
-    [goToProjectButton addTarget:self action:@selector(goToProject) forControlEvents:UIControlEventTouchUpInside];
+    goToFileButton       = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToFileButton.frame = goToFileFrame;
+    [goToFileButton addTarget:self action:@selector(goToFile) forControlEvents:UIControlEventTouchUpInside];
     
     
     _inEditingMode = false;
     
     // Add Subviews
-    [self addSubview:projectNameLabel];
-    [self addSubview:moreButton];
+    [self addSubview:fileNameLabel];
     [self addSubview:previewView];
-    [self addSubview:goToProjectButton];
+    [self addSubview:goToFileButton];
     
     
     return self;
@@ -118,57 +128,61 @@
 - (void) showOptions
 {
     UIAlertController *options = [UIAlertController alertControllerWithTitle:@"Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-    UIAlertAction *share = [UIAlertAction actionWithTitle:@"Share" style:UIAlertActionStyleDefault handler:nil];
+    
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     // Below action should be dependent on permissions
-    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        [self goToProject:true];
-        
-    }];
+    UIAlertAction *edit = [UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self goToFile:true];}];
     
-    
-    if (self->_inEditingMode) {
-        [options addAction:edit];
-    }
+    UIAlertAction *delete = [UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self deleteFile];}];
     
     
     [options addAction:cancel];
-    [options addAction:share];
-    
-
+    [options addAction:edit];
+    [options addAction:delete];
     
     UIViewController *currentTopVC = [self currentTopViewController];
     [currentTopVC presentViewController:options animated:YES completion:nil];
     
 }
 
-- (void) goToProject:(BOOL) canEdit
+- (void) deleteFile
 {
-    ProjectView *project = [[ProjectView alloc] init];
+    FileData *fileToRemove = [currentProject fileNamed:fileName];
+    [currentProject.files removeObject:fileToRemove];
+    [self removeFromSuperview];
     
+    [parentView createPreviews];
+}
+
+- (void) goToFile:(BOOL) canEdit
+{
+    FileView *fileView = [[FileView alloc] init];
     
-    UserData *projects = [UserData sharedMyProjects];
-    ProjectData *pd = [projects projectNamed:projectName];
+    FileData *fileData = [currentProject fileNamed:fileName];
     
-    [project loadProjectWithData:pd];
+    [fileView loadFileWithData:fileData inProject:currentProject];
     
     UIViewController *currentTopVC = [self currentTopViewController];
-    [currentTopVC presentViewController:project animated:YES completion:nil];
+    [currentTopVC presentViewController:fileView animated:YES completion:nil];
     
     
     if (canEdit) {
-        [project enterEditingMode];
-    }
+        [fileView enterEditingMode];
+    } //else [fileView enterViewingMode];
 }
 
-- (void) goToProject
+- (void) goToFile
 {
     
-    if (self->_inEditingMode) [self goToProject:true];
-    else [self goToProject:false];
+    if (self->_inEditingMode) [self goToFile:true];
+    else [self goToFile:false];
+}
+
+- (void) enterEditingMode
+{
+    self->_inEditingMode = true;
+    [self addSubview:moreButton];
 }
 
 - (UIViewController *) currentTopViewController
@@ -180,9 +194,6 @@
     
     return topVC;
 }
-
-
-
 
 
 

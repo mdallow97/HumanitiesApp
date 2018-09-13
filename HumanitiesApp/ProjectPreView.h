@@ -6,8 +6,8 @@
 //  Copyright © 2018 Michael Dallow. All rights reserved.
 //
 
-#ifndef PreView_h
-#define PreView_h
+#ifndef ProjectPreView_h
+#define ProjectPreView_h
 
 #import <UIKit/UIKit.h>
 #import "ProjectView.h"
@@ -15,18 +15,19 @@
 #import "UserData.h"
 
 
-@interface PreView : UIView
+@interface ProjectPreView : UIView
 
 - (id) initWithFrame:(CGRect)frame;
 - (void) setup;
 - (void) showOptions;
+- (void) deleteProject;
 - (UIViewController *) currentTopViewController;
 - (void) goToProject;
 - (void) goToProject:(BOOL) canEdit;
-- (void) setProjectName:(NSString *)name;
+- (void) setProjectName:(NSString *)name withParentView:(UIViewController *) parentView;
 
 @property BOOL inEditingMode;
-@property NSString *name;
+//@property NSString *name;
 
 
 
@@ -34,4 +35,4 @@
 @end
 
 
-#endif /* PreView_h */
+#endif /* ProjectPreView_h */

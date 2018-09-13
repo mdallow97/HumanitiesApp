@@ -10,7 +10,7 @@
 #define PersonalPageViewController_h
 
 #import <UIKit/UIKit.h>
-#import "PreView.h"
+#import "ProjectPreView.h"
 #import "UserData.h"
 #import "ProjectData.h"
 #import "ProjectView.h"

@@ -13,27 +13,43 @@
 #import "ProjectData.h"
 #import "FileData.h"
 
-@interface FileView : UIViewController <UITextFieldDelegate>
+@interface FileView : UIViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 // General Functions
 - (void) viewDidLoad;
 - (void) frameSetup;
 - (void) hideAll;
 - (void) inProject:(ProjectData *) project;
+- (void) loadFileWithData:(FileData *) file inProject:(ProjectData *) project;
 
 @property NSString *currentFileName;
 
-// File Functions
+// Functions only available in editing mode
+- (void) enterEditingMode;
+
 - (void) createFileOfType:(int) type;
+- (BOOL) isFileNameEmptyOrTaken;
+- (void) saveFileName:(NSString *) name;
+
+
 - (void) createDocument;
 - (void) createPresentation;
+
 - (void) createImage;
+- (void) openCamera;
+- (void) openPhotos;
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info;
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker;
+
 - (void) createAudio;
 - (void) createVideo;
 - (void) createAR;
 
-- (BOOL) isFileNameEmptyOrTaken;
-- (void) saveFileWithName:(NSString *) name;
+
+// Functions only available in viewing mode
+- (void) enterViewingMode;
+
+
 
 
 @property enum {
@@ -44,6 +60,8 @@ AUDIO,
 VIDEO,
 AUGMENTED_REALITY
 };
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField;
 
 
 @end

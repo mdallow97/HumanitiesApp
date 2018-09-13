@@ -85,10 +85,10 @@
     
     [logInViewController dismissViewControllerAnimated:YES completion:nil];
     
-    UITabBarController *tbc = [[UITabBarController alloc] init];
-    UIViewController *mainViewController = [[ViewController alloc] init];
-    UIViewController *personalPageController = [[PersonalPageViewController alloc] init];
-    UIViewController *settingsController = [[SettingsTableViewController alloc] init];
+    UITabBarController *tbc                     = [[UITabBarController alloc] init];
+    UIViewController *mainViewController        = [[ViewController alloc] init];
+    UIViewController *personalPageController    = [[PersonalPageViewController alloc] init];
+    UIViewController *settingsController        = [[SettingsTableViewController alloc] init];
     
     
     tbc.viewControllers = [NSArray arrayWithObjects:
@@ -98,9 +98,9 @@
                            nil];
     
     
-    tbc.tabBar.tintColor = [UIColor blackColor];
-    tbc.tabBar.barTintColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
-    self.window.rootViewController = tbc;
+    tbc.tabBar.tintColor            = [UIColor blackColor];
+    tbc.tabBar.barTintColor         = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    self.window.rootViewController  = tbc;
 }
 
 
