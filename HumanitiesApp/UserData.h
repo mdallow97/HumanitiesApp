@@ -18,6 +18,7 @@
 // User Data
 @property NSString *username;
 @property NSString *password;
+@property NSString *accId;
 
 + (id) globalUserData;
 
