@@ -12,6 +12,7 @@
 
 @interface LogInViewController ()
 
+-(void) clearLabels;
 
 @end
 
@@ -168,6 +169,17 @@
     
 }
 
+-(void) clearLabels
+{
+    incorrectInfoLabel.hidden = YES;
+    uniqueUsernameLabel.hidden = YES;
+    notFullLabel.hidden = YES;
+    passwordNoMatchLabel.hidden = YES;
+    passLength.hidden = YES;
+    uniqueUsernameLabel.hidden = YES;
+    userCreated.hidden = YES;
+}
+
 - (void) hasParent: (AppDelegate *) parent
 {
     parentController = parent;
@@ -216,15 +228,17 @@
     //if ([usernameTextField.text isEqual:@""] || [passwordTextField.text isEqual:@""])
     if (!([passwordTextField.text isEqual:response]))
     {
-
-        incorrectInfoLabel.hidden   = NO;
-        usernameTextField.text      = nil;
-        passwordTextField.text      = nil;
-
+        [self clearLabels];
+        incorrectInfoLabel.hidden = NO;
+        usernameTextField.text = nil;
+        passwordTextField.text = nil;
         return false;
     } else {
-        incorrectInfoLabel.hidden   = YES;
-        ud.username                 = usernameTextField.text;
+        NSString *aId = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"setAccId.php"];
+        NSLog(@"%@",aId);
+        [self clearLabels];
+        ud.username = usernameTextField.text;
+        ud.accId = aId;
         return true;
     }
     
@@ -247,51 +261,36 @@
     
     if([usernameTextField.text isEqualToString:@""] || [passwordTextField.text isEqualToString:@""] || [newPasswordTF.text isEqualToString:@""])
     {
-        uniqueUsernameLabel.hidden    = YES;
-        notFullLabel.hidden           = NO;
-        passwordNoMatchLabel.hidden   = YES;
-        passLength.hidden             = YES;
-        userCreated.hidden            = YES;
+
+        [self clearLabels];
+        notFullLabel.hidden = NO;
     }
     else if(used)
     {
-        uniqueUsernameLabel.hidden    = NO;
-        notFullLabel.hidden           = YES;
-        passwordNoMatchLabel.hidden   = YES;
-        passLength.hidden             = YES;
-        userCreated.hidden            = YES;
+        [self clearLabels];
+        uniqueUsernameLabel.hidden = NO;
     }
     else if(![passwordTextField.text isEqual:newPasswordTF.text])
     {
-        uniqueUsernameLabel.hidden    = YES;
-        notFullLabel.hidden           = YES;
-        passwordNoMatchLabel.hidden   = NO;
-        passLength.hidden             = YES;
-        userCreated.hidden            = YES;
-        
+        [self clearLabels];
+        passwordNoMatchLabel.hidden = NO;
     }
     else if(passwordTextField.text.length < length)
     {
-        uniqueUsernameLabel.hidden      = YES;
-        notFullLabel.hidden             = YES;
-        passwordNoMatchLabel.hidden     = YES;
-        passLength.hidden               = NO;
-        userCreated.hidden              = YES;
+        [self clearLabels];
+        passLength.hidden = NO;
     }
     else
     {
-        
-        uniqueUsernameLabel.hidden            = YES;
-        notFullLabel.hidden                   = YES;
-        passwordNoMatchLabel.hidden           = YES;
-        newPasswordTF.hidden                  = YES;
-        regist.hidden                         = YES;
-        userCreated.hidden                    = NO;
-        usernameTextField.text                = nil;
-        passwordTextField.text                = nil;
-        newPasswordTF.text                    = nil;
-        parentController.logInButton.hidden   = NO;
-        parentController.regButton.hidden     = NO;
+        [self clearLabels];
+        newPasswordTF.hidden = YES;
+        regist.hidden = YES;
+        userCreated.hidden = NO;
+        usernameTextField.text = nil;
+        passwordTextField.text = nil;
+        newPasswordTF.text = nil;
+        parentController.logInButton.hidden = NO;
+        parentController.regButton.hidden = NO;
     }
     
     usernameTextField.text = nil;
