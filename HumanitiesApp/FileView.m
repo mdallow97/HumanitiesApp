@@ -42,6 +42,12 @@
     UIButton *saveButton;
     CGRect saveFrame;
     
+    // Viewing Mode
+    
+    UIButton *postCommentButton;
+    CGRect postFrame;
+    int keyboardHeight;
+    
     
     // NEW PROJECT MODE Variable Declarations:
     
@@ -60,6 +66,7 @@
     
     // Description Text View Input
     UITextView *descriptionTV;
+    UITextView *fileDescription;
 }
 
 
@@ -101,6 +108,7 @@
     projectNameWidth    = 200;
     projectNameHeight   = 50;
     projectNameFrame    = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
+    
 }
 
 - (void) inProject:(ProjectData *) project
@@ -108,11 +116,18 @@
     projectData = project;
 }
 
+- (void) keyboardWillShow:(NSNotification *)notification {
+    keyboardHeight = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+}
+
 - (void) viewDidLoad
 {
     self.view.backgroundColor = [UIColor whiteColor];
     [self frameSetup];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    _inEditingMode = false;
     
     // Data will be nil if file does not exist
     fileData = [projectData fileNamed:self->_currentFileName];
@@ -196,6 +211,7 @@
 
 - (void) enterEditingMode
 {
+    _inEditingMode      = true;
     cancelButton.hidden = NO;
     
     // Edit file of a certain type
@@ -218,23 +234,39 @@
 
 - (void) enterViewingMode
 {
-    UserData *currentUser   = [UserData globalUserData];
+    UserData *currentUser                   = [UserData globalUserData];
     
-    int y                   = ((viewHeight - 85) / 2);
-    CGRect fileViewFrame    = CGRectMake(0, 85, viewWidth, y);
+    CGRect scrollFrame                      = CGRectMake(0, 85, viewWidth, (viewHeight - 85));
+    UIScrollView *mainScrollView            = [[UIScrollView alloc] initWithFrame:scrollFrame];
+    mainScrollView.contentSize              = CGSizeMake(viewWidth, 4000);
     
-    y                       += 100;
-    CGRect usernameFrame    = CGRectMake(10, y, 50, 30);
-    UILabel *usernameLabel  = [[UILabel alloc] initWithFrame:usernameFrame];
-    usernameLabel.text      = currentUser.username;
-    usernameLabel.font      = [UIFont fontWithName:@"DamascusBold" size:16];
+    CGRect fileViewFrame                    = CGRectMake(0, 0, viewWidth, (viewHeight / 3));
     
-    y                                   += 20;
-    CGRect descriptionFrame             = CGRectMake(10, y, (viewWidth - 20), 125);
-    UITextView *fileDescription         = [[UITextView alloc] initWithFrame:descriptionFrame];
-    fileDescription.font                = [UIFont systemFontOfSize:16];
-    fileDescription.text                = fileData.fileDescription;
+    CGRect usernameFrame                    = CGRectMake(10, ((viewHeight / 3) + 20), 50, 30);
+    UILabel *usernameLabel                  = [[UILabel alloc] initWithFrame:usernameFrame];
+    usernameLabel.text                      = currentUser.username;
+    usernameLabel.font                      = [UIFont fontWithName:@"DamascusBold" size:16];
     
+    CGRect descriptionFrame                 = CGRectMake(10, ((viewHeight / 3) + 40), (viewWidth - 20), 125);
+    fileDescription                         = [[UITextView alloc] initWithFrame:descriptionFrame];
+    fileDescription.font                    = [UIFont systemFontOfSize:16];
+    fileDescription.text                    = fileData.fileDescription;
+    fileDescription.delegate                = self;
+    fileDescription.scrollEnabled           = NO;
+    
+    CGRect commentFrame                     = CGRectMake(10, (viewHeight - 60), (viewWidth - 20), 35);
+    UITextField *commentTF                  = [[UITextField alloc] initWithFrame:commentFrame];
+    commentTF.placeholder                   = @"Add comment here...";
+    commentTF.borderStyle                   = UITextBorderStyleRoundedRect;
+    
+    
+    if (_inEditingMode) fileDescription.editable    = true;
+    else fileDescription.editable                   = false;
+    
+    
+    
+    [self.view addSubview:mainScrollView];
+    [self.view addSubview:commentTF];
     
     // Open file of a certain type
     if (fileData.fileType == DOCUMENT) {
@@ -247,7 +279,7 @@
         [fileView setImage:fileData.image];
         [fileView setContentMode:UIViewContentModeScaleAspectFit];
         
-        [self.view addSubview:fileView];
+        [mainScrollView addSubview:fileView];
         
     } else if (fileData.fileType == AUDIO) {
         
@@ -257,8 +289,11 @@
         
     }
     
-    [self.view addSubview:usernameLabel];
-    [self.view addSubview:fileDescription];
+    
+    
+    
+    [mainScrollView addSubview:fileDescription];
+    [mainScrollView addSubview:usernameLabel];
 }
 
 
@@ -359,7 +394,20 @@
     descriptionTV.font              = [UIFont systemFontOfSize:16];
     descriptionTV.backgroundColor   = [UIColor lightGrayColor];
     
+    UILabel *descriptionHere = [[UILabel alloc] initWithFrame:CGRectMake(30, (viewHeight / 3) - 30, 200, 30)];
+    descriptionHere.text = @"Add a description below:";
+    
+    [self.view addSubview:descriptionHere];
     [self.view addSubview:descriptionTV];
+}
+
+- (void) postComment
+{
+    postCommentButton.hidden = YES;
+    
+    if ([fileDescription isFirstResponder]) [fileDescription resignFirstResponder];
+    [fileData storeDescription:fileDescription.text];
+    
 }
 
 /*
@@ -490,9 +538,24 @@
     return YES;
 }
 
-
-
-
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    NSLog(@"%i\n", keyboardHeight);
+    postFrame                               = CGRectMake((viewWidth / 2) - 25, (keyboardHeight + 100), 50, 50);
+    postCommentButton                       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    postCommentButton.frame                 = postFrame;
+    postCommentButton.titleLabel.textColor  = [UIColor blueColor];
+    postCommentButton.titleLabel.font       = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+//    postCommentButton.hidden                = YES;
+    [postCommentButton setTitle:@"Post" forState:UIControlStateNormal];
+    [postCommentButton addTarget:self action:@selector(postComment) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:postCommentButton];
+    
+    if (textView == fileDescription) {
+        postCommentButton.hidden = NO;
+    }
+}
 
 - (UIViewController *) currentTopViewController
 {
