@@ -167,9 +167,8 @@
     [currentTopVC presentViewController:fileView animated:YES completion:nil];
     
     
-    if (canEdit) {
-        [fileView enterEditingMode];
-    } //else [fileView enterViewingMode];
+    if (canEdit) [fileView enterEditingMode];
+    else [fileView enterViewingMode];
 }
 
 - (void) goToFile

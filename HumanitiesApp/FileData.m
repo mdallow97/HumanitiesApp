@@ -16,5 +16,9 @@
     self->_previewImage = image;
 }
 
+- (void) storeDescription: (NSString *) description
+{
+    self->_fileDescription = description;
+}
 
 @end

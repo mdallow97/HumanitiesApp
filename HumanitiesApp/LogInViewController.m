@@ -308,6 +308,7 @@
         return NO;
     } else if (textField == passwordTextField) {
         [textField resignFirstResponder];
+        [parentController logIn];
     }
     
     return YES;

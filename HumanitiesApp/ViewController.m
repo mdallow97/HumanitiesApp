@@ -50,8 +50,8 @@
     
     
     // Search Bar Text Field Variable Initialization
-    searchHeightInitial = 35;
-    searchHeight        = scrollHeightInitial - (searchHeightInitial + 20);
+    searchHeightInitial = 40;
+    searchHeight        = scrollHeightInitial - (searchHeightInitial + 10);
     
     searchFrame         = CGRectMake(10, searchHeightInitial, (viewWidth - 20), searchHeight);
     

@@ -10,10 +10,13 @@
 #define FileView_h
 
 #import <UIKit/UIKit.h>
+#import "UserData.h"
 #import "ProjectData.h"
 #import "FileData.h"
+//#import "QuartzCore/QuartzCore.h"
 
-@interface FileView : UIViewController <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+
+@interface FileView : UIViewController <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 // General Functions
 - (void) viewDidLoad;
@@ -23,6 +26,8 @@
 - (void) loadFileWithData:(FileData *) file inProject:(ProjectData *) project;
 
 @property NSString *currentFileName;
+@property BOOL inEditingMode;
+@property(readonly, copy) NSDictionary *userInfo;
 
 // Functions only available in editing mode
 - (void) enterEditingMode;
@@ -30,7 +35,8 @@
 - (void) createFileOfType:(int) type;
 - (BOOL) isFileNameEmptyOrTaken;
 - (void) saveFileName:(NSString *) name;
-
+- (void) changeFileDescription;
+- (void) postComment;
 
 - (void) createDocument;
 - (void) createPresentation;
@@ -62,7 +68,11 @@ AUGMENTED_REALITY
 };
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField;
+- (void) textViewDidBeginEditing:(UITextView *)textView;
+- (void) keyboardWillShow:(NSNotification *)notification;
 
+
+- (UIViewController *) currentTopViewController;
 
 @end
 
