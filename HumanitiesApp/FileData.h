@@ -18,6 +18,7 @@
 @property NSString *fileName;
 @property UIImage *previewImage;
 @property NSString *fileDescription;
+@property (nonatomic, retain) NSMutableArray *comments;
 
 // store document
 // store presentation

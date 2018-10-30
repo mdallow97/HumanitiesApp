@@ -67,6 +67,7 @@
     // Description Text View Input
     UITextView *descriptionTV;
     UITextView *fileDescription;
+    UITextField *commentTF;
 }
 
 
@@ -109,6 +110,7 @@
     projectNameHeight   = 50;
     projectNameFrame    = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
     
+    keyboardHeight = 335;
 }
 
 - (void) inProject:(ProjectData *) project
@@ -255,9 +257,10 @@
     fileDescription.scrollEnabled           = NO;
     
     CGRect commentFrame                     = CGRectMake(10, (viewHeight - 60), (viewWidth - 20), 35);
-    UITextField *commentTF                  = [[UITextField alloc] initWithFrame:commentFrame];
+    commentTF                               = [[UITextField alloc] initWithFrame:commentFrame];
     commentTF.placeholder                   = @"Add comment here...";
     commentTF.borderStyle                   = UITextBorderStyleRoundedRect;
+    commentTF.delegate                      = self;
     
     
     if (_inEditingMode) fileDescription.editable    = true;
@@ -392,13 +395,20 @@
     descriptionTV                   = [[UITextView alloc] initWithFrame:descriptionFrame];
     descriptionTV.editable          = YES;
     descriptionTV.font              = [UIFont systemFontOfSize:16];
-    descriptionTV.backgroundColor   = [UIColor lightGrayColor];
+    descriptionTV.backgroundColor   = [UIColor whiteColor];
+    
+    // Create rectangle around frame of description
+    UIView *rectView = [[UIView alloc] initWithFrame:CGRectMake(28, (viewHeight / 3) - 2, (viewWidth - 56), 204)];
+    rectView.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    
     
     UILabel *descriptionHere = [[UILabel alloc] initWithFrame:CGRectMake(30, (viewHeight / 3) - 30, 200, 30)];
-    descriptionHere.text = @"Add a description below:";
+    descriptionHere.text = @"Add a description below";
     
+    [self.view addSubview:rectView];
     [self.view addSubview:descriptionHere];
     [self.view addSubview:descriptionTV];
+    
 }
 
 - (void) postComment
@@ -533,14 +543,24 @@
     if (textField == nameTextField) {
         
         [textField resignFirstResponder];
+    } else if (textField == commentTF) {
+        commentTF.frame = CGRectMake(10, (viewHeight - 60), (viewWidth - 20), 35);
+        [textField resignFirstResponder];
     }
     
     return YES;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField == commentTF) {
+        
+        commentTF.frame = CGRectMake(10, (keyboardHeight + 100), (viewWidth - 20), 35);
+    }
+}
+
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    NSLog(@"%i\n", keyboardHeight);
     postFrame                               = CGRectMake((viewWidth / 2) - 25, (keyboardHeight + 100), 50, 50);
     postCommentButton                       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     postCommentButton.frame                 = postFrame;
