@@ -216,6 +216,17 @@
     return response;
 }
 
+-(NSMutableArray *) toArray:(NSString *)data
+{
+    NSArray *items = [data componentsSeparatedByString:@" "];
+    NSMutableArray* arrayOfNumbers = [NSMutableArray arrayWithCapacity:items.count];
+    for (NSString* string in items) {
+        [arrayOfNumbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
+    }
+    
+    return arrayOfNumbers;
+}
+
 -(BOOL) logIn
 {
     UserData *ud = [UserData globalUserData];
@@ -235,10 +246,14 @@
         return false;
     } else {
         NSString *aId = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"setAccId.php"];
-        NSLog(@"%@",aId);
         [self clearLabels];
         ud.username = usernameTextField.text;
         ud.accId = aId;
+        NSString *followers = [self interactWithDatabase:ud.accId with: nil at:@"getFollowing.php"];
+        ud.followers = [self toArray:followers];
+        NSString *projIds = [self interactWithDatabase:ud.accId with: nil at:@"allProj.php"];
+        ud.projIds = [self toArray:projIds];
+        NSLog(@"%@", ud.projIds);
         return true;
     }
     
@@ -308,6 +323,7 @@
         return NO;
     } else if (textField == passwordTextField) {
         [textField resignFirstResponder];
+        [parentController logIn];
     }
     
     return YES;
