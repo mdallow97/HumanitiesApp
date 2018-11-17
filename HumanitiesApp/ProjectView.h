@@ -22,6 +22,7 @@
 - (void) viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
 - (void) frameSetup;
+- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at: (NSString *)path;
 - (void) done;
 - (void) createPreviews;
 - (void) changeScrollHeight:(int)height;

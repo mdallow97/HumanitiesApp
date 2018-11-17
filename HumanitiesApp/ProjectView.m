@@ -229,12 +229,38 @@
     myFilesView.contentSize = CGSizeMake(viewWidth, (height + 30));
 }
 
+- (NSString *) interactWithDatabase: (NSString *) projName with: (NSString *) accId at:(NSString *)path
+{
+    NSString *response;
+    NSString *myRequestString;
+    
+        // Create your request string with parameter name as defined in PHP file
+        myRequestString = [NSString stringWithFormat:@"projName=%@&accId=%@",projName,accId];
+    // Create Data from request
+    NSData *myRequestData = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
+    NSString *url = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
+    // set Request Type
+    [request setHTTPMethod: @"POST"];
+    // Set content-type
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    // Set Request Body
+    [request setHTTPBody: myRequestData];
+    // Now send a request and get Response
+    NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    // Log Response
+    response = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    return response;
+}
 
 -(void) done
 {
+    UserData *ud = [UserData globalUserData];
+    
     if (shouldAddProject) {
         [projects.myProjects addObject:projectData];
-        
+        NSString *reply = [self interactWithDatabase:projectData.projectName with: ud.accId at:@"uploadProj.php"];
+        NSLog(@"%@", reply);
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
