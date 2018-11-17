@@ -229,7 +229,7 @@
 
 -(BOOL) logIn
 {
-    UserData *ud = [UserData globalUserData];
+    UserData *ud = [UserData sharedMyProjects];
     
     userCreated.hidden = YES;
     

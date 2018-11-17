@@ -84,12 +84,16 @@
     myProjectsView.contentSize      = CGSizeMake(viewWidth, 4000);
     
     
-    UserData *ud = [UserData globalUserData];
-    int num_of_projects = (sizeof(ud.projIds) / sizeof(ud.projIds[0])) - 1;
+    UserData *ud = [UserData sharedMyProjects];
+    int num_of_projects = (sizeof(ud.projIds) / sizeof(ud.projIds[0]));
+    
+    NSLog(@"%i", num_of_projects);
     
     for (int i = 0; i < num_of_projects; i++) {
         ProjectData *newProject = [[ProjectData alloc] init];
-//        newProject.projectName =
+        newProject.projectName = [self interactWithDatabase:ud.projIds[i] with:nil at:@"getName.php"];
+        NSLog(@"projects: ");
+        NSLog(@"%@", newProject.projectName);
         // Code to add files (another loop)
         [ud.myProjects addObject:newProject];
     }
@@ -102,6 +106,37 @@
     [self.view addSubview:searchBar];
     
     [self createPreView];
+}
+
+- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at:(NSString *)path
+{
+    NSString *response;
+    NSString *myRequestString;
+    if(password == nil)
+    {
+        // Create your request string with parameter name as defined in PHP file
+        myRequestString = [NSString stringWithFormat:@"username=%@",username];
+    }
+    else
+    {
+        // Create your request string with parameter name as defined in PHP file
+        myRequestString = [NSString stringWithFormat:@"username=%@&password=%@",username,password];
+    }
+    // Create Data from request
+    NSData *myRequestData = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
+    NSString *url = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
+    // set Request Type
+    [request setHTTPMethod: @"POST"];
+    // Set content-type
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    // Set Request Body
+    [request setHTTPBody: myRequestData];
+    // Now send a request and get Response
+    NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    // Log Response
+    response = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    return response;
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField

@@ -16,6 +16,7 @@
 - (UITabBarItem *)tabBarItem;
 - (void) viewDidLoad;
 - (void) didReceiveMemoryWarning;
+- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at:(NSString *)path;
 - (BOOL) textFieldShouldReturn:(UITextField *)textField;
 - (void) createPreView;
 - (void) changeScrollHeight:(int)height;
