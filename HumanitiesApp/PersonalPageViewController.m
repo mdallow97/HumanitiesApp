@@ -133,11 +133,14 @@
 
 - (void) createPreviews
 {
+    
     for (UIView *view in myProjectsView.subviews)
         if ([view isKindOfClass:[ProjectPreView class]]) [view removeFromSuperview];
     
     UserData *projects   = [UserData sharedMyProjects];
     int numberOfPreviews = (int) projects.myProjects.count;
+    
+    
     
     CGRect rect[numberOfPreviews];
     

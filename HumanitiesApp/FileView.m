@@ -261,6 +261,7 @@
     commentTF.placeholder                   = @"Add comment here...";
     commentTF.borderStyle                   = UITextBorderStyleRoundedRect;
     commentTF.delegate                      = self;
+    commentTF.returnKeyType                 = UIReturnKeyDone;
     
     
     if (_inEditingMode) fileDescription.editable    = true;
