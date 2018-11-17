@@ -4,28 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>HumanitiesApp.xcscheme</key>
+		<key>HumanitiesApp.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
-		</dict>
-	</dict>
-	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>4172C81E20E1D0570065A277</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4172C83620E1D0580065A277</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4172C84120E1D0580065A277</key>
-		<dict>
-			<key>primary</key>
-			<true/>
 		</dict>
 	</dict>
 </dict>

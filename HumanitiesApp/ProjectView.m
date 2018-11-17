@@ -234,6 +234,7 @@
 {
     if (shouldAddProject) {
         [projects.myProjects addObject:projectData];
+        
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
