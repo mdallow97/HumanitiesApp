@@ -50,8 +50,8 @@
     
     
     // Search Bar Text Field Variable Initialization
-    searchHeightInitial = 35;
-    searchHeight        = scrollHeightInitial - (searchHeightInitial + 20);
+    searchHeightInitial = 40;
+    searchHeight        = scrollHeightInitial - (searchHeightInitial + 10);
     
     searchFrame         = CGRectMake(10, searchHeightInitial, (viewWidth - 20), searchHeight);
     
@@ -89,7 +89,7 @@
     [self.view addSubview:myProjectsView];
     [self.view addSubview:searchBar];
     
-    [self createPreView:3];
+    [self createPreView];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
@@ -105,27 +105,30 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) createPreView:(int) it
+- (void) createPreView
 {
     int i;
+
+    UserData *ud = [UserData globalUserData];
+    int num_of_projects = (sizeof(ud.projIds) / sizeof(ud.projIds[0])) - 1;
     
-    ProjectPreView *pv[it];
-    CGRect rect[it];
-    NSArray *names = [[NSMutableArray alloc] initWithObjects:@"Example1", @"Example2", @"Example3", nil];
+    // Need to check number of projects, make sure not too many
     
-    for (i = 0; i < it; i++)
-    {
-        rect[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
-        pv[i]   = [[ProjectPreView alloc] initWithFrame:rect[i]];
+    ProjectPreView *project_previews[num_of_projects];
+    CGRect preview_frame[num_of_projects];
+    NSArray *names; // *** names will get pulled from database
+    
+    for (i = num_of_projects - 1; i >= 0; i--) {
         
-        [pv[i] setProjectName:names[i] withParentView:self];
-        
-        [myProjectsView addSubview: pv[i]];
-        
-        pv[i].inEditingMode = false;
+        preview_frame[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
+        project_previews[i]   = [[ProjectPreView alloc] initWithFrame:preview_frame[i]];
+
+        [project_previews[i] setProjectName:names[i] withParentView:self];
+
+        [myProjectsView addSubview: project_previews[i]];
+
+        project_previews[i].inEditingMode = false;
     }
-    
-    [self changeScrollHeight:(pvHeightInitial * it)];
 }
 
 - (void) changeScrollHeight:(int)height

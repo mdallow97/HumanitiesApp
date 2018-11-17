@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ProjectPreView.h"
+#import "UserData.h"
 
 @interface ViewController : UIViewController <UITextFieldDelegate>
 
@@ -16,7 +17,7 @@
 - (void) viewDidLoad;
 - (void) didReceiveMemoryWarning;
 - (BOOL) textFieldShouldReturn:(UITextField *)textField;
-- (void) createPreView:(int) it;
+- (void) createPreView;
 - (void) changeScrollHeight:(int)height;
 
 @end

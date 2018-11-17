@@ -17,6 +17,7 @@
 
 @property NSString *projectName;
 @property UIImage *previewImage;
+
 @property (nonatomic, retain) NSMutableArray *files;
 
 + (id) sharedFiles;

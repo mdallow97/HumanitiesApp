@@ -28,6 +28,7 @@
 		4191960220F3E1E500439A41 /* FileData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960120F3E1E500439A41 /* FileData.m */; };
 		4191960520F3FDC000439A41 /* FileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4191960420F3FDC000439A41 /* FileView.m */; };
 		41AB359120E329CF001EFB5F /* ProjectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41AB359020E329CF001EFB5F /* ProjectView.m */; };
+		41CC80E22155B3BB009B5350 /* CommentData.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CC80E12155B3BB009B5350 /* CommentData.m */; };
 		41F5A6EC20F6B4FC00D976D1 /* FilePreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41F5A6EB20F6B4FC00D976D1 /* FilePreView.m */; };
 		B575692220FFDD9300C37BF1 /* appDB.sql in Resources */ = {isa = PBXBuildFile; fileRef = B575692120FFDD9200C37BF1 /* appDB.sql */; };
 		B5B32AE520F6A4C300EF8580 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B32AE420F6A4C300EF8580 /* libsqlite3.tbd */; };
@@ -89,6 +90,8 @@
 		4191960420F3FDC000439A41 /* FileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileView.m; sourceTree = "<group>"; };
 		41AB359020E329CF001EFB5F /* ProjectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectView.m; sourceTree = "<group>"; };
 		41AB359220E329D8001EFB5F /* ProjectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectView.h; sourceTree = "<group>"; };
+		41CC80E12155B3BB009B5350 /* CommentData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommentData.m; sourceTree = "<group>"; };
+		41CC80E32155B3CF009B5350 /* CommentData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommentData.h; sourceTree = "<group>"; };
 		41F5A6EA20F6B4DB00D976D1 /* FilePreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilePreView.h; sourceTree = "<group>"; };
 		41F5A6EB20F6B4FC00D976D1 /* FilePreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilePreView.m; sourceTree = "<group>"; };
 		B575692120FFDD9200C37BF1 /* appDB.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = appDB.sql; sourceTree = "<group>"; };
@@ -169,6 +172,8 @@
 				415457C820EC79B400B64540 /* ProjectData.m */,
 				4191960020F3E11900439A41 /* FileData.h */,
 				4191960120F3E1E500439A41 /* FileData.m */,
+				41CC80E32155B3CF009B5350 /* CommentData.h */,
+				41CC80E12155B3BB009B5350 /* CommentData.m */,
 				4172C82820E1D0570065A277 /* Main.storyboard */,
 				4172C82B20E1D0580065A277 /* Assets.xcassets */,
 				4172C82D20E1D0580065A277 /* LaunchScreen.storyboard */,
@@ -353,6 +358,7 @@
 				41AB359120E329CF001EFB5F /* ProjectView.m in Sources */,
 				4172C83220E1D0580065A277 /* main.m in Sources */,
 				4172C82420E1D0570065A277 /* AppDelegate.m in Sources */,
+				41CC80E22155B3BB009B5350 /* CommentData.m in Sources */,
 				41F5A6EC20F6B4FC00D976D1 /* FilePreView.m in Sources */,
 				412FB06F20E5822D00ECECAD /* PersonalPageViewController.m in Sources */,
 				4191960220F3E1E500439A41 /* FileData.m in Sources */,
