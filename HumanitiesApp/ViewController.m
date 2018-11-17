@@ -83,6 +83,14 @@
     myProjectsView.backgroundColor  = [UIColor whiteColor];
     myProjectsView.contentSize      = CGSizeMake(viewWidth, 4000);
     
+    UserData *ud = [UserData globalUserData];
+    int num_of_projects = (sizeof(ud.projIds) / sizeof(ud.projIds[0])) - 1;
+    
+    for (int i = 0; i < num_of_projects; i++) {
+        //[[ud.myProjects objectAtIndex:i] projectName] = 
+    }
+    
+    
     self.view.backgroundColor       = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
     // Adding sub views
