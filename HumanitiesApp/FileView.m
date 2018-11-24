@@ -236,7 +236,7 @@
 
 - (void) enterViewingMode
 {
-    UserData *currentUser                   = [UserData globalUserData];
+    UserData *currentUser                   = [UserData sharedMyProjects];
     
     CGRect scrollFrame                      = CGRectMake(0, 85, viewWidth, (viewHeight - 85));
     UIScrollView *mainScrollView            = [[UIScrollView alloc] initWithFrame:scrollFrame];

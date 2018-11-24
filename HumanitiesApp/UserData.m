@@ -10,14 +10,6 @@
 
 @implementation UserData
 
-+ (id) globalUserData {
-    static UserData *data = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        data = [[self alloc] init];
-    });
-    return data;
-}
 
 + (id) sharedMyProjects {
     static UserData *projects = nil;

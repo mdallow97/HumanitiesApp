@@ -255,7 +255,7 @@
 
 -(void) done
 {
-    UserData *ud = [UserData globalUserData];
+    UserData *ud = [UserData sharedMyProjects];
     
     if (shouldAddProject) {
         [projects.myProjects addObject:projectData];

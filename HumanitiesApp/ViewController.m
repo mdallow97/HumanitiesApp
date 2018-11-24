@@ -85,8 +85,7 @@
     
     
     UserData *ud = [UserData sharedMyProjects];
-    int num_of_projects = (sizeof(ud.projIds) / sizeof(ud.projIds[0]));
-    
+    int num_of_projects = ud.projIds.count-1;
     NSLog(@"%i", num_of_projects);
     
     for (int i = 0; i < num_of_projects; i++) {
@@ -156,8 +155,8 @@
 {
     int i;
 
-    UserData *ud = [UserData globalUserData];
-    int num_of_projects = (sizeof(ud.projIds) / sizeof(ud.projIds[0])) - 1;
+    UserData *ud = [UserData sharedMyProjects];
+    int num_of_projects = (sizeof(ud.projIds) / sizeof(ud.projIds[0]))-1;
     
     // Need to check number of projects, make sure not too many
     

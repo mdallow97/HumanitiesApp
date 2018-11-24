@@ -95,7 +95,7 @@
     
     // Username Label setup
     usernameLabel               = [[UILabel alloc] initWithFrame:usernameFrame];
-    UserData *ud                = [UserData globalUserData];
+    UserData *ud                = [UserData sharedMyProjects];
     usernameLabel.textAlignment = NSTextAlignmentCenter;
     usernameLabel.text          = ud.username; // This needs to retrieve username from UserData
     
