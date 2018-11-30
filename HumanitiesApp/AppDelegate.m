@@ -18,7 +18,7 @@
     int viewWidth, viewHeight;
 }
 
-
+// Application starts here
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
@@ -49,7 +49,7 @@
     self.logInButton.frame = logInFrame;
     [self.logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
     
-    // new User button creation
+    // Register button creation
     self.regButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.regButton setTitle:@"New User? Register." forState:UIControlStateNormal];
     self.regButton.titleLabel.font = [UIFont systemFontOfSize:10];
