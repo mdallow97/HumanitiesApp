@@ -70,9 +70,7 @@
 }
 
 
-
-// General Function Definitions
-
+// This function prepates all global item's frames.
 - (void) frameSetup
 {
     // General Variable Initialization
@@ -193,6 +191,11 @@
     [self createPreviews];
 }
 
+/*
+ This function creates all file previews within a project. These previews present a
+ preview image for the file. Previews can be tapped on to take the user to the file, where the
+ entire file is displayed, and possibly along with a file description added by the owners
+ */
 - (void) createPreviews
 {
     for (UIView *view in myFilesView.subviews)
@@ -224,6 +227,10 @@
     
 }
 
+/*
+ This function is used to change the height of the scroll view. This is used everytime a new file is added. This allows the program to change the scroll height dynamically.
+ INPUT: height, the new length that the scroll view will be set to
+ */
 - (void) changeScrollHeight:(int)height
 {
     myFilesView.contentSize = CGSizeMake(viewWidth, (height + 30));
@@ -234,25 +241,35 @@
     NSString *response;
     NSString *myRequestString;
     
-        // Create your request string with parameter name as defined in PHP file
-        myRequestString = [NSString stringWithFormat:@"projName=%@&accId=%@",projName,accId];
+    // Create your request string with parameter name as defined in PHP file
+    myRequestString                 = [NSString stringWithFormat:@"projName=%@&accId=%@",projName,accId];
+    
     // Create Data from request
-    NSData *myRequestData = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
-    NSString *url = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
+    NSData *myRequestData           = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
+    NSString *url                   = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
+    NSMutableURLRequest *request    = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
+    
     // set Request Type
     [request setHTTPMethod: @"POST"];
+    
     // Set content-type
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    
     // Set Request Body
     [request setHTTPBody: myRequestData];
+    
     // Now send a request and get Response
-    NSData *returnData = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    NSData *returnData  = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    
     // Log Response
-    response = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    response            = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    
     return response;
 }
 
+/*
+ This function is called by the doneButton. It is pressed when a user wants to add a project to their account.
+ */
 -(void) done
 {
     UserData *ud = [UserData sharedMyProjects];

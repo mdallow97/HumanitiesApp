@@ -261,14 +261,14 @@
     
 }
 
-//FIX THIS
+
 -(BOOL) registerNow
 {
     int length              = 8;
     newPasswordTF.hidden    = NO;
     regist.hidden           = NO;
     
-    NSString *responseS = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"checkuser.php"];
+    NSString *responseS     = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"checkuser.php"];
     
     
     BOOL used = NO;
@@ -300,23 +300,27 @@
     else
     {
         [self clearLabels];
-        newPasswordTF.hidden = YES;
-        regist.hidden = YES;
-        userCreated.hidden = NO;
-        usernameTextField.text = nil;
-        passwordTextField.text = nil;
-        newPasswordTF.text = nil;
+        newPasswordTF.hidden                = YES;
+        regist.hidden                       = YES;
+        userCreated.hidden                  = NO;
+        usernameTextField.text              = nil;
+        passwordTextField.text              = nil;
+        newPasswordTF.text                  = nil;
         parentController.logInButton.hidden = NO;
-        parentController.regButton.hidden = NO;
+        parentController.regButton.hidden   = NO;
     }
     
-    usernameTextField.text = nil;
-    passwordTextField.text = nil;
+    usernameTextField.text                  = nil;
+    passwordTextField.text                  = nil;
     
     return false;
     
 }
 
+/*
+ Parameter: textField, can be compared with a global variable to confirm which text field should return
+ Return Value: Bool, YES if the text field should return
+ */
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
     
