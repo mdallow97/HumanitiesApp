@@ -236,7 +236,7 @@
 
 - (void) enterViewingMode
 {
-    UserData *currentUser                   = [UserData globalUserData];
+    UserData *currentUser                   = [UserData sharedMyProjects];
     
     CGRect scrollFrame                      = CGRectMake(0, 85, viewWidth, (viewHeight - 85));
     UIScrollView *mainScrollView            = [[UIScrollView alloc] initWithFrame:scrollFrame];
@@ -261,6 +261,7 @@
     commentTF.placeholder                   = @"Add comment here...";
     commentTF.borderStyle                   = UITextBorderStyleRoundedRect;
     commentTF.delegate                      = self;
+    commentTF.returnKeyType                 = UIReturnKeyDone;
     
     
     if (_inEditingMode) fileDescription.editable    = true;

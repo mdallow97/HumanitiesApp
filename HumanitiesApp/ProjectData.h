@@ -15,8 +15,10 @@
 
 @interface ProjectData : NSObject
 
+@property NSString *projectId;
 @property NSString *projectName;
 @property UIImage *previewImage;
+@property (nonatomic, retain) NSMutableArray *fileIds;
 
 @property (nonatomic, retain) NSMutableArray *files;
 

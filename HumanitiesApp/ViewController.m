@@ -83,6 +83,19 @@
     myProjectsView.backgroundColor  = [UIColor whiteColor];
     myProjectsView.contentSize      = CGSizeMake(viewWidth, 4000);
     
+    
+    UserData *ud        = [UserData sharedMyProjects];
+    int num_of_projects = (int) ud.projIds.count - 1;
+    
+    for (int i = 0; i < num_of_projects; i++) {
+        ProjectData *newProject     = [[ProjectData alloc] init];
+        newProject.projectName      = [self interactWithDatabase:ud.projIds[i] with:nil at:@"getName.php"];
+        newProject.projectId = ud.projIds[i];
+        // Code to add files (another loop)
+        [ud.myProjects addObject:newProject];
+    }
+    
+    
     self.view.backgroundColor       = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
     // Adding sub views
@@ -92,6 +105,48 @@
     [self createPreView];
 }
 
+- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at:(NSString *)path
+{
+    NSString *response;
+    NSString *myRequestString;
+    if(password == nil)
+    {
+        // Create your request string with parameter name as defined in PHP file
+        myRequestString = [NSString stringWithFormat:@"username=%@",username];
+    }
+    else
+    {
+        // Create your request string with parameter name as defined in PHP file
+        myRequestString = [NSString stringWithFormat:@"username=%@&password=%@",username,password];
+    }
+    // Create Data from request
+    NSData *myRequestData           = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
+    NSString *url                   = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
+    NSMutableURLRequest *request    = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
+    
+    // set Request Type
+    [request setHTTPMethod: @"POST"];
+    
+    // Set content-type
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    
+    // Set Request Body
+    [request setHTTPBody: myRequestData];
+    
+    // Now send a request and get Response
+    NSData *returnData  = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    
+    // Log Response
+    response            = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    
+    return response;
+}
+
+
+/*
+ Parameter: textField, can be compared with a global variable to confirm which text field should return
+ Return Value: Bool, YES if the text field should return
+ */
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == searchBar) [textField resignFirstResponder];
@@ -104,14 +159,29 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+ /*
+ This function creates the previews seen on the home page of the application. These previews present a
+ preview image for the project. Previews can be tapped on to take the user to the project, where
+ the files are held.
+ */
 - (void) createPreView
 {
     int i;
+    int j;
 
-    UserData *ud = [UserData globalUserData];
-    int num_of_projects = (sizeof(ud.projIds) / sizeof(ud.projIds[0])) - 1;
+    UserData *ud        = [UserData sharedMyProjects];
+    NSString *folProjIds = @"";
     
+    int num_of_projects = (int) ud.projIds.count - 1; // Subtract 1 because array contains a terminating element passed from database
+     int num_of_fol_projects = (int) ud.followers.count - 1;
+    
+    NSLog(@"followers: %lu", ud.followers.count-1);
+    
+    for (j = 0; j <= num_of_fol_projects; j++)
+    {
+        NSString *ids = [self interactWithDatabase:ud.followers[j] with: nil at:@"followerProj.php"];
+        folProjIds = [folProjIds stringByAppendingString:ids];
+    }
     // Need to check number of projects, make sure not too many
     
     ProjectPreView *project_previews[num_of_projects];
@@ -120,8 +190,8 @@
     
     for (i = num_of_projects - 1; i >= 0; i--) {
         
-        preview_frame[i] = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
-        project_previews[i]   = [[ProjectPreView alloc] initWithFrame:preview_frame[i]];
+        preview_frame[i]        = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
+        project_previews[i]     = [[ProjectPreView alloc] initWithFrame:preview_frame[i]];
 
         [project_previews[i] setProjectName:names[i] withParentView:self];
 
@@ -131,11 +201,18 @@
     }
 }
 
+/*
+ This function is used to change the height of the scroll view. This is used everytime a new project is added. This allows the program to change the scroll height dynamically.
+ INPUT: height, the new length that the scroll view will be set to
+ */
 - (void) changeScrollHeight:(int)height
 {
     myProjectsView.contentSize = CGSizeMake(viewWidth, height);
 }
 
+/*
+ This is where the tab bar item (bottom of the screen) is created. It will use a picture, and wants a name for the item
+ */
 - (UITabBarItem *)tabBarItem
 {
     UITabBarItem *item;

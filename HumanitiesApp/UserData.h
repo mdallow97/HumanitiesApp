@@ -20,7 +20,6 @@
 @property NSString *password;
 @property NSString *accId;
 
-+ (id) globalUserData;
 
 
 // Project Data

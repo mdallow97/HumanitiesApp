@@ -95,7 +95,7 @@
     
     // Username Label setup
     usernameLabel               = [[UILabel alloc] initWithFrame:usernameFrame];
-    UserData *ud                = [UserData globalUserData];
+    UserData *ud                = [UserData sharedMyProjects];
     usernameLabel.textAlignment = NSTextAlignmentCenter;
     usernameLabel.text          = ud.username; // This needs to retrieve username from UserData
     
@@ -125,19 +125,29 @@
 {
     [self createPreviews];
 }
-
+/*
+ Allows scroll height in the personal page to be changed dynamically.
+ */
 - (void) changeScrollHeight:(int)height
 {
     myProjectsView.contentSize = CGSizeMake(viewWidth, (height + 40));
 }
 
+/*
+ This function creates all previews for the personal page. These previews present a
+ preview image for the project. Previews can be tapped on to take the user to the project, where
+ the files are held.
+ */
 - (void) createPreviews
 {
+    
     for (UIView *view in myProjectsView.subviews)
         if ([view isKindOfClass:[ProjectPreView class]]) [view removeFromSuperview];
     
     UserData *projects   = [UserData sharedMyProjects];
     int numberOfPreviews = (int) projects.myProjects.count;
+    
+    
     
     CGRect rect[numberOfPreviews];
     
@@ -161,6 +171,9 @@
     
 }
 
+/*
+ This function is called when a new project is going to be created. Called by the + button on the top right of the screen in the personal page.
+ */
 - (void) createNewProject
 {
     
@@ -171,6 +184,11 @@
     [projectEditingView enterNewProjectMode];
 }
 
+
+/*
+ OUTPUT: Returns the current top view controller.
+ This allows the program to present the editing view.
+ */
 - (UIViewController *) currentTopViewController
 {
     UIViewController *topVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
@@ -181,6 +199,9 @@
     return topVC;
 }
 
+/*
+ This is where the tab bar item (bottom of the screen) is created. It will use a picture, and wants a name for the item
+ */
 - (UITabBarItem *)tabBarItem
 {
     UITabBarItem *item;
