@@ -259,12 +259,17 @@
     
     if (shouldAddProject) {
         [projects.myProjects addObject:projectData];
+        //NSData *imageData = UIImagePNGRepresentation(projectData.previewImage);
+        //NSString *imageBin = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+       // NSLog(@"binary: %@", imageBin);
         NSString *reply = [self interactWithDatabase:projectData.projectName with: ud.accId at:@"uploadProj.php"];
         NSLog(@"%@", reply);
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+
 
 - (UIViewController *) currentTopViewController
 {
