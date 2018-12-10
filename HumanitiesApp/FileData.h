@@ -15,6 +15,7 @@
 @interface FileData : NSObject
 
 @property int fileType;
+@property NSString *fileId;
 @property NSString *fileName;
 @property UIImage *previewImage;
 @property NSString *fileDescription;

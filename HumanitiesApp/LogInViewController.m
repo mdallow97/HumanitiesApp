@@ -253,7 +253,6 @@
         ud.followers = [self toArray:followers];
         NSString *projIds = [self interactWithDatabase:ud.accId with: nil at:@"allProj.php"];
         ud.projIds = [self toArray:projIds];
-        NSLog(@"%@", ud.projIds);
         
         
         return true;

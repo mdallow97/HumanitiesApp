@@ -90,8 +90,7 @@
     for (int i = 0; i < num_of_projects; i++) {
         ProjectData *newProject     = [[ProjectData alloc] init];
         newProject.projectName      = [self interactWithDatabase:ud.projIds[i] with:nil at:@"getName.php"];
-        NSLog(@"projects: ");
-        NSLog(@"%@", newProject.projectName);
+        newProject.projectId = ud.projIds[i];
         // Code to add files (another loop)
         [ud.myProjects addObject:newProject];
     }
@@ -168,10 +167,21 @@
 - (void) createPreView
 {
     int i;
+    int j;
 
     UserData *ud        = [UserData sharedMyProjects];
-    int num_of_projects = (int) ud.projIds.count - 1; // Subtract 1 because array contains a terminating element passed from database
+    NSString *folProjIds = @"";
     
+    int num_of_projects = (int) ud.projIds.count - 1; // Subtract 1 because array contains a terminating element passed from database
+     int num_of_fol_projects = (int) ud.followers.count - 1;
+    
+    NSLog(@"followers: %lu", ud.followers.count-1);
+    
+    for (j = 0; j <= num_of_fol_projects; j++)
+    {
+        NSString *ids = [self interactWithDatabase:ud.followers[j] with: nil at:@"followerProj.php"];
+        folProjIds = [folProjIds stringByAppendingString:ids];
+    }
     // Need to check number of projects, make sure not too many
     
     ProjectPreView *project_previews[num_of_projects];

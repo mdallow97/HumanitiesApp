@@ -201,6 +201,18 @@
     for (UIView *view in myFilesView.subviews)
         if ([view isKindOfClass:[FilePreView class]]) [view removeFromSuperview];
     
+    NSString *fileIds = [self interactWithDatabase:projectData.projectId with: nil at:@"allFile.php"];
+    projectData.fileIds = [self toArray:fileIds];
+    
+    int num_of_files = (int) projectData.fileIds.count - 1;
+    
+    for (int i = 0; i < num_of_files; i++) {
+        FileData *newFile     = [[FileData alloc] init];
+        newFile.fileName      = [self interactWithDatabase:projectData.fileIds[i] with:nil at:@"gFileName.php"];
+        newFile.fileId = projectData.fileIds[i];
+        // Code to add files (another loop)
+        [projectData.files addObject:newFile];
+    }
     
     int numberOfPreviews = (int) projectData.files.count;
     
@@ -225,6 +237,17 @@
         
     }
     
+}
+
+-(NSMutableArray *) toArray:(NSString *)data
+{
+    NSArray *items = [data componentsSeparatedByString:@" "];
+    NSMutableArray* arrayOfNumbers = [NSMutableArray arrayWithCapacity:items.count];
+    for (NSString* string in items) {
+        [arrayOfNumbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
+    }
+    
+    return arrayOfNumbers;
 }
 
 /*
