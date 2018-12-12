@@ -298,6 +298,8 @@
     }
     else
     {
+        NSString *respons     = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"register.php"];
+        NSLog(@"%@",respons);
         [self clearLabels];
         newPasswordTF.hidden                = YES;
         regist.hidden                       = YES;
