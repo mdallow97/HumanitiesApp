@@ -186,9 +186,50 @@
     projectData = project;
 }
 
+- (NSString *) interactWithDatabase: (NSString *) fileName with: (int) fileType and: (NSString *) desc and: (NSString *) projId at:(NSString *)path
+{
+    NSString *response;
+    NSString *myRequestString;
+    
+    // Create your request string with parameter name as defined in PHP file
+    myRequestString                 = [NSString stringWithFormat:@"fileName=%@&fileType=%d&desc=%@&projId=%@",fileName,fileType,desc,projId];
+    
+    // Create Data from request
+    NSData *myRequestData           = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
+    NSString *url                   = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
+    NSMutableURLRequest *request    = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
+    
+    // set Request Type
+    [request setHTTPMethod: @"POST"];
+    
+    // Set content-type
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    
+    // Set Request Body
+    [request setHTTPBody: myRequestData];
+    
+    // Now send a request and get Response
+    NSData *returnData  = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    
+    // Log Response
+    response            = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    
+    return response;
+}
+
 - (void) save
 {
-    if (shouldAddFile) [projectData.files addObject:fileData];
+    if (shouldAddFile)
+    {
+        NSLog(@"adds file");
+        [projectData.files addObject:fileData];
+        
+        //NSData *imageData = UIImagePNGRepresentation(projectData.previewImage);
+        //NSString *imageBin = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLneLength];
+        // NSLog(@"binary: %@", imageBin);
+        NSString *reply = [self interactWithDatabase: fileData.fileName with: fileData.fileType and: descriptionTV.text and: projectData.projectId at:@"uploadFile.php"];
+        NSLog(@"%@", reply);
+    }
     if (descriptionTV.text) [fileData storeDescription:descriptionTV.text];
     if ([descriptionTV isFirstResponder]) [descriptionTV resignFirstResponder];
     

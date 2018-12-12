@@ -37,7 +37,7 @@
 - (void) saveFileName:(NSString *) name;
 - (void) changeFileDescription;
 - (void) postComment;
-
+- (NSString *) interactWithDatabase: (NSString *) fileName with: (int) fileType and: (NSString *) desc and: (NSString *) projId at:(NSString *)path;
 - (void) createDocument;
 - (void) createPresentation;
 

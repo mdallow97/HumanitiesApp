@@ -20,9 +20,11 @@
     return projects;
 }
 
+
 - (id) init {
     if (self = [super init]) {
         self.myProjects = [[NSMutableArray alloc] init];
+        self.followerProjects = [[NSMutableArray alloc] init];
     }
     return self;
 }

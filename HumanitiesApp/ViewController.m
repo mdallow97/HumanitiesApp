@@ -159,6 +159,17 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+-(NSMutableArray *) toArray:(NSString *)data
+{
+    NSArray *items = [data componentsSeparatedByString:@" "];
+    NSMutableArray* arrayOfNumbers = [NSMutableArray arrayWithCapacity:items.count];
+    for (NSString* string in items) {
+        [arrayOfNumbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
+    }
+    
+    return arrayOfNumbers;
+}
  /*
  This function creates the previews seen on the home page of the application. These previews present a
  preview image for the project. Previews can be tapped on to take the user to the project, where
@@ -182,22 +193,35 @@
         NSString *ids = [self interactWithDatabase:ud.followers[j] with: nil at:@"followerProj.php"];
         folProjIds = [folProjIds stringByAppendingString:ids];
     }
+    
+    ud.followerProjIds = [self toArray:folProjIds];
     // Need to check number of projects, make sure not too many
     
-    ProjectPreView *project_previews[num_of_projects];
-    CGRect preview_frame[num_of_projects];
-    NSArray *names; // *** names will get pulled from database
     
-    for (i = num_of_projects - 1; i >= 0; i--) {
+    for (int i = 0; i <= num_of_fol_projects; i++) {
+        ProjectData *newProject     = [[ProjectData alloc] init];
+        newProject.projectName      = [self interactWithDatabase:ud.followerProjIds[i] with:nil at:@"getName.php"];
+        newProject.projectId = ud.followerProjIds[i];
+        // Code to add files (another loop)
+        [ud.followerProjects addObject:newProject];
+    }
+    
+    ProjectPreView *project_previews[num_of_fol_projects+1];
+    CGRect preview_frame[num_of_fol_projects+1];
+    
+    for (i = num_of_fol_projects; i >= 0; i--) {
+        
+        ProjectData *pd = (ProjectData *) ud.followerProjects[i];
         
         preview_frame[i]        = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         project_previews[i]     = [[ProjectPreView alloc] initWithFrame:preview_frame[i]];
 
-        [project_previews[i] setProjectName:names[i] withParentView:self];
+        [project_previews[i] setProjectName:pd.projectName withParentView:self];
 
         [myProjectsView addSubview: project_previews[i]];
 
         project_previews[i].inEditingMode = false;
+        
     }
 }
 

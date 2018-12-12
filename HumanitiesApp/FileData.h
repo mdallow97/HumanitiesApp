@@ -17,6 +17,7 @@
 @property int fileType;
 @property NSString *fileId;
 @property NSString *fileName;
+@property NSString *projectId;
 @property UIImage *previewImage;
 @property NSString *fileDescription;
 @property (nonatomic, retain) NSMutableArray *comments;
