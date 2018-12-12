@@ -18,6 +18,7 @@
 - (void) didReceiveMemoryWarning;
 - (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at:(NSString *)path;
 - (BOOL) textFieldShouldReturn:(UITextField *)textField;
+-(NSMutableArray *) toArray:(NSString *)data;
 - (void) createPreView;
 - (void) changeScrollHeight:(int)height;
 

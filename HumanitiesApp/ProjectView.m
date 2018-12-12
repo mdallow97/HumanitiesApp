@@ -211,7 +211,8 @@
         newFile.fileName      = [self interactWithDatabase:projectData.fileIds[i] with:nil at:@"gFileName.php"];
         newFile.fileId = projectData.fileIds[i];
         // Code to add files (another loop)
-        [projectData.files addObject:newFile];
+        if([projectData fileNamed:newFile.fileName] == nil)
+            [projectData.files addObject:newFile];
     }
     
     int numberOfPreviews = (int) projectData.files.count;

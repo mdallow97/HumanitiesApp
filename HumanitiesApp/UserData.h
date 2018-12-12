@@ -26,6 +26,9 @@
 @property (nonatomic, retain) NSMutableArray *myProjects;
 @property (nonatomic, retain) NSMutableArray *projIds;
 @property (nonatomic, retain) NSMutableArray *followers;
+@property (nonatomic, retain) NSMutableArray *followerProjects;
+@property (nonatomic, retain) NSMutableArray *followerProjIds;
+@property (nonatomic, retain) NSMutableArray *followerProjNames;
 
 + (id) sharedMyProjects;
 
