@@ -12,7 +12,7 @@
 
 @interface LogInViewController ()
 
--(void) clearLabels;
+-(void) hideLabels;
 
 @end
 
@@ -39,16 +39,10 @@
     
 }
 
-- (void) setup
+- (void) viewDidLoad
 {
     viewWidth  = self.view.frame.size.width;
     viewHeight = self.view.frame.size.height;
-    
-}
-
-- (void) viewDidLoad
-{
-    [self setup];
     
     // Username text field frame setup
     int textFieldWidth  = 250;
@@ -194,7 +188,7 @@
     
 }
 
--(void) clearLabels
+-(void) hideLabels
 {
     incorrectInfoLabel.hidden = YES;
     uniqueUsernameLabel.hidden = YES;
@@ -260,17 +254,16 @@
     NSString *response = [self interactWithDatabase:usernameTextField.text with:nil at:@"login.php"];
     
     // Check to see if username and password match
-    //if ([usernameTextField.text isEqual:@""] || [passwordTextField.text isEqual:@""])
     if (!([passwordTextField.text isEqual:response]))
     {
-        [self clearLabels];
+        [self hideLabels];
         incorrectInfoLabel.hidden = NO;
         usernameTextField.text = nil;
         passwordTextField.text = nil;
         return false;
     } else {
         NSString *aId = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"setAccId.php"];
-        [self clearLabels];
+        [self hideLabels];
         ud.username = usernameTextField.text;
         ud.accId = aId;
         NSString *followers = [self interactWithDatabase:ud.accId with: nil at:@"getFollowing.php"];
@@ -307,22 +300,22 @@
     if([createUsernameTF.text isEqualToString:@""] || [newPasswordTF.text isEqualToString:@""] || [verifyPasswordTF.text isEqualToString:@""])
     {
         
-        [self clearLabels];
+        [self hideLabels];
         notFullLabel.hidden = NO;
     }
     else if(used)
     {
-        [self clearLabels];
+        [self hideLabels];
         uniqueUsernameLabel.hidden = NO;
     }
     else if(![newPasswordTF.text isEqual:verifyPasswordTF.text])
     {
-        [self clearLabels];
+        [self hideLabels];
         passwordNoMatchLabel.hidden = NO;
     }
     else if(newPasswordTF.text.length < length)
     {
-        [self clearLabels];
+        [self hideLabels];
         passLength.hidden = NO;
     }
     else
@@ -331,7 +324,7 @@
         
         NSString *respons     = [self interactWithDatabase:createUsernameTF.text with:newPasswordTF.text at:@"register.php"];
         NSLog(@"%@",respons);
-        [self clearLabels];
+        [self hideLabels];
         
         createUsernameTF.hidden             = YES;
         newPasswordTF.hidden                = YES;

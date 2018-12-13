@@ -128,7 +128,8 @@
     [self frameSetup];
     
     projects    = [UserData sharedMyProjects];
-    projectData = [projects projectNamed:self->_currentProjectName]; // Data will be nil if project does not exist
+    //projectData = [projects projectNamed:self->_currentProjectName]; // Data will be nil if project does not exist
+    projectData = [projects projectWithId:self->_currentProjectId];
     
     doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
@@ -323,6 +324,7 @@
 - (void) loadProjectWithData:(ProjectData *) project;
 {
     _currentProjectName     = project.projectName;
+    _currentProjectId       = project.projectId;
 }
 
 

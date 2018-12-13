@@ -23,6 +23,7 @@
 -(BOOL) registerNow;
 - (void) hasParent: (UIResponder *) parent;
 - (BOOL) logIn;
+- (void) hideLabels;
 - (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at: (NSString *)path;
 -(NSMutableArray *) toArray: (NSString *) data;
 

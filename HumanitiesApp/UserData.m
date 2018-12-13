@@ -54,5 +54,29 @@
     else return pd;
 }
 
+- (ProjectData *) projectWithId: (NSString *) Id
+{
+    ProjectData *pd = nil;
+    
+    
+    int numProjects = (int) self.followerProjects.count;
+    int i;
+    
+    for (i = 0; i < numProjects; i++) {
+        ProjectData *test = (ProjectData *) self.followerProjects[i];
+        
+        if ([test.projectId isEqualToString:Id]) {
+            
+            pd = test;
+            
+            break;
+        }
+    }
+    
+    // Double check
+    if (![pd.projectId isEqualToString:Id]) return nil;
+    else return pd;
+}
+
 
 @end

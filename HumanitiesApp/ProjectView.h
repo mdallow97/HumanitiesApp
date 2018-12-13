@@ -44,6 +44,7 @@
 - (void) loadProjectWithData:(ProjectData *) project;
 
 @property NSString *currentProjectName;
+@property NSString *currentProjectId;
 @property BOOL inEditingMode;
 
 

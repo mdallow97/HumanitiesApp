@@ -34,6 +34,7 @@
 
 // Commented part of below function will allow us to find unique project
 - (ProjectData *) projectNamed: (NSString *) name; //byUser: (NSString *) username;
+- (ProjectData *) projectWithId: (NSString *) Id;
 
 
 
