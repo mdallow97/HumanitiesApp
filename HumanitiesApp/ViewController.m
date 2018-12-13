@@ -209,6 +209,9 @@
     ProjectPreView *project_previews[num_of_fol_projects+1];
     CGRect preview_frame[num_of_fol_projects+1];
     
+    if(num_of_fol_projects == 0)
+        num_of_fol_projects--;
+    
     for (i = num_of_fol_projects; i >= 0; i--) {
         
         ProjectData *pd = (ProjectData *) ud.followerProjects[i];
