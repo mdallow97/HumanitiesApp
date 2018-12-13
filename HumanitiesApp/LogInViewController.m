@@ -34,7 +34,7 @@
     UILabel *userCreated;
     UIButton *regist;
     
-  
+    
     AppDelegate *parentController;
     
 }
@@ -53,7 +53,7 @@
     // Username text field frame setup
     int textFieldWidth  = 250;
     int textFieldHeight = 40;
-
+    
     int x                   = (viewWidth / 2) - (textFieldWidth / 2);
     int y                   = (viewHeight / 2) - (textFieldHeight / 2);
     int logInWidth          = 100;
@@ -306,7 +306,7 @@
     
     if([createUsernameTF.text isEqualToString:@""] || [newPasswordTF.text isEqualToString:@""] || [verifyPasswordTF.text isEqualToString:@""])
     {
-
+        
         [self clearLabels];
         notFullLabel.hidden = NO;
     }
