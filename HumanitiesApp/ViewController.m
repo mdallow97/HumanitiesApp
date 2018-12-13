@@ -198,7 +198,7 @@
     // Need to check number of projects, make sure not too many
     int num_of_fol_projects = (int) ud.followerProjIds.count -1;
     
-    for (int i = 0; i <= num_of_fol_projects; i++) {
+    for (int i = 0; i < num_of_fol_projects; i++) {
         ProjectData *newProject     = [[ProjectData alloc] init];
         newProject.projectName      = [self interactWithDatabase:ud.followerProjIds[i] with:nil at:@"getName.php"];
         newProject.projectId = ud.followerProjIds[i];
@@ -211,8 +211,8 @@
     
     if(num_of_fol_projects == 0)
         num_of_fol_projects--;
-    
-    for (i = num_of_fol_projects; i >= 0; i--) {
+
+    for (i = num_of_fol_projects-1; i >= 0; i--) {
         
         ProjectData *pd = (ProjectData *) ud.followerProjects[i];
         

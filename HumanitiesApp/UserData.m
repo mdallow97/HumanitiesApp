@@ -54,7 +54,7 @@
     else return pd;
 }
 
-- (ProjectData *) projectWithId: (NSString *) Id
+- (ProjectData *) projectWithId: (NSString *) pId
 {
     ProjectData *pd = nil;
     
@@ -64,17 +64,16 @@
     
     for (i = 0; i < numProjects; i++) {
         ProjectData *test = (ProjectData *) self.followerProjects[i];
-        
-        if ([test.projectId isEqualToString:Id]) {
-            
+
+        if ([(NSString *) test.projectId isEqual: (NSString *)pId]) {
             pd = test;
             
             break;
         }
     }
-    
+
     // Double check
-    if (![pd.projectId isEqualToString:Id]) return nil;
+    if (![(NSString *) pd.projectId isEqual:(NSString *) pId]) return nil;
     else return pd;
 }
 

@@ -23,6 +23,7 @@
 - (id) init {
     if (self = [super init]) {
         self.files = [[NSMutableArray alloc] init];
+        self.fileIds = [[NSMutableArray alloc] init];
     }
     return self;
 }

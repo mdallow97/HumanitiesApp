@@ -76,9 +76,13 @@
     
     
     UserData *projects  = [UserData sharedMyProjects];
+    
     if (Id == nil)
         project         = [projects projectNamed:projectName];
-    else project        = [projects projectWithId:Id];
+    else
+    {
+        project        = [projects projectWithId:Id];
+    }
     if (project.previewImage) [previewView setImage:project.previewImage];
     
     projectNameLabel.text = projectName;
