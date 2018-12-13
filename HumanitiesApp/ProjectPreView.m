@@ -22,6 +22,7 @@
     UIImage *preview;
     CGRect projectNameFrame, moreFrame, goToProjectFrame, previewFrame;
     NSString *projectName;
+    NSString *projectId;
     UIImageView *previewView;
     
     int viewHeight, viewWidth;
@@ -72,6 +73,7 @@
 - (void) setProjectName:(NSString *)name andID:(NSString *) Id withParentView:(PersonalPageViewController *) parentView
 {
     projectName         = name;
+    projectId           = Id;
     self->parentView    = parentView;
     
     
@@ -177,7 +179,10 @@
 {
     ProjectView *project    = [[ProjectView alloc] init];
     UserData *projects      = [UserData sharedMyProjects];
-    ProjectData *pd         = [projects projectNamed:projectName];
+    ProjectData *pd;
+    
+    if (projectId == nil) pd = [projects projectNamed:projectName];
+    else pd = [projects projectWithId:projectId];
     
     [project loadProjectWithData:pd];
     
