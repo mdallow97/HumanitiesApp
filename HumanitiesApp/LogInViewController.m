@@ -23,7 +23,9 @@
     
     UITextField *usernameTextField;
     UITextField *passwordTextField;
+    UITextField *createUsernameTF;
     UITextField *newPasswordTF;
+    UITextField *verifyPasswordTF;
     UILabel *incorrectInfoLabel;
     UILabel *uniqueUsernameLabel;
     UILabel *notFullLabel;
@@ -90,16 +92,37 @@
     passwordTextField.delegate          = self;
     passwordTextField.secureTextEntry   = YES;
     
+    // Username Creation Text Field Setup
+    createUsernameTF                    = [[UITextField alloc] initWithFrame:usernameFrame];
+    createUsernameTF.borderStyle        = UITextBorderStyleRoundedRect;
+    createUsernameTF.tintColor          = [UIColor blueColor];
+    createUsernameTF.backgroundColor    = [UIColor lightGrayColor];
+    createUsernameTF.placeholder        = @"Create Username";
+    createUsernameTF.returnKeyType      = UIReturnKeyNext;
+    createUsernameTF.delegate           = self;
+    createUsernameTF.hidden             = YES;
+    
+    // Password Creation Text Field Setup
+    newPasswordTF                       = [[UITextField alloc] initWithFrame:passwordFrame];
+    newPasswordTF.borderStyle           = UITextBorderStyleRoundedRect;
+    newPasswordTF.tintColor             = [UIColor blueColor];
+    newPasswordTF.backgroundColor       = [UIColor lightGrayColor];
+    newPasswordTF.placeholder           = @"Create Password";
+    newPasswordTF.returnKeyType         = UIReturnKeyNext;
+    newPasswordTF.hidden                = YES;
+    newPasswordTF.delegate              = self;
+    newPasswordTF.secureTextEntry       = YES;
+    
     //second password text field setup
-    newPasswordTF                   = [[UITextField alloc] initWithFrame:newPasswordFrame];
-    newPasswordTF.borderStyle       = UITextBorderStyleRoundedRect;
-    newPasswordTF.tintColor         = [UIColor blueColor];
-    newPasswordTF.backgroundColor   = [UIColor lightGrayColor];
-    newPasswordTF.placeholder       = @"Retype Password";
-    newPasswordTF.returnKeyType     = UIReturnKeyNext;
-    newPasswordTF.delegate          = self;
-    newPasswordTF.hidden            = YES;
-    newPasswordTF.secureTextEntry   = YES;
+    verifyPasswordTF                   = [[UITextField alloc] initWithFrame:newPasswordFrame];
+    verifyPasswordTF.borderStyle       = UITextBorderStyleRoundedRect;
+    verifyPasswordTF.tintColor         = [UIColor blueColor];
+    verifyPasswordTF.backgroundColor   = [UIColor lightGrayColor];
+    verifyPasswordTF.placeholder       = @"Retype Password";
+    verifyPasswordTF.returnKeyType     = UIReturnKeyGo;
+    verifyPasswordTF.delegate          = self;
+    verifyPasswordTF.hidden            = YES;
+    verifyPasswordTF.secureTextEntry   = YES;
     
     // Empty password/username Label Setup
     incorrectInfoLabel              = [[UILabel alloc] initWithFrame:emptyFieldFrame];
@@ -158,7 +181,9 @@
     [self.view addSubview:regist];
     [self.view addSubview:usernameTextField];
     [self.view addSubview:passwordTextField];
+    [self.view addSubview:createUsernameTF];
     [self.view addSubview:newPasswordTF];
+    [self.view addSubview:verifyPasswordTF];
     [self.view addSubview:incorrectInfoLabel];
     [self.view addSubview:uniqueUsernameLabel];
     [self.view addSubview:notFullLabel];
@@ -230,7 +255,6 @@
 -(BOOL) logIn
 {
     UserData *ud = [UserData sharedMyProjects];
-    
     userCreated.hidden = YES;
     
     NSString *response = [self interactWithDatabase:usernameTextField.text with:nil at:@"login.php"];
@@ -263,19 +287,24 @@
 
 -(BOOL) registerNow
 {
-    int length              = 8;
-    newPasswordTF.hidden    = NO;
-    regist.hidden           = NO;
+    int length                  = 8;
     
-    NSString *responseS     = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"checkuser.php"];
+    usernameTextField.hidden    = YES;
+    passwordTextField.hidden    = YES;
+    newPasswordTF.hidden        = NO;
+    verifyPasswordTF.hidden     = NO;
+    regist.hidden               = NO;
+    createUsernameTF.hidden     = NO;
     
+    
+    NSString *responseS     = [self interactWithDatabase:createUsernameTF.text with:newPasswordTF.text at:@"checkuser.php"];
     
     BOOL used = NO;
     
     if ([responseS isEqualToString:@"YES"])
         used = YES;
     
-    if([usernameTextField.text isEqualToString:@""] || [passwordTextField.text isEqualToString:@""] || [newPasswordTF.text isEqualToString:@""])
+    if([createUsernameTF.text isEqualToString:@""] || [newPasswordTF.text isEqualToString:@""] || [verifyPasswordTF.text isEqualToString:@""])
     {
 
         [self clearLabels];
@@ -286,27 +315,38 @@
         [self clearLabels];
         uniqueUsernameLabel.hidden = NO;
     }
-    else if(![passwordTextField.text isEqual:newPasswordTF.text])
+    else if(![newPasswordTF.text isEqual:verifyPasswordTF.text])
     {
         [self clearLabels];
         passwordNoMatchLabel.hidden = NO;
     }
-    else if(passwordTextField.text.length < length)
+    else if(newPasswordTF.text.length < length)
     {
         [self clearLabels];
         passLength.hidden = NO;
     }
     else
     {
-        NSString *respons     = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"register.php"];
+        
+        
+        NSString *respons     = [self interactWithDatabase:createUsernameTF.text with:newPasswordTF.text at:@"register.php"];
         NSLog(@"%@",respons);
         [self clearLabels];
+        
+        createUsernameTF.hidden             = YES;
         newPasswordTF.hidden                = YES;
+        verifyPasswordTF.hidden             = YES;
         regist.hidden                       = YES;
+        
+        usernameTextField.hidden            = NO;
+        passwordTextField.hidden            = NO;
         userCreated.hidden                  = NO;
+        
         usernameTextField.text              = nil;
-        passwordTextField.text              = nil;
+        createUsernameTF.text               = nil;
         newPasswordTF.text                  = nil;
+        verifyPasswordTF.text               = nil;
+        
         parentController.logInButton.hidden = NO;
         parentController.regButton.hidden   = NO;
     }
@@ -326,11 +366,29 @@
 {
     
     if (textField == usernameTextField) {
+        
         [passwordTextField becomeFirstResponder];
         return NO;
+        
     } else if (textField == passwordTextField) {
+        
         [textField resignFirstResponder];
         [parentController logIn];
+        
+    } else if (textField == createUsernameTF) {
+        
+        [newPasswordTF becomeFirstResponder];
+        return NO;
+        
+    } else if (textField == newPasswordTF) {
+        
+        [verifyPasswordTF becomeFirstResponder];
+        return NO;
+        
+    } else if (textField == verifyPasswordTF) {
+        
+        [textField resignFirstResponder];
+        
     }
     
     return YES;
