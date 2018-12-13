@@ -303,8 +303,6 @@
         //NSData *imageData = UIImagePNGRepresentation(projectData.previewImage);
         //NSString *imageBin = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
        // NSLog(@"binary: %@", imageBin);
-        NSString *reply = [self interactWithDatabase:projectData.projectName with: ud.accId at:@"uploadProj.php"];
-        NSLog(@"%@", reply);
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -394,6 +392,10 @@
     projectNameLabel.hidden = NO;
     nextButton.hidden       = YES;
     nameTextField.hidden    = YES;
+    NSString *reply = [self interactWithDatabase:projectData.projectName with: projects.accId at:@"uploadProj.php"];
+    NSString *response = [self interactWithDatabase:projectData.projectName with: projects.accId at:@"setProjId.php"];
+    NSLog(@"%@", response);
+    projectData.projectId = response;
     
     [self enterEditingMode];
 }
