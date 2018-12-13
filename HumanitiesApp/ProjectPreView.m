@@ -69,13 +69,16 @@
     goToProjectFrame = previewFrame;
 }
 
-- (void) setProjectName:(NSString *)name withParentView:(PersonalPageViewController *) parentView
+- (void) setProjectName:(NSString *)name andID:(NSString *) Id withParentView:(PersonalPageViewController *) parentView
 {
     projectName         = name;
     self->parentView    = parentView;
     
+    
     UserData *projects  = [UserData sharedMyProjects];
-    project             = [projects projectNamed:projectName];
+    if (Id == nil)
+        project         = [projects projectNamed:projectName];
+    else project        = [projects projectWithId:Id];
     if (project.previewImage) [previewView setImage:project.previewImage];
     
     projectNameLabel.text = projectName;

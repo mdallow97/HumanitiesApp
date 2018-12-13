@@ -162,7 +162,7 @@
         rect[i]         = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         previews[i]     = [[ProjectPreView alloc] initWithFrame:rect[i]];
         
-        [previews[i] setProjectName:pd.projectName withParentView:self];
+        [previews[i] setProjectName:pd.projectName andID:nil withParentView:self];
         [myProjectsView addSubview: previews[i]];
         
         previews[i].inEditingMode   = true;

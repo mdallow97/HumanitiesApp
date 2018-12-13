@@ -219,7 +219,7 @@
         preview_frame[i]        = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         project_previews[i]     = [[ProjectPreView alloc] initWithFrame:preview_frame[i]];
 
-        [project_previews[i] setProjectName:pd.projectName withParentView:self];
+        [project_previews[i] setProjectName:pd.projectName andID:pd.projectId withParentView:self];
 
         [myProjectsView addSubview: project_previews[i]];
 

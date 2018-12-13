@@ -24,7 +24,7 @@
 - (UIViewController *) currentTopViewController;
 - (void) goToProject;
 - (void) goToProject:(BOOL) canEdit;
-- (void) setProjectName:(NSString *)name withParentView:(UIViewController *) parentView;
+- (void) setProjectName:(NSString *)name andID:(NSString *) Id withParentView:(UIViewController *) parentView;
 
 @property BOOL inEditingMode;
 //@property NSString *name;
