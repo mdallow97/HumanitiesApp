@@ -285,14 +285,22 @@
     
     CGRect usernameFrame                    = CGRectMake(10, ((viewHeight / 3) + 20), 50, 30);
     UILabel *usernameLabel = [[UILabel alloc] initWithFrame:usernameFrame];
-    usernameLabel.text                      = [self interactWithDatabase: fileData.fileId with: nil and: nil and: nil at:@"whoOwns.php"];
+    
+    UserData *localUser                     = [UserData sharedMyProjects];
+    
+    if (_inEditingMode) usernameLabel.text  = localUser.username;
+    else usernameLabel.text                 = [self interactWithDatabase: fileData.fileId with: nil and: nil and: nil at:@"whoOwns.php"];
     
     usernameLabel.font                      = [UIFont fontWithName:@"DamascusBold" size:16];
 
     CGRect descriptionFrame                 = CGRectMake(10, ((viewHeight / 3) + 40), (viewWidth - 20), 125);
     fileDescription                         = [[UITextView alloc] initWithFrame:descriptionFrame];
     fileDescription.font                    = [UIFont systemFontOfSize:16];
-    fileData.fileDescription                = [self interactWithDatabase: fileData.fileId with: nil and: nil and: nil at:@"fileDesc.php"];
+    
+    if (fileData.fileDescription == nil)
+        fileData.fileDescription            = [self interactWithDatabase: fileData.fileId with: nil and: nil and: nil at:@"fileDesc.php"];
+    
+    
     fileDescription.text                    = fileData.fileDescription;
     fileDescription.delegate                = self;
     fileDescription.scrollEnabled           = NO;
