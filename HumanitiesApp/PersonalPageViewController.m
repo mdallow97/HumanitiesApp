@@ -159,6 +159,8 @@
         
         ProjectData *pd = (ProjectData *) projects.myProjects[i];
         
+        
+        
         rect[i]         = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
         previews[i]     = [[ProjectPreView alloc] initWithFrame:rect[i]];
         

@@ -130,7 +130,8 @@
     projects    = [UserData sharedMyProjects];
     //projectData = [projects projectNamed:self->_currentProjectName]; // Data will be nil if project does not exist
     projectData = [projects projectWithId:self->_currentProjectId];
-    
+    if(projectData == nil)
+        projectData = [projects projectNamed:self->_currentProjectName];
     doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
@@ -202,11 +203,10 @@
     for (UIView *view in myFilesView.subviews)
         if ([view isKindOfClass:[FilePreView class]]) [view removeFromSuperview];
     
-    NSString *fileIds = [self interactWithDatabase:projectData.projectId with: nil at:@"allFile.php"];
-    projectData.fileIds = [self toArray:fileIds];
-    
+    NSString *fileIds = [self interactWithDatabase:_currentProjectId with: nil at:@"allFile.php"];
+    NSMutableArray * array = [self toArray:fileIds];
+    projectData.fileIds = array;
     int num_of_files = (int) projectData.fileIds.count - 1;
-    
     for (int i = 0; i < num_of_files; i++) {
         FileData *newFile     = [[FileData alloc] init];
         newFile.fileName      = [self interactWithDatabase:projectData.fileIds[i] with:nil at:@"gFileName.php"];
@@ -249,6 +249,7 @@
         [arrayOfNumbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
     }
     
+    NSLog(@"array: %@", arrayOfNumbers);
     return arrayOfNumbers;
 }
 
