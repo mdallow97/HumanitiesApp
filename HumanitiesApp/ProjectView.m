@@ -249,7 +249,6 @@
         [arrayOfNumbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
     }
     
-    NSLog(@"array: %@", arrayOfNumbers);
     return arrayOfNumbers;
 }
 

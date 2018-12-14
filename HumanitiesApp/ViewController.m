@@ -186,8 +186,6 @@
     int num_of_projects = (int) ud.projIds.count - 1; // Subtract 1 because array contains a terminating element passed from database
      int num_of_fol = (int) ud.followers.count - 1;
     
-    NSLog(@"followers: %lu", ud.followers.count-1);
-    
     for (j = 0; j <= num_of_fol; j++)
     {
         NSString *ids = [self interactWithDatabase:ud.followers[j] with: nil at:@"followerProj.php"];

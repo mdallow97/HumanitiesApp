@@ -77,7 +77,6 @@
     projectId           = Id;
     self->parentView    = parentView;
     
-    NSLog(@"thisProjectId: %@", Id);
     UserData *projects  = [UserData sharedMyProjects];
     
     if (Id == nil)
@@ -182,18 +181,14 @@
     UserData *projects      = [UserData sharedMyProjects];
     ProjectData *pd;
     
-    NSLog(@"ProjectID: %@", projectId);
     if (projectId == nil)
     {
-        NSLog(@"projectName: %@", projectName);
         pd = [projects projectNamed:projectName];
     }
     else
     {
-        NSLog(@"here");
         pd = [projects projectWithId:projectId];
     }
-    NSLog(@"ProjectId: %@", pd.projectId);
     [project loadProjectWithData:pd];
     
     UIViewController *currentTopVC = [self currentTopViewController];
