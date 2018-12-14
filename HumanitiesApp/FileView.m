@@ -255,7 +255,6 @@
 - (void) enterEditingMode
 {
     _inEditingMode      = true;
-    cancelButton.hidden = NO;
     
     // Edit file of a certain type
     if (fileData.fileType == DOCUMENT) {
@@ -277,6 +276,7 @@
 
 - (void) enterViewingMode
 {
+    cancelButton.hidden                     = NO;
     UserData *currentUser                   = [UserData sharedMyProjects];
     
     CGRect scrollFrame                      = CGRectMake(0, 85, viewWidth, (viewHeight - 85));
