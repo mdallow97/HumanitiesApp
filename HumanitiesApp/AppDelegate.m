@@ -14,87 +14,76 @@
 
 @implementation AppDelegate
 {
-    LogInViewController *logInViewController;
-    int viewWidth, viewHeight;
+    LogInViewController *log_in_VC;
+    int view_width, view_height;
 }
 
 // Application starts here
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    logInViewController = [[LogInViewController alloc] init];
-    self.window.rootViewController = logInViewController;
-    
-    logInViewController.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    log_in_VC                           = [[LogInViewController alloc] init];
+    self.window.rootViewController      = log_in_VC;
+    log_in_VC.view.backgroundColor      = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
     
     // Setup frames for ViewController
-    viewWidth = logInViewController.view.frame.size.width;
-    viewHeight = logInViewController.view.frame.size.height;
-    
-    int logInWidth = 100;
-    int x = (viewWidth / 2) - (logInWidth / 2);
-    CGRect logInFrame = CGRectMake(x, ((viewHeight / 3) * 2), logInWidth, 35);
-    
-    int regWidth = 200;
-    int regX = (viewWidth / 2) - (regWidth / 2);
-    CGRect regFrame = CGRectMake(regX, ((viewHeight / 15) * 11), regWidth, 35);
-    
+    view_width  = log_in_VC.view.frame.size.width;
+    view_height = log_in_VC.view.frame.size.height;
     
     
     // Login button creation
-    self.logInButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.logInButton setTitle:@"Log In" forState:UIControlStateNormal];
-    self.logInButton.titleLabel.font = [UIFont systemFontOfSize:30];
-    self.logInButton.frame = logInFrame;
-    [self.logInButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
+    self.log_in_button                  = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.log_in_button.titleLabel.font  = [UIFont systemFontOfSize:30];
+    self.log_in_button.frame            = CGRectMake((view_width / 2) - 50, ((view_height / 3) * 2), 100, 35);
+    [self.log_in_button setTitle:@"Log In" forState:UIControlStateNormal];
+    [self.log_in_button addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
     
     // Register button creation
-    self.regButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.regButton setTitle:@"New User? Register." forState:UIControlStateNormal];
-    self.regButton.titleLabel.font = [UIFont systemFontOfSize:10];
-    self.regButton.frame = regFrame;
-    [self.regButton addTarget:self action:@selector(reg) forControlEvents:UIControlEventTouchUpInside];
+    self.create_user_button                    = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.create_user_button.titleLabel.font    = [UIFont systemFontOfSize:10];
+    self.create_user_button.frame              = CGRectMake((view_width / 2) - 100, ((view_height / 15) * 11), 200, 35);
+    [self.create_user_button setTitle:@"New User? Register." forState:UIControlStateNormal];
+    [self.create_user_button addTarget:self action:@selector(newUserRegistration) forControlEvents:UIControlEventTouchUpInside];
     
-    self.logInButton.hidden = NO;
-    self.regButton.hidden = NO;
+    // Make sure buttons show
+    self.log_in_button.hidden       = NO;
+    self.create_user_button.hidden  = NO;
     
-    [logInViewController hasParent:self];
+    [log_in_VC hasParent:self];
     
-    [logInViewController.view addSubview:self.logInButton];
-    [logInViewController.view addSubview:self.regButton];
+    [log_in_VC.view addSubview:self.log_in_button];
+    [log_in_VC.view addSubview:self.create_user_button];
     
     
     
     return YES;
 }
 
-- (void) reg
+- (void) newUserRegistration
 {
-    self.logInButton.hidden = YES;
-    self.regButton.hidden = YES;
-    if (![logInViewController registerNow])
-    {
-        return;
-    }
+    self.log_in_button.hidden       = YES;
+    self.create_user_button.hidden  = YES;
+    
+    if (![log_in_VC enterRegistrationInfo]) return;
 }
 
 - (void) logIn
 {
-    if (![logInViewController logIn]) return;
+    if (![log_in_VC enterLogInCredentials]) return;
     
-    [logInViewController dismissViewControllerAnimated:YES completion:nil];
+    [log_in_VC dismissViewControllerAnimated:YES completion:nil];
     
-    UITabBarController *tbc                     = [[UITabBarController alloc] init];
-    UIViewController *mainViewController        = [[ViewController alloc] init];
-    UIViewController *personalPageController    = [[PersonalPageViewController alloc] init];
-    UIViewController *settingsController        = [[SettingsTableViewController alloc] init];
+    UITabBarController *tbc                 = [[UITabBarController alloc] init];
+    UIViewController *main_VC               = [[ViewController alloc] init];
+    UIViewController *personal_page_VC      = [[PersonalPageViewController alloc] init];
+    UIViewController *settings_VC           = [[SettingsTableViewController alloc] init];
     
     
     tbc.viewControllers = [NSArray arrayWithObjects:
-                           mainViewController,
-                           personalPageController,
-                           settingsController,
+                           main_VC,
+                           personal_page_VC,
+                           settings_VC,
                            nil];
     
     

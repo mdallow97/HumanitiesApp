@@ -23,23 +23,23 @@
 
 - (id) init {
     if (self = [super init]) {
-        self.myProjects = [[NSMutableArray alloc] init];
-        self.followerProjects = [[NSMutableArray alloc] init];
+        self.user_projects = [[NSMutableArray alloc] init];
+        self.follower_projects = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
 // returns a project with given "name". Searches through every project
-- (ProjectData *) projectNamed:(NSString *)name
+- (ProjectData *) userProjectNamed:(NSString *)name
 {
     ProjectData *pd = nil;
     
     
-    int numProjects = (int) self.myProjects.count;
+    int numProjects = (int) self.user_projects.count;
     int i;
     
     for (i = 0; i < numProjects; i++) {
-        ProjectData *test = (ProjectData *) self.myProjects[i];
+        ProjectData *test = (ProjectData *) self.user_projects[i];
         
         if ([test.projectName isEqualToString:name]) {
             
@@ -54,16 +54,16 @@
     else return pd;
 }
 
-- (ProjectData *) projectWithId: (NSString *) pId
+- (ProjectData *) followerProjectWithId: (NSString *) pId
 {
     ProjectData *pd = nil;
     
     
-    int numProjects = (int) self.followerProjects.count;
+    int numProjects = (int) self.follower_projects.count;
     int i;
     
     for (i = 0; i < numProjects; i++) {
-        ProjectData *test = (ProjectData *) self.followerProjects[i];
+        ProjectData *test = (ProjectData *) self.follower_projects[i];
 
         if ([(NSString *) test.projectId isEqual: (NSString *)pId]) {
             pd = test;

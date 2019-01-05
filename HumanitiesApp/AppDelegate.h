@@ -15,9 +15,10 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property UIButton *logInButton;
-@property UIButton *regButton;
+@property UIButton *log_in_button;
+@property UIButton *create_user_button;
 
+- (void) newUserRegistration;
 - (void) logIn;
 
 @end

@@ -21,7 +21,6 @@
 // General Functions
 - (void) viewDidLoad;
 - (void)viewWillAppear:(BOOL)animated;
-- (void) frameSetup;
 - (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at: (NSString *)path;
 -(NSMutableArray *) toArray:(NSString *)data;
 - (void) done;
@@ -39,13 +38,13 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info;
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 - (void) cancel;
-- (void) showEditingOptions;
+- (void) presentEditingOptions;
 - (void) enterEditingMode;
 - (void) loadProjectWithData:(ProjectData *) project;
 
-@property NSString *currentProjectName;
-@property NSString *currentProjectId;
-@property BOOL inEditingMode;
+@property NSString *current_project_name;
+@property NSString *current_project_ID;
+@property BOOL in_editing_mode;
 
 
 - (void) createFileOfType:(int) type;

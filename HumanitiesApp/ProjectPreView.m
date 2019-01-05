@@ -14,80 +14,37 @@
 
 @implementation ProjectPreView
 {
-    PersonalPageViewController *parentView;
+    PersonalPageViewController *parent_view;
     ProjectData *project;
     
-    UILabel *projectNameLabel;
-    UIButton *moreButton, *goToProjectButton;
+    UILabel *project_name_LBL;
+    UIButton *more_button, *go_to_project_button;
     UIImage *preview;
-    CGRect projectNameFrame, moreFrame, goToProjectFrame, previewFrame;
-    NSString *projectName;
-    NSString *projectId;
-    UIImageView *previewView;
+    NSString *project_name;
+    NSString *project_ID;
+    UIImageView *preview_view;
     
-    int viewHeight, viewWidth;
-    
-    // Label variables
-    int defaultLabelHeight, defaultLabelWidth;
-    
-    // Button variables
-    int defaultButtonHeight, defaultButtonWidth;
-    
-    // Preview variables
-    int defaultPreviewHeight;
-}
-
-- (void) setup
-{
-    viewWidth = self.frame.size.width;
-    viewHeight = self.frame.size.height;
-    
-    int x;
-    
-    // Prepare frame for displaying the username label
-    defaultLabelWidth = (viewWidth / 3) * 2;
-    defaultLabelHeight = 50;
-    
-    // Prepare frame for displaying more options button
-    defaultButtonWidth = 50;
-    defaultButtonHeight = 35;
-    
-    // Prepare frame for displaying preview image
-    defaultPreviewHeight = viewHeight - defaultLabelHeight;
-    preview = [UIImage imageNamed:@"preview.png"];
-    
-    
-    x = 10;
-    projectNameFrame = CGRectMake(x, 5, defaultLabelWidth, defaultLabelHeight);
-    
-    
-    x = viewWidth - (defaultButtonWidth + x);
-    moreFrame = CGRectMake(x, 0, defaultButtonWidth, defaultButtonHeight);
-    
-    x = 0;
-    previewFrame = CGRectMake(x, defaultLabelHeight, viewWidth, defaultPreviewHeight);
-    
-    goToProjectFrame = previewFrame;
+    int view_height, view_width;
 }
 
 - (void) setProjectName:(NSString *)name andID:(NSString *) Id withParentView:(PersonalPageViewController *) parentView
 {
     
-    projectName         = name;
-    projectId           = Id;
-    self->parentView    = parentView;
+    project_name        = name;
+    project_ID          = Id;
+    self->parent_view   = parentView;
     
     UserData *projects  = [UserData sharedMyProjects];
     
     if (Id == nil)
-        project         = [projects projectNamed:projectName];
+        project         = [projects userProjectNamed:project_name];
     else
     {
-        project        = [projects projectWithId:Id];
+        project         = [projects followerProjectWithId:Id];
     }
-    if (project.previewImage) [previewView setImage:project.previewImage];
+    if (project.previewImage) [preview_view setImage:project.previewImage];
     
-    projectNameLabel.text = projectName;
+    project_name_LBL.text = project_name;
     
     
 }
@@ -96,41 +53,43 @@
 {
     self = [super initWithFrame:frame];
     
-    [self setup];
+    view_width  = self.frame.size.width;
+    view_height = self.frame.size.height;
+    preview     = [UIImage imageNamed:@"preview.png"];
     
     self.backgroundColor = [UIColor whiteColor];
     
     // Username Label Creation
-    projectNameLabel      = [[UILabel alloc] initWithFrame:projectNameFrame];
-    projectNameLabel.font = [UIFont fontWithName:@"DamascusBold" size:16];
+    project_name_LBL      = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, (view_width / 3) * 2, 50)];
+    project_name_LBL.font = [UIFont fontWithName:@"DamascusBold" size:16];
     
     
     // More Options Button Creation
-    moreButton                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    moreButton.frame           = moreFrame;
-    moreButton.titleLabel.font = [UIFont systemFontOfSize:35];
-    [moreButton setTitle:@"..." forState:UIControlStateNormal];
-    [moreButton addTarget:self action:@selector(showOptions) forControlEvents:UIControlEventTouchUpInside];
+    more_button                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    more_button.frame           = CGRectMake(view_width - 60, 0, 50, 35);
+    more_button.titleLabel.font = [UIFont systemFontOfSize:35];
+    [more_button setTitle:@"..." forState:UIControlStateNormal];
+    [more_button addTarget:self action:@selector(showOptions) forControlEvents:UIControlEventTouchUpInside];
     
     
     // Preview image setup
-    previewView = [[UIImageView alloc] initWithFrame:previewFrame];
-    [previewView setImage:preview];
-    [previewView setContentMode:UIViewContentModeScaleAspectFit];
+    preview_view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 50, view_width, view_height - 50)];
+    [preview_view setImage:preview];
+    [preview_view setContentMode:UIViewContentModeScaleAspectFit];
     
     // Go To Project Button setup
-    goToProjectButton       = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToProjectButton.frame = goToProjectFrame;
-    [goToProjectButton addTarget:self action:@selector(goToProject) forControlEvents:UIControlEventTouchUpInside];
+    go_to_project_button       = [UIButton buttonWithType:UIButtonTypeCustom];
+    go_to_project_button.frame = CGRectMake(0, 50, view_width, view_height - 50);
+    [go_to_project_button addTarget:self action:@selector(goToProject) forControlEvents:UIControlEventTouchUpInside];
     
     
     _inEditingMode = false;
     
     // Add Subviews
-    [self addSubview:projectNameLabel];
-    [self addSubview:moreButton];
-    [self addSubview:previewView];
-    [self addSubview:goToProjectButton];
+    [self addSubview:project_name_LBL];
+    [self addSubview:more_button];
+    [self addSubview:preview_view];
+    [self addSubview:go_to_project_button];
     
     
     return self;
@@ -167,12 +126,12 @@
 {
     UserData *ud = [UserData sharedMyProjects];
     
-    ProjectData *projectToRemove = [ud projectNamed:projectName];
-    [ud.myProjects removeObject:projectToRemove];
+    ProjectData *project_to_remove = [ud userProjectNamed:project_name];
+    [ud.user_projects removeObject:project_to_remove];
     
     [self removeFromSuperview];
     
-    [parentView createPreviews];
+    [parent_view createPreviews];
 }
 
 - (void) goToProject:(BOOL) canEdit
@@ -181,13 +140,13 @@
     UserData *projects      = [UserData sharedMyProjects];
     ProjectData *pd;
     
-    if (projectId == nil)
+    if (project_ID == nil)
     {
-        pd = [projects projectNamed:projectName];
+        pd = [projects userProjectNamed:project_name];
     }
     else
     {
-        pd = [projects projectWithId:projectId];
+        pd = [projects followerProjectWithId:project_ID];
     }
     [project loadProjectWithData:pd];
     

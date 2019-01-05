@@ -20,14 +20,15 @@
 
 // General Functions
 - (void) viewDidLoad;
-- (void) frameSetup;
 - (void) hideAll;
 - (void) inProject:(ProjectData *) project;
 - (void) loadFileWithData:(FileData *) file inProject:(ProjectData *) project;
 
-@property NSString *currentFileName;
-@property BOOL inEditingMode;
-@property(readonly, copy) NSDictionary *userInfo;
+@property ProjectData *current_project;
+@property FileData *current_file;
+@property NSString *current_file_name;
+@property BOOL in_editing_mode;
+@property(readonly, copy) NSDictionary *user_info;
 
 // Functions only available in editing mode
 - (void) enterEditingMode;

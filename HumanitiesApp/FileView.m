@@ -14,188 +14,125 @@
 @implementation FileView
 {
     // General Variable Declaration
-    int viewWidth, viewHeight;
-    int buttonWidth, buttonHeight;
+    int view_width, view_height;
+    int button_width, button_height;
     
-    BOOL shouldAddFile;
-    
-    ProjectData *projectData;
-    FileData *fileData;
+    BOOL should_add_file;
     
     // Cancel Button Variable Declarations
-    UIButton *cancelButton;
-    int cancelX, cancelY;
-    CGRect cancelFrame;
-    
-    // File Name Label Variable Declaration
-    UILabel *projectNameLabel;
-    int projectNameWidth, projectNameHeight;
-    CGRect projectNameFrame;
+    UIButton *cancel_button;
     
     // EDITING MODE Variables:
-    
-    // Next Button
-    UIButton *nextButton;
-    CGRect nextFrame;
-    
-    // Save Button Variable Declarations
-    UIButton *saveButton;
-    CGRect saveFrame;
+    UIButton *next_button;
+    UIButton *save_button;
     
     // Viewing Mode
-    
-    UIButton *postCommentButton;
-    CGRect postFrame;
-    int keyboardHeight;
+    UIButton *post_comment_button;
+    int keyboard_height;
     
     
     // NEW PROJECT MODE Variable Declarations:
-    
-    // New File Name Text Field
-    int textFieldWidth, textFieldHeight;
-    UITextField *nameTextField;
-    
-    // New File Name Empty Label
-    UILabel *errorFieldLabel;
-    int errorFieldWidth, errorFieldHeight;
-    CGRect errorFieldFrame;
+    UITextField *file_name_TF;
+    UILabel *error_LBL;
     
     // File Type: Image
-    UIButton *takePhotoButton;
-    UIButton *openPhotosButton;
+    UIButton *take_photo_button;
+    UIButton *open_camera_roll_button;
     
     // Description Text View Input
-    UITextView *descriptionTV;
-    UITextView *fileDescription;
-    UITextField *commentTF;
-}
-
-
-// General Function Definitions
-
-- (void) frameSetup
-{
-    // General Variable Initialization
-    viewWidth           = self.view.frame.size.width;
-    viewHeight          = self.view.frame.size.height;
-    
-    shouldAddFile       = false;
-    
-    buttonWidth         = 50;
-    buttonHeight        = 50;
-    
-    // Cancel Button Variable Initialization
-    cancelFrame         = CGRectMake(10, 30, buttonWidth, buttonHeight);
-    
-    // Add File Button Variable Initialization
-    cancelX             = viewWidth - (buttonWidth + 5);
-    cancelY             = 30;
-    
-    saveFrame           = CGRectMake(cancelX, cancelY, buttonWidth, buttonHeight);
-    
-    // Next Button Variable Initialization
-    nextFrame           = saveFrame;
-    
-    // General Text Field Variable Initialization
-    textFieldWidth      = 250;
-    textFieldHeight     = 50;
-    
-    // Empty Name Label Variable Initialization
-    errorFieldWidth     = 250;
-    errorFieldHeight    = 50;
-    errorFieldFrame     = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
-    
-    // Project Name Label Variable Initialization
-    projectNameWidth    = 200;
-    projectNameHeight   = 50;
-    projectNameFrame    = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
-    
-    keyboardHeight = 335;
+    UITextView *create_description_TV;
+    UITextView *edit_description_TV;
+    UITextField *comment_TF;
 }
 
 - (void) inProject:(ProjectData *) project
 {
-    projectData = project;
+    _current_project = project;
 }
 
 - (void) keyboardWillShow:(NSNotification *)notification {
-    keyboardHeight = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    keyboard_height = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
 }
 
 - (void) viewDidLoad
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    [self frameSetup];
+    
+    view_width      = self.view.frame.size.width;
+    view_height     = self.view.frame.size.height;
+    
+    should_add_file = false;
+    keyboard_height  = 335; // Typical keyboard height, cannot be zero when initialized or it will cause a bug
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
-    _inEditingMode = false;
+    _in_editing_mode = false;
     
     // Data will be nil if file does not exist
-    fileData = [projectData fileNamed:self->_currentFileName];
+    _current_file = [_current_project fileNamed:self->_current_file_name];
     
-    saveButton          = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    saveButton.hidden   = YES;
-    saveButton.frame    = saveFrame;
-    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
-    [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
+    save_button          = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    save_button.hidden   = YES;
+    save_button.frame    = CGRectMake(view_width - 55, 30, 50, 50);
+    [save_button setTitle:@"Save" forState:UIControlStateNormal];
+    [save_button addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
     
-    cancelButton        = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    cancelButton.frame  = cancelFrame;
-    cancelButton.hidden = YES;
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+    cancel_button        = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    cancel_button.frame  = CGRectMake(10, 30, 50, 50);
+    cancel_button.hidden = YES;
+    [cancel_button setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancel_button addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     
-    nextButton          = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    nextButton.frame    = nextFrame;
-    nextButton.hidden   = YES;
-    [nextButton setTitle:@"Next" forState:UIControlStateNormal];
+    next_button          = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    next_button.frame    = CGRectMake(view_width - 55, 30, 50, 50);
+    next_button.hidden   = YES;
+    [next_button setTitle:@"Next" forState:UIControlStateNormal];
     // nextButton target is dependent on file type
     
     
-    nameTextField                   = [[UITextField alloc] initWithFrame:CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight)];
-    self->nameTextField.placeholder = @"New File Name";
-    nameTextField.hidden            = YES;
-    nameTextField.borderStyle       = UITextBorderStyleRoundedRect;
-    nameTextField.tintColor         = [UIColor blueColor];
-    nameTextField.backgroundColor   = [UIColor lightGrayColor];
-    nameTextField.returnKeyType     = UIReturnKeyDone;
-    nameTextField.textAlignment     = NSTextAlignmentCenter;
-    nameTextField.delegate          = self;
+    file_name_TF                   = [[UITextField alloc] initWithFrame:CGRectMake((view_width / 2) - 125, (view_height / 3), 250, 50)];
+    self->file_name_TF.placeholder = @"New File Name";
+    file_name_TF.hidden            = YES;
+    file_name_TF.borderStyle       = UITextBorderStyleRoundedRect;
+    file_name_TF.tintColor         = [UIColor blueColor];
+    file_name_TF.backgroundColor   = [UIColor lightGrayColor];
+    file_name_TF.returnKeyType     = UIReturnKeyDone;
+    file_name_TF.textAlignment     = NSTextAlignmentCenter;
+    file_name_TF.delegate          = self;
     
     
     // Empty Project Name Label Setup
-    errorFieldLabel                 = [[UILabel alloc] initWithFrame:errorFieldFrame];
-    errorFieldLabel.textAlignment   = NSTextAlignmentCenter;
-    errorFieldLabel.hidden          = YES;
-    errorFieldLabel.textColor       = [UIColor redColor];
+    error_LBL                 = [[UILabel alloc] initWithFrame:CGRectMake((view_width / 2) - 125, (view_height / 2), 250, 50)];
+    error_LBL.textAlignment   = NSTextAlignmentCenter;
+    error_LBL.hidden          = YES;
+    error_LBL.textColor       = [UIColor redColor];
     
     [self hideAll];
     
     // Adding Subviews
-    [self.view addSubview:saveButton];
-    [self.view addSubview:cancelButton];
-    [self.view addSubview:nextButton];
-    [self.view addSubview:nameTextField];
-    [self.view addSubview:errorFieldLabel];
+    [self.view addSubview:save_button];
+    [self.view addSubview:cancel_button];
+    [self.view addSubview:next_button];
+    [self.view addSubview:file_name_TF];
+    [self.view addSubview:error_LBL];
 }
 
 - (void) loadFileWithData:(FileData *) file inProject:(ProjectData *) project
 {
-    _currentFileName = file.fileName;
-    projectData = project;
+    _current_file_name  = file.fileName;
+    _current_project    = project;
 }
 
 - (NSString *) interactWithDatabase: (NSString *) fileName with: (int) fileType and: (NSString *) desc and: (NSString *) projId at:(NSString *)path
 {
     NSString *response;
-    NSString *myRequestString;
+    NSString *request_string;
     
     // Create your request string with parameter name as defined in PHP file
-    myRequestString                 = [NSString stringWithFormat:@"fileName=%@&fileType=%d&desc=%@&projId=%@",fileName,fileType,desc,projId];
+    request_string                  = [NSString stringWithFormat:@"fileName=%@&fileType=%d&desc=%@&projId=%@",fileName,fileType,desc,projId];
     
     // Create Data from request
-    NSData *myRequestData           = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
+    NSData *request_data            = [NSData dataWithBytes: [request_string UTF8String] length: [request_string length]];
     NSString *url                   = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
     NSMutableURLRequest *request    = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
     
@@ -206,31 +143,28 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
     
     // Set Request Body
-    [request setHTTPBody: myRequestData];
+    [request setHTTPBody: request_data];
     
     // Now send a request and get Response
-    NSData *returnData  = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    NSData *return_data  = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     
     // Log Response
-    response            = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    response            = [[NSString alloc] initWithBytes:[return_data bytes] length:[return_data length] encoding:NSUTF8StringEncoding];
     
     return response;
 }
 
 - (void) save
 {
-    if (shouldAddFile)
+    if (should_add_file)
     {
-        [projectData.files addObject:fileData];
+        [_current_project.files addObject:_current_file];
         
-        //NSData *imageData = UIImagePNGRepresentation(projectData.previewImage);
-        //NSString *imageBin = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLneLength];
-        // NSLog(@"binary: %@", imageBin);
-        NSString *reply = [self interactWithDatabase: fileData.fileName with: fileData.fileType and: descriptionTV.text and: projectData.projectId at:@"uploadFile.php"];
+        NSString *reply = [self interactWithDatabase: _current_file.fileName with: _current_file.fileType and: create_description_TV.text and: _current_project.projectId at:@"uploadFile.php"];
         NSLog(@"%@", reply);
     }
-    if (descriptionTV.text) [fileData storeDescription:descriptionTV.text];
-    if ([descriptionTV isFirstResponder]) [descriptionTV resignFirstResponder];
+    if (create_description_TV.text) [_current_file storeDescription:create_description_TV.text];
+    if ([create_description_TV isFirstResponder]) [create_description_TV resignFirstResponder];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -242,31 +176,31 @@
 
 - (void) hideAll
 {
-    saveButton.hidden       = YES;
-    cancelButton.hidden     = YES;
-    nextButton.hidden       = YES;
-    nameTextField.hidden    = YES;
-    errorFieldLabel.hidden  = YES;
-    openPhotosButton.hidden = YES;
-    takePhotoButton.hidden  = YES;
+    save_button.hidden              = YES;
+    cancel_button.hidden            = YES;
+    next_button.hidden              = YES;
+    file_name_TF.hidden             = YES;
+    error_LBL.hidden                = YES;
+    open_camera_roll_button.hidden  = YES;
+    take_photo_button.hidden        = YES;
 }
 
 - (void) enterEditingMode
 {
-    _inEditingMode      = true;
+    _in_editing_mode = true;
     
     // Edit file of a certain type
-    if (fileData.fileType == DOCUMENT) {
+    if (_current_file.fileType == DOCUMENT) {
         
-    } else if (fileData.fileType == PRESENTATION) {
+    } else if (_current_file.fileType == PRESENTATION) {
         
-    } else if (fileData.fileType == IMAGE) {
+    } else if (_current_file.fileType == IMAGE) {
         // Add change button in upper right corner
-    } else if (fileData.fileType == AUDIO) {
+    } else if (_current_file.fileType == AUDIO) {
         
-    } else if (fileData.fileType == VIDEO) {
+    } else if (_current_file.fileType == VIDEO) {
         
-    } else if (fileData.fileType == AUGMENTED_REALITY) {
+    } else if (_current_file.fileType == AUGMENTED_REALITY) {
         
     }
     
@@ -275,145 +209,137 @@
 
 - (void) enterViewingMode
 {
-    cancelButton.hidden                     = NO;
+    cancel_button.hidden  = NO;
     
-    CGRect scrollFrame                      = CGRectMake(0, 85, viewWidth, (viewHeight - 85));
-    UIScrollView *mainScrollView            = [[UIScrollView alloc] initWithFrame:scrollFrame];
-    mainScrollView.contentSize              = CGSizeMake(viewWidth, 4000);
+    UIScrollView *file_SV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 85, view_width, (view_height - 85))];
+    file_SV.contentSize   = CGSizeMake(view_width, 4000);
     
-    CGRect fileViewFrame                    = CGRectMake(0, 0, viewWidth, (viewHeight / 3));
+    UILabel *username_LBL = [[UILabel alloc] initWithFrame:CGRectMake(10, ((view_height / 3) + 20), 50, 30)];
+    UserData *local_user  = [UserData sharedMyProjects];
     
-    CGRect usernameFrame                    = CGRectMake(10, ((viewHeight / 3) + 20), 50, 30);
-    UILabel *usernameLabel = [[UILabel alloc] initWithFrame:usernameFrame];
-    
-    UserData *localUser                     = [UserData sharedMyProjects];
-    
-    if (_inEditingMode) usernameLabel.text  = localUser.username;
-    else usernameLabel.text                 = [self interactWithDatabase: fileData.fileId with: nil and: nil and: nil at:@"whoOwns.php"];
-    
-    usernameLabel.font                      = [UIFont fontWithName:@"DamascusBold" size:16];
+    if (_in_editing_mode) username_LBL.text = local_user.username;
+    else username_LBL.text                  = [self interactWithDatabase: _current_file.fileId with: nil and: nil and: nil at:@"whoOwns.php"];
+    username_LBL.font                       = [UIFont fontWithName:@"DamascusBold" size:16];
 
-    CGRect descriptionFrame                 = CGRectMake(10, ((viewHeight / 3) + 40), (viewWidth - 20), 125);
-    fileDescription                         = [[UITextView alloc] initWithFrame:descriptionFrame];
-    fileDescription.font                    = [UIFont systemFontOfSize:16];
+    edit_description_TV         = [[UITextView alloc] initWithFrame:CGRectMake(10, ((view_height / 3) + 40), (view_width - 20), 125)];
+    edit_description_TV.font    = [UIFont systemFontOfSize:16];
     
-    if (fileData.fileDescription == nil)
-        fileData.fileDescription            = [self interactWithDatabase: fileData.fileId with: nil and: nil and: nil at:@"fileDesc.php"];
-    
-    
-    fileDescription.text                    = fileData.fileDescription;
-    fileDescription.delegate                = self;
-    fileDescription.scrollEnabled           = NO;
-    
-    CGRect commentFrame                     = CGRectMake(10, (viewHeight - 60), (viewWidth - 20), 35);
-    commentTF                               = [[UITextField alloc] initWithFrame:commentFrame];
-    commentTF.placeholder                   = @"Add comment here...";
-    commentTF.borderStyle                   = UITextBorderStyleRoundedRect;
-    commentTF.delegate                      = self;
-    commentTF.returnKeyType                 = UIReturnKeyDone;
+    if (_current_file.fileDescription == nil)
+        _current_file.fileDescription            = [self interactWithDatabase: _current_file.fileId with: nil and: nil and: nil at:@"fileDesc.php"];
     
     
-    if (_inEditingMode) fileDescription.editable    = true;
-    else fileDescription.editable                   = false;
+    edit_description_TV.text                 = _current_file.fileDescription;
+    edit_description_TV.delegate             = self;
+    edit_description_TV.scrollEnabled        = NO;
+    
+    comment_TF                               = [[UITextField alloc] initWithFrame:CGRectMake(10, (view_height - 60), (view_width - 20), 35)];
+    comment_TF.placeholder                   = @"Add comment here...";
+    comment_TF.borderStyle                   = UITextBorderStyleRoundedRect;
+    comment_TF.delegate                      = self;
+    comment_TF.returnKeyType                 = UIReturnKeyDone;
+    
+    
+    if (_in_editing_mode) edit_description_TV.editable    = true;
+    else edit_description_TV.editable                   = false;
     
     
     
-    [self.view addSubview:mainScrollView];
-    [self.view addSubview:commentTF];
+    [self.view addSubview:file_SV];
+    [self.view addSubview:comment_TF];
     
     // Open file of a certain type
-    if (fileData.fileType == DOCUMENT) {
+    if (_current_file.fileType == DOCUMENT) {
         
-    } else if (fileData.fileType == PRESENTATION) {
+    } else if (_current_file.fileType == PRESENTATION) {
         
-    } else if (fileData.fileType == IMAGE) {
+    } else if (_current_file.fileType == IMAGE) {
         
-        UIImageView *fileView = [[UIImageView alloc] initWithFrame:fileViewFrame];
-        [fileView setImage:fileData.image];
-        [fileView setContentMode:UIViewContentModeScaleAspectFit];
+        UIImageView *file_view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view_width, (view_height / 3))];
+        [file_view setImage:_current_file.image];
+        [file_view setContentMode:UIViewContentModeScaleAspectFit];
         
-        [mainScrollView addSubview:fileView];
+        [file_SV addSubview:file_view];
         
-    } else if (fileData.fileType == AUDIO) {
+    } else if (_current_file.fileType == AUDIO) {
         
-    } else if (fileData.fileType == VIDEO) {
+    } else if (_current_file.fileType == VIDEO) {
         
-    } else if (fileData.fileType == AUGMENTED_REALITY) {
+    } else if (_current_file.fileType == AUGMENTED_REALITY) {
         
     }
     
     
     
     
-    [mainScrollView addSubview:fileDescription];
-    [mainScrollView addSubview:usernameLabel];
+    [file_SV addSubview:edit_description_TV];
+    [file_SV addSubview:username_LBL];
 }
 
 
 - (void) createFileOfType:(int) type
 {
     [self hideAll];
-    cancelButton.hidden         = NO;
-    nextButton.hidden           = NO;
-    nameTextField.hidden        = NO;
+    cancel_button.hidden    = NO;
+    next_button.hidden      = NO;
+    file_name_TF.hidden     = NO;
     
     // create file with type
-    fileData            = [[FileData alloc] init];
-    nameTextField.text  = @"";
-    fileData.fileType   = type;
+    _current_file           = [[FileData alloc] init];
+    file_name_TF.text       = @"";
+    _current_file.fileType  = type;
     
-    [nameTextField becomeFirstResponder];
+    [file_name_TF becomeFirstResponder];
     
     // start creation of file, dependent on type of file
     if (type == DOCUMENT) {
-        [nextButton addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventTouchUpInside)];
-        [nameTextField addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventEditingDidEnd)];
+        [next_button addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventTouchUpInside)];
+        [file_name_TF addTarget:self action:@selector(createDocument) forControlEvents:(UIControlEventEditingDidEnd)];
     } else if (type == PRESENTATION) {
-        [nextButton addTarget:self action:@selector(createPresentation) forControlEvents:(UIControlEventTouchUpInside)];
-        [nameTextField addTarget:self action:@selector(createPresentation) forControlEvents:(UIControlEventEditingDidEnd)];
+        [next_button addTarget:self action:@selector(createPresentation) forControlEvents:(UIControlEventTouchUpInside)];
+        [file_name_TF addTarget:self action:@selector(createPresentation) forControlEvents:(UIControlEventEditingDidEnd)];
     } else if (type == IMAGE) {
-        [nextButton addTarget:self action:@selector(createImage) forControlEvents:(UIControlEventTouchUpInside)];
-        [nameTextField addTarget:self action:@selector(createImage) forControlEvents:(UIControlEventEditingDidEnd)];
+        [next_button addTarget:self action:@selector(createImage) forControlEvents:(UIControlEventTouchUpInside)];
+        [file_name_TF addTarget:self action:@selector(createImage) forControlEvents:(UIControlEventEditingDidEnd)];
     } else if (type == AUDIO) {
-        [nextButton addTarget:self action:@selector(createAudio) forControlEvents:(UIControlEventTouchUpInside)];
-        [nameTextField addTarget:self action:@selector(createAudio) forControlEvents:(UIControlEventEditingDidEnd)];
+        [next_button addTarget:self action:@selector(createAudio) forControlEvents:(UIControlEventTouchUpInside)];
+        [file_name_TF addTarget:self action:@selector(createAudio) forControlEvents:(UIControlEventEditingDidEnd)];
     } else if (type == VIDEO) {
-        [nextButton addTarget:self action:@selector(createVideo) forControlEvents:(UIControlEventTouchUpInside)];
-        [nameTextField addTarget:self action:@selector(createVideo) forControlEvents:(UIControlEventEditingDidEnd)];
+        [next_button addTarget:self action:@selector(createVideo) forControlEvents:(UIControlEventTouchUpInside)];
+        [file_name_TF addTarget:self action:@selector(createVideo) forControlEvents:(UIControlEventEditingDidEnd)];
     } else if (type == AUGMENTED_REALITY) {
-        [nextButton addTarget:self action:@selector(createAR) forControlEvents:(UIControlEventTouchUpInside)];
-        [nameTextField addTarget:self action:@selector(createAR) forControlEvents:(UIControlEventEditingDidEnd)];
+        [next_button addTarget:self action:@selector(createAR) forControlEvents:(UIControlEventTouchUpInside)];
+        [file_name_TF addTarget:self action:@selector(createAR) forControlEvents:(UIControlEventEditingDidEnd)];
     }
 }
 
 
 - (BOOL) isFileNameEmptyOrTaken
 {
-    [nameTextField resignFirstResponder];
+    [file_name_TF resignFirstResponder];
     // Check to make sure text field is not empty
-    if ([nameTextField.text isEqual:@""])
+    if ([file_name_TF.text isEqual:@""])
     {
-        errorFieldLabel.text    = @"File name cannot be blank";
-        errorFieldLabel.hidden  = NO;
+        error_LBL.text    = @"File name cannot be blank";
+        error_LBL.hidden  = NO;
         
         return true;
     }
     
-    errorFieldLabel.hidden = YES;
+    error_LBL.hidden = YES;
     
     // Check to make sure file name doesnt conflict with another file name within same project
     
-    FileData *test = [projectData fileNamed:nameTextField.text];
+    FileData *test = [_current_project fileNamed:file_name_TF.text];
     
-    if ([test.fileName isEqualToString:nameTextField.text]) {
-        errorFieldLabel.text    = @"File name taken";
-        errorFieldLabel.hidden  = NO;
+    if ([test.fileName isEqualToString:file_name_TF.text]) {
+        error_LBL.text    = @"File name taken";
+        error_LBL.hidden  = NO;
         return true;
     }
     
     
     
-    NSString *name = nameTextField.text;
+    NSString *name = file_name_TF.text;
     [self hideAll];
     [self saveFileName:name];
     
@@ -423,11 +349,11 @@
 
 - (void) saveFileName:(NSString *)name
 {
-    shouldAddFile       = true;
-    cancelButton.hidden = NO;
+    should_add_file         = true;
+    cancel_button.hidden    = NO;
     
     // Store File Name
-    fileData.fileName   = name;
+    _current_file.fileName  = name;
     
 }
 
@@ -437,36 +363,36 @@
     [self hideAll];
     
     // Unhide necessary objects
-    saveButton.hidden = NO;
+    save_button.hidden = NO;
     
     // Create Description Text Field
-    CGRect descriptionFrame         = CGRectMake(30, (viewHeight / 3), (viewWidth - 60), 200);
+    CGRect descriptionFrame         = CGRectMake(30, (view_height / 3), (view_width - 60), 200);
     
-    descriptionTV                   = [[UITextView alloc] initWithFrame:descriptionFrame];
-    descriptionTV.editable          = YES;
-    descriptionTV.font              = [UIFont systemFontOfSize:16];
-    descriptionTV.backgroundColor   = [UIColor whiteColor];
+    create_description_TV                   = [[UITextView alloc] initWithFrame:descriptionFrame];
+    create_description_TV.editable          = YES;
+    create_description_TV.font              = [UIFont systemFontOfSize:16];
+    create_description_TV.backgroundColor   = [UIColor whiteColor];
     
     // Create rectangle around frame of description
-    UIView *rectView = [[UIView alloc] initWithFrame:CGRectMake(28, (viewHeight / 3) - 2, (viewWidth - 56), 204)];
-    rectView.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    UIView *description_frame           = [[UIView alloc] initWithFrame:CGRectMake(28, (view_height / 3) - 2, (view_width - 56), 204)];
+    description_frame.backgroundColor   = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
     
-    UILabel *descriptionHere = [[UILabel alloc] initWithFrame:CGRectMake(30, (viewHeight / 3) - 30, 200, 30)];
+    UILabel *descriptionHere = [[UILabel alloc] initWithFrame:CGRectMake(30, (view_height / 3) - 30, 200, 30)];
     descriptionHere.text = @"Add a description below";
     
-    [self.view addSubview:rectView];
+    [self.view addSubview:description_frame];
     [self.view addSubview:descriptionHere];
-    [self.view addSubview:descriptionTV];
+    [self.view addSubview:create_description_TV];
     
 }
 
 - (void) postComment
 {
-    postCommentButton.hidden = YES;
+    post_comment_button.hidden = YES;
     
-    if ([fileDescription isFirstResponder]) [fileDescription resignFirstResponder];
-    [fileData storeDescription:fileDescription.text];
+    if ([edit_description_TV isFirstResponder]) [edit_description_TV resignFirstResponder];
+    [_current_file storeDescription:edit_description_TV.text];
     
 }
 
@@ -496,34 +422,34 @@
     if ([self isFileNameEmptyOrTaken]) return;
     
     
-    takePhotoButton                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    takePhotoButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight);
-    takePhotoButton.titleLabel.font = [UIFont systemFontOfSize:30];
-    [takePhotoButton setTitle:@"Take a Photo" forState:UIControlStateNormal];
-    [takePhotoButton addTarget:self action:@selector(openCamera) forControlEvents:UIControlEventTouchUpInside];
+    take_photo_button                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    take_photo_button.frame           = CGRectMake((view_width / 2) - 125, (view_height / 3), 250, 50);
+    take_photo_button.titleLabel.font = [UIFont systemFontOfSize:30];
+    [take_photo_button setTitle:@"Take a Photo" forState:UIControlStateNormal];
+    [take_photo_button addTarget:self action:@selector(openCamera) forControlEvents:UIControlEventTouchUpInside];
     
-    openPhotosButton                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    openPhotosButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), 2 * (viewHeight / 3), textFieldWidth, textFieldHeight);
-    openPhotosButton.titleLabel.font = [UIFont systemFontOfSize:30];
-    [openPhotosButton setTitle:@"Open Photo Roll" forState:UIControlStateNormal];
-    [openPhotosButton addTarget:self action:@selector(openPhotos) forControlEvents:UIControlEventTouchUpInside];
+    open_camera_roll_button                 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    open_camera_roll_button.frame           = CGRectMake((view_width / 2) - 125, 2 * (view_height / 3), 250, 50);
+    open_camera_roll_button.titleLabel.font = [UIFont systemFontOfSize:30];
+    [open_camera_roll_button setTitle:@"Open Photo Roll" forState:UIControlStateNormal];
+    [open_camera_roll_button addTarget:self action:@selector(openPhotos) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.view addSubview:takePhotoButton];
-    [self.view addSubview:openPhotosButton];
+    [self.view addSubview:take_photo_button];
+    [self.view addSubview:open_camera_roll_button];
     
 }
 
 - (void) openCamera
 {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"ERROR" message:@"Device does not have camera" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert_controller = [UIAlertController alertControllerWithTitle:@"ERROR" message:@"Device does not have camera" preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *alert = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:nil];
         
-        [alertController addAction:alert];
+        [alert_controller addAction:alert];
         
-        UIViewController *currentTopVC = [self currentTopViewController];
-        [currentTopVC presentViewController:alertController animated:YES completion:nil];
+        UIViewController *current_top_VC = [self currentTopViewController];
+        [current_top_VC presentViewController:alert_controller animated:YES completion:nil];
         
         return;
     }
@@ -539,24 +465,23 @@
 
 - (void) openPhotos
 {
-    UIImagePickerController *photoRoll  = [[UIImagePickerController alloc] init];
-    photoRoll.allowsEditing             = YES;
-    photoRoll.sourceType                = UIImagePickerControllerSourceTypePhotoLibrary;
-    photoRoll.delegate                  = self;
+    UIImagePickerController *photo_roll  = [[UIImagePickerController alloc] init];
+    photo_roll.allowsEditing             = YES;
+    photo_roll.sourceType                = UIImagePickerControllerSourceTypePhotoLibrary;
+    photo_roll.delegate                  = self;
     
-    [self presentViewController:photoRoll animated:YES completion:nil];
+    [self presentViewController:photo_roll animated:YES completion:nil];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
     UIImage *image = info[UIImagePickerControllerOriginalImage];
-    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    UIImage *edited_image = info[UIImagePickerControllerEditedImage];
     
-    if (editedImage)    [fileData storeImage:editedImage];
-    else                [fileData storeImage:image];
+    if (edited_image)    [_current_file storeImage:edited_image];
+    else                [_current_file storeImage:image];
     
     [picker dismissViewControllerAnimated:YES completion:nil];
-//    [self save];
     
     [self changeFileDescription];
 }
@@ -590,11 +515,11 @@
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
     
-    if (textField == nameTextField) {
+    if (textField == file_name_TF) {
         
         [textField resignFirstResponder];
-    } else if (textField == commentTF) {
-        commentTF.frame = CGRectMake(10, (viewHeight - 60), (viewWidth - 20), 35);
+    } else if (textField == comment_TF) {
+        comment_TF.frame = CGRectMake(10, (view_height - 60), (view_width - 20), 35);
         [textField resignFirstResponder];
     }
     
@@ -603,27 +528,25 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField == commentTF) {
+    if (textField == comment_TF) {
         
-        commentTF.frame = CGRectMake(10, (keyboardHeight + 100), (viewWidth - 20), 35);
+        comment_TF.frame = CGRectMake(10, (keyboard_height + 100), (view_width - 20), 35);
     }
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    postFrame                               = CGRectMake((viewWidth / 2) - 25, (keyboardHeight + 100), 50, 50);
-    postCommentButton                       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    postCommentButton.frame                 = postFrame;
-    postCommentButton.titleLabel.textColor  = [UIColor blueColor];
-    postCommentButton.titleLabel.font       = [UIFont fontWithName:@"Arial-BoldMT" size:16];
-//    postCommentButton.hidden                = YES;
-    [postCommentButton setTitle:@"Post" forState:UIControlStateNormal];
-    [postCommentButton addTarget:self action:@selector(postComment) forControlEvents:UIControlEventTouchUpInside];
+    post_comment_button                       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    post_comment_button.frame                 = CGRectMake((view_width / 2) - 25, (keyboard_height + 100), 50, 50);
+    post_comment_button.titleLabel.textColor  = [UIColor blueColor];
+    post_comment_button.titleLabel.font       = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+    [post_comment_button setTitle:@"Post" forState:UIControlStateNormal];
+    [post_comment_button addTarget:self action:@selector(postComment) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.view addSubview:postCommentButton];
+    [self.view addSubview:post_comment_button];
     
-    if (textView == fileDescription) {
-        postCommentButton.hidden = NO;
+    if (textView == edit_description_TV) {
+        post_comment_button.hidden = NO;
     }
 }
 

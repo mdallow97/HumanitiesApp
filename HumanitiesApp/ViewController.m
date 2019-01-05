@@ -15,112 +15,74 @@
 
 @implementation ViewController
 {
-    int viewWidth, viewHeight;
+    int view_width, view_height;
     
     // Scroll View Variable Declarations
-    UIScrollView *myProjectsView;
-    int scrollHeightInitial, scrollHeight;
-    int scrollWidthInitial, scrollWidth;
-    CGRect scrollViewFrame;
-    
-    // Preview Variable Declarations
-    int pvWidthInitial, pvWidth;
-    int pvHeightInitial, pvHeight;
-    
-    UITextField *searchBar;
-    CGRect searchFrame;
-    int searchHeightInitial, searchHeight;
-    
-}
-
-- (void) setup
-{
-    // General Variable Initialization
-    viewWidth           = self.view.frame.size.width;
-    viewHeight          = self.view.frame.size.height;
-    
-    // Scroll View Variable initialization
-    scrollHeightInitial = 85;
-    scrollWidthInitial  = 0;
-    
-    scrollWidth         = viewWidth - (2 * scrollWidthInitial);
-    scrollHeight        = viewHeight - scrollHeightInitial;
-    
-    scrollViewFrame     = CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight);
-    
-    
-    // Search Bar Text Field Variable Initialization
-    searchHeightInitial = 40;
-    searchHeight        = scrollHeightInitial - (searchHeightInitial + 10);
-    
-    searchFrame         = CGRectMake(10, searchHeightInitial, (viewWidth - 20), searchHeight);
-    
-    
-    // Preview Variable initialization
-    pvWidthInitial      = 0;
-    pvHeightInitial     = 351;
-    pvHeight            = 350;
-    pvWidth             = viewWidth - pvWidthInitial;
+    UIScrollView *following_projects_SV;
+    UITextField *search_bar_TF;
 }
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    [self setup];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    // General Variable Initialization
+    view_width          = self.view.frame.size.width;
+    view_height         = self.view.frame.size.height;
     
     // Search Bar Text Field Setup
-    searchBar                   = [[UITextField alloc] initWithFrame:searchFrame];
-    searchBar.borderStyle       = UITextBorderStyleRoundedRect;
-    searchBar.tintColor         = [UIColor blueColor];
-    searchBar.backgroundColor   = [UIColor lightGrayColor];
-    searchBar.placeholder       = @"Search...";
-    searchBar.returnKeyType     = UIReturnKeyGo;
-    searchBar.delegate          = self;
+    search_bar_TF                   = [[UITextField alloc] initWithFrame:CGRectMake(10, 40, (view_width - 20), 35)];
+    search_bar_TF.borderStyle       = UITextBorderStyleRoundedRect;
+    search_bar_TF.tintColor         = [UIColor blueColor];
+    search_bar_TF.backgroundColor   = [UIColor lightGrayColor];
+    search_bar_TF.placeholder       = @"Search...";
+    search_bar_TF.returnKeyType     = UIReturnKeyGo;
+    search_bar_TF.delegate          = self;
     
     
     // Project View Setup
-    myProjectsView                  = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
-    myProjectsView.backgroundColor  = [UIColor whiteColor];
-    myProjectsView.contentSize      = CGSizeMake(viewWidth, 4000);
+    following_projects_SV                  = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 85, view_width, view_height - 85)];
+    following_projects_SV.backgroundColor  = [UIColor whiteColor];
+    following_projects_SV.contentSize      = CGSizeMake(view_width, 4000);
     
     
+    // Load user projects
     UserData *ud        = [UserData sharedMyProjects];
-    int num_of_projects = (int) ud.projIds.count - 1;
+    int project_count = (int) ud.project_IDs.count - 1;
     
-    for (int i = 0; i < num_of_projects; i++) {
-        ProjectData *newProject     = [[ProjectData alloc] init];
-        newProject.projectName      = [self interactWithDatabase:ud.projIds[i] with:nil at:@"getName.php"];
-        newProject.projectId = ud.projIds[i];
-        // Code to add files (another loop)
-        [ud.myProjects addObject:newProject];
+    for (int i = 0; i < project_count; i++) {
+        ProjectData *user_project     = [[ProjectData alloc] init];
+        user_project.projectName      = [self interactWithDatabase:ud.project_IDs[i] with:nil at:@"getName.php"];
+        user_project.projectId          = ud.project_IDs[i];
+        
+        [ud.user_projects addObject:user_project];
     }
     
     
-    self.view.backgroundColor       = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    self.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
     // Adding sub views
-    [self.view addSubview:myProjectsView];
-    [self.view addSubview:searchBar];
+    [self.view addSubview:following_projects_SV];
+    [self.view addSubview:search_bar_TF];
     
-    [self createPreView];
+    [self createFollowerPreviews];
 }
 
 - (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at:(NSString *)path
 {
     NSString *response;
-    NSString *myRequestString;
+    NSString *request_string;
     if(password == nil)
     {
         // Create your request string with parameter name as defined in PHP file
-        myRequestString = [NSString stringWithFormat:@"username=%@",username];
+        request_string = [NSString stringWithFormat:@"username=%@",username];
     }
     else
     {
         // Create your request string with parameter name as defined in PHP file
-        myRequestString = [NSString stringWithFormat:@"username=%@&password=%@",username,password];
+        request_string = [NSString stringWithFormat:@"username=%@&password=%@",username,password];
     }
     // Create Data from request
-    NSData *myRequestData           = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
+    NSData *request_data            = [NSData dataWithBytes: [request_string UTF8String] length: [request_string length]];
     NSString *url                   = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
     NSMutableURLRequest *request    = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
     
@@ -131,13 +93,13 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
     
     // Set Request Body
-    [request setHTTPBody: myRequestData];
+    [request setHTTPBody: request_data];
     
     // Now send a request and get Response
-    NSData *returnData  = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    NSData *return_data  = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     
     // Log Response
-    response            = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    response            = [[NSString alloc] initWithBytes:[return_data bytes] length:[return_data length] encoding:NSUTF8StringEncoding];
     
     return response;
 }
@@ -149,7 +111,7 @@
  */
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == searchBar) [textField resignFirstResponder];
+    if (textField == search_bar_TF) [textField resignFirstResponder];
     
     return YES;
 }
@@ -162,66 +124,66 @@
 
 -(NSMutableArray *) toArray:(NSString *)data
 {
-    NSArray *items = [data componentsSeparatedByString:@" "];
-    NSMutableArray* arrayOfNumbers = [NSMutableArray arrayWithCapacity:items.count];
+    NSArray *items                      = [data componentsSeparatedByString:@" "];
+    NSMutableArray* array_of_numbers    = [NSMutableArray arrayWithCapacity:items.count];
     for (NSString* string in items) {
-        [arrayOfNumbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
+        [array_of_numbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
     }
     
-    return arrayOfNumbers;
+    return array_of_numbers;
 }
- /*
+
+/*
  This function creates the previews seen on the home page of the application. These previews present a
  preview image for the project. Previews can be tapped on to take the user to the project, where
  the files are held.
  */
-- (void) createPreView
+- (void) createFollowerPreviews
 {
     int i;
-    int j;
 
-    UserData *ud        = [UserData sharedMyProjects];
-    NSString *folProjIds = @"";
+    UserData *ud                    = [UserData sharedMyProjects];
+    NSString *follower_project_IDs  = @"";
+    int follower_count              = (int) ud.followers.count - 1;
     
-    int num_of_projects = (int) ud.projIds.count - 1; // Subtract 1 because array contains a terminating element passed from database
-     int num_of_fol = (int) ud.followers.count - 1;
-    
-    for (j = 0; j <= num_of_fol; j++)
+    for (i = 0; i <= follower_count; i++)
     {
-        NSString *ids = [self interactWithDatabase:ud.followers[j] with: nil at:@"followerProj.php"];
-        folProjIds = [folProjIds stringByAppendingString:ids];
+        NSString *ids           = [self interactWithDatabase:ud.followers[i] with: nil at:@"followerProj.php"];
+        follower_project_IDs    = [follower_project_IDs stringByAppendingString:ids];
     }
     
-    ud.followerProjIds = [self toArray:folProjIds];
-    // Need to check number of projects, make sure not too many
-    int num_of_fol_projects = (int) ud.followerProjIds.count -1;
+    ud.follower_project_IDs          = [self toArray:follower_project_IDs];
+    int follower_project_count  = (int) ud.follower_project_IDs.count -1;
     
-    for (int i = 0; i < num_of_fol_projects; i++) {
-        ProjectData *newProject     = [[ProjectData alloc] init];
-        newProject.projectName      = [self interactWithDatabase:ud.followerProjIds[i] with:nil at:@"getName.php"];
-        newProject.projectId = ud.followerProjIds[i];
+    for (int i = 0; i < follower_project_count; i++) {
+        ProjectData *follower_project     = [[ProjectData alloc] init];
+        follower_project.projectName      = [self interactWithDatabase:ud.follower_project_IDs[i] with:nil at:@"getName.php"];
+        follower_project.projectId        = ud.follower_project_IDs[i];
         // Code to add files (another loop)
-        [ud.followerProjects addObject:newProject];
+        [ud.follower_projects addObject:follower_project];
     }
     
-    ProjectPreView *project_previews[num_of_fol_projects+1];
-    CGRect preview_frame[num_of_fol_projects+1];
+    ProjectPreView *project_previews[follower_project_count+1];
+    CGRect preview_frame[follower_project_count+1];
     
-    [self changeScrollHeight:(pvHeightInitial * (num_of_fol_projects+1))];
+    int preview_initial_height  = 351;
+    int preview_height          = 350;
     
-    if(num_of_fol_projects == 0)
-        num_of_fol_projects--;
+    [self changeScrollHeight:(preview_initial_height * (follower_project_count+1))];
+    
+    if(follower_project_count == 0)
+        follower_project_count--;
 
-    for (i = num_of_fol_projects-1; i >= 0; i--) {
+    for (i = follower_project_count-1; i >= 0; i--) {
         
-        ProjectData *pd = (ProjectData *) ud.followerProjects[i];
+        ProjectData *pd = (ProjectData *) ud.follower_projects[i];
         
-        preview_frame[i]        = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
+        preview_frame[i]        = CGRectMake(0,  (preview_initial_height * i), view_width, preview_height);
         project_previews[i]     = [[ProjectPreView alloc] initWithFrame:preview_frame[i]];
 
         [project_previews[i] setProjectName:pd.projectName andID:pd.projectId withParentView:self];
 
-        [myProjectsView addSubview: project_previews[i]];
+        [following_projects_SV addSubview: project_previews[i]];
 
         project_previews[i].inEditingMode = false;
         
@@ -234,7 +196,7 @@
  */
 - (void) changeScrollHeight:(int)height
 {
-    myProjectsView.contentSize = CGSizeMake(viewWidth, height);
+    following_projects_SV.contentSize = CGSizeMake(view_width, height);
 }
 
 /*

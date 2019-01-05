@@ -22,7 +22,6 @@
 - (void) createNewProject;
 - (void) changeScrollHeight: (int) height;
 - (UIViewController *) currentTopViewController;
-- (void) frameSetup;
 - (UITabBarItem *)tabBarItem;
 
 @end

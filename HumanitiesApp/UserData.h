@@ -18,23 +18,25 @@
 // User Data
 @property NSString *username;
 @property NSString *password;
-@property NSString *accId;
-
+@property NSString *account_ID;
 
 
 // Project Data
-@property (nonatomic, retain) NSMutableArray *myProjects;
-@property (nonatomic, retain) NSMutableArray *projIds;
+@property (nonatomic, retain) NSMutableArray *user_projects;
+@property (nonatomic, retain) NSMutableArray *project_IDs;
+
+
+// Follower Project Data
 @property (nonatomic, retain) NSMutableArray *followers;
-@property (nonatomic, retain) NSMutableArray *followerProjects;
-@property (nonatomic, retain) NSMutableArray *followerProjIds;
-@property (nonatomic, retain) NSMutableArray *followerProjNames;
+@property (nonatomic, retain) NSMutableArray *follower_projects;
+@property (nonatomic, retain) NSMutableArray *follower_project_IDs;
+@property (nonatomic, retain) NSMutableArray *follower_project_names;
 
 + (id) sharedMyProjects;
 
 // Commented part of below function will allow us to find unique project
-- (ProjectData *) projectNamed: (NSString *) name; //byUser: (NSString *) username;
-- (ProjectData *) projectWithId: (NSString *) Id;
+- (ProjectData *) userProjectNamed: (NSString *) name;
+- (ProjectData *) followerProjectWithId: (NSString *) Id;
 
 
 

@@ -18,7 +18,6 @@
 @interface ProjectPreView : UIView
 
 - (id) initWithFrame:(CGRect)frame;
-- (void) setup;
 - (void) showOptions;
 - (void) deleteProject;
 - (UIViewController *) currentTopViewController;

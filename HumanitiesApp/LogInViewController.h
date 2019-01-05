@@ -20,12 +20,12 @@
 }
 @property (nonatomic, retain) NSString *username;
 
--(BOOL) registerNow;
+- (BOOL) enterRegistrationInfo;
 - (void) hasParent: (UIResponder *) parent;
-- (BOOL) logIn;
+- (BOOL) enterLogInCredentials;
 - (void) hideLabels;
 - (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at: (NSString *)path;
--(NSMutableArray *) toArray: (NSString *) data;
+- (NSMutableArray *) toArray: (NSString *) data;
 
 @end
 

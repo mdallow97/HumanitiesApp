@@ -15,177 +15,121 @@
 @implementation ProjectView
 {
     // General Variable Declaration
-    int viewWidth, viewHeight;
-    int buttonWidth, buttonHeight;
+    int view_width, view_height;
     
-    BOOL shouldAddProject, shouldAddFile;
+    BOOL should_add_project;
     
-    UserData *projects;
-    ProjectData *projectData;
+    UserData *user_data;
+    ProjectData *user_project;
     FilePreView *previews[100];
     
     // Scroll View Variable Declarations
-    UIScrollView *myFilesView;
-    int scrollHeightInitial, scrollHeight;
-    int scrollWidthInitial, scrollWidth;
-    
-    // Preview Variable Declarations
-    int pvWidthInitial, pvWidth;
-    int pvHeightInitial, pvHeight;
+    UIScrollView *files_SV;
+    int SV_initial_height, SV_height;
     
     // Cancel Button Variable Declarations
-    UIButton *doneButton;
-    CGRect doneFrame;
+    UIButton *done_button;
     
     // Project Name Label Variable Declaration
-    UILabel *projectNameLabel;
-    int projectNameWidth, projectNameHeight;
-    CGRect projectNameFrame;
+    UILabel *project_name_LBL;
     
     // EDITING MODE Variables:
     
-    // Add File Button
-    UIButton *editingOptionsButton;
+    // Add File Button Variable Declaration
+    UIButton *editing_options_button;
     
-    int editingOptionsX, editingOptionsY;
-    CGRect editingOptionsFrame;
+    // Next Button Variable Declaration
+    UIButton *next_button;
     
-    // Next Button
-    UIButton *nextButton;
-    CGRect nextFrame;
-    
-    UIViewController *previewOptions;
+    // Preview Image Options Variable Declaration
+    UIViewController *preview_image_options_VC;
     
     
     // NEW PROJECT MODE Variable Declarations:
     
     // New Project Name Text Field
-    int textFieldWidth, textFieldHeight;
-    UITextField *nameTextField;
+    int TF_width, TF_height;
+    UITextField *project_name_TF;
     
     // New Project Name Empty Label
-    UILabel *errorFieldLabel;
-    int errorFieldWidth, errorFieldHeight;
-    CGRect errorFieldFrame;
-}
-
-
-// This function prepates all global item's frames.
-- (void) frameSetup
-{
-    // General Variable Initialization
-    viewWidth           = self.view.frame.size.width;
-    viewHeight          = self.view.frame.size.height;
-    
-    shouldAddProject    = false;
-    shouldAddFile       = false;
-    
-    buttonWidth         = 50;
-    buttonHeight        = 50;
-    
-    // Preview Variable initialization
-    pvWidthInitial      = 0;
-    pvHeightInitial     = 351;
-    pvHeight            = 350;
-    pvWidth             = viewWidth - pvWidthInitial;
-    
-    // Cancel Button Variable Initialization
-    doneFrame           = CGRectMake(10, 30, buttonWidth, buttonHeight);
-    
-    // Add File Button Variable Initialization
-    editingOptionsX     = viewWidth - (buttonWidth + 5);
-    editingOptionsY     = 30;
-    
-    editingOptionsFrame = CGRectMake(editingOptionsX, editingOptionsY, buttonWidth, buttonHeight);
-    
-    // Next Button Variable Initialization
-    nextFrame = editingOptionsFrame;
-    
-    // General Text Field Variable Initialization
-    textFieldWidth      = 250;
-    textFieldHeight     = 50;
-    
-    // Empty Name Label Variable Initialization
-    errorFieldWidth     = 250;
-    errorFieldHeight    = 50;
-    errorFieldFrame     = CGRectMake((viewWidth / 2) - (errorFieldWidth / 2), (viewHeight / 2), errorFieldWidth, errorFieldHeight);
-    
-    // Project Name Label Variable Initialization
-    projectNameWidth    = 200;
-    projectNameHeight   = 50;
-    projectNameFrame    = CGRectMake((viewWidth / 2) - (projectNameWidth / 2), 30, projectNameWidth, projectNameHeight);
-    
-    // Scroll View Variable initialization
-    scrollHeightInitial = 85;
-    scrollWidthInitial  = 0;
-    scrollWidth         = viewWidth - (2 * scrollWidthInitial);
-    scrollHeight        = viewHeight - scrollHeightInitial;
+    UILabel *error_LBL;
 }
 
 - (void) viewDidLoad
 {
     self.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
-    [self frameSetup];
     
-    projects    = [UserData sharedMyProjects];
-    //projectData = [projects projectNamed:self->_currentProjectName]; // Data will be nil if project does not exist
-    projectData = [projects projectWithId:self->_currentProjectId];
-    if(projectData == nil)
-        projectData = [projects projectNamed:self->_currentProjectName];
-    doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-    [doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
-    doneButton.frame = doneFrame;
+    view_width          = self.view.frame.size.width;
+    view_height         = self.view.frame.size.height;
+    should_add_project  = false;
     
-    editingOptionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [editingOptionsButton setTitle:@"Edit" forState:UIControlStateNormal];
-    [editingOptionsButton addTarget:self action:@selector(showEditingOptions) forControlEvents:UIControlEventTouchUpInside];
-    editingOptionsButton.frame  = editingOptionsFrame;
-    editingOptionsButton.hidden = YES;
+    // General Text Field Variable Initialization
+    TF_width    = 250;
+    TF_height   = 50;
     
-    nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [nextButton setTitle:@"Next" forState:UIControlStateNormal];
-    [nextButton addTarget:self action:@selector(createProject) forControlEvents:UIControlEventTouchUpInside];
-    nextButton.frame  = nextFrame;
-    nextButton.hidden = YES;
+    // Scroll View Variable Initialization
+    SV_initial_height   = 85;
+    SV_height           = view_height - SV_initial_height;
     
+    user_data    = [UserData sharedMyProjects];
+    user_project = [user_data followerProjectWithId:self->_current_project_ID];
     
-    nameTextField = [[UITextField alloc] initWithFrame:CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight)];
-    nameTextField.borderStyle     = UITextBorderStyleRoundedRect;
-    nameTextField.tintColor       = [UIColor blueColor];
-    nameTextField.backgroundColor = [UIColor lightGrayColor];
-    nameTextField.returnKeyType   = UIReturnKeyDone;
-    nameTextField.textAlignment   = NSTextAlignmentCenter;
-    nameTextField.delegate        = self;
-    nameTextField.hidden          = YES;
+    if(user_project == nil)
+        user_project = [user_data userProjectNamed:self->_current_project_name];
+    
+    done_button         = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    done_button.frame   = CGRectMake(10, 30, 50, 50);
+    [done_button setTitle:@"Done" forState:UIControlStateNormal];
+    [done_button addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
+    
+    editing_options_button          = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    editing_options_button.frame    = CGRectMake(view_width - 55, 30, 50, 50);
+    editing_options_button.hidden   = YES;
+    [editing_options_button setTitle:@"Edit" forState:UIControlStateNormal];
+    [editing_options_button addTarget:self action:@selector(presentEditingOptions) forControlEvents:UIControlEventTouchUpInside];
+    
+    next_button         = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    next_button.frame   = CGRectMake(view_width - 55, 30, 50, 50);
+    next_button.hidden  = YES;
+    [next_button setTitle:@"Next" forState:UIControlStateNormal];
+    [next_button addTarget:self action:@selector(createProject) forControlEvents:UIControlEventTouchUpInside];
+    
+    project_name_TF                 = [[UITextField alloc] initWithFrame:CGRectMake((view_width / 2) - (TF_width / 2), (view_height / 3), TF_width, TF_height)];
+    project_name_TF.borderStyle     = UITextBorderStyleRoundedRect;
+    project_name_TF.tintColor       = [UIColor blueColor];
+    project_name_TF.backgroundColor = [UIColor lightGrayColor];
+    project_name_TF.returnKeyType   = UIReturnKeyDone;
+    project_name_TF.textAlignment   = NSTextAlignmentCenter;
+    project_name_TF.delegate        = self;
+    project_name_TF.hidden          = YES;
     
     
     // Empty Project Name Label Setup
-    errorFieldLabel               = [[UILabel alloc] initWithFrame:errorFieldFrame];
-    errorFieldLabel.textAlignment = NSTextAlignmentCenter;
-    errorFieldLabel.textColor     = [UIColor redColor];
-    errorFieldLabel.hidden        = YES;
+    error_LBL               = [[UILabel alloc] initWithFrame:CGRectMake((view_width / 2) - 125, (view_height / 2), 250, 50)];
+    error_LBL.textAlignment = NSTextAlignmentCenter;
+    error_LBL.textColor     = [UIColor redColor];
+    error_LBL.hidden        = YES;
     
     // Project Name Label Setup
-    projectNameLabel                    = [[UILabel alloc] initWithFrame:projectNameFrame];
-    projectNameLabel.textAlignment      = NSTextAlignmentCenter;
-    projectNameLabel.text               = _currentProjectName;
+    project_name_LBL                = [[UILabel alloc] initWithFrame:CGRectMake((view_width / 2) - 100, 30, 200, 50)];
+    project_name_LBL.textAlignment  = NSTextAlignmentCenter;
+    project_name_LBL.text           = _current_project_name;
     
     // Project View Setup
-    myFilesView = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
-    myFilesView.backgroundColor = [UIColor whiteColor];
-    myFilesView.contentSize     = CGSizeMake(viewWidth, (viewHeight - 85));
+    files_SV                    = [[UIScrollView alloc] initWithFrame:CGRectMake(0, SV_initial_height, view_width, SV_height)];
+    files_SV.backgroundColor    = [UIColor whiteColor];
+    files_SV.contentSize        = CGSizeMake(view_width, (view_height - 85));
     
     // Adding Subviews
-    [self.view addSubview:doneButton];
-    [self.view addSubview:editingOptionsButton];
-    [self.view addSubview:nextButton];
-    [self.view addSubview:nameTextField];
-    [self.view addSubview:errorFieldLabel];
-    [self.view addSubview:projectNameLabel];
-    [self.view addSubview:myFilesView];
+    [self.view addSubview:done_button];
+    [self.view addSubview:editing_options_button];
+    [self.view addSubview:next_button];
+    [self.view addSubview:project_name_TF];
+    [self.view addSubview:error_LBL];
+    [self.view addSubview:project_name_LBL];
+    [self.view addSubview:files_SV];
     
-    self.inEditingMode = NO;
+    self.in_editing_mode = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -200,56 +144,45 @@
  */
 - (void) createPreviews
 {
-    for (UIView *view in myFilesView.subviews)
+    for (UIView *view in files_SV.subviews)
         if ([view isKindOfClass:[FilePreView class]]) [view removeFromSuperview];
     
-    NSString *fileIds = [self interactWithDatabase:_currentProjectId with: nil at:@"allFile.php"];
-    NSMutableArray * array = [self toArray:fileIds];
-    projectData.fileIds = array;
-    int num_of_files = (int) projectData.fileIds.count - 1;
-    for (int i = 0; i < num_of_files; i++) {
-        FileData *newFile     = [[FileData alloc] init];
-        newFile.fileName      = [self interactWithDatabase:projectData.fileIds[i] with:nil at:@"gFileName.php"];
-        newFile.fileId = projectData.fileIds[i];
-        // Code to add files (another loop)
-        if([projectData fileNamed:newFile.fileName] == nil)
-            [projectData.files addObject:newFile];
+    NSString *file_IDs      = [self interactWithDatabase:_current_project_ID with: nil at:@"allFile.php"];
+    user_project.fileIds    = [self toArray:file_IDs];
+    int file_count          = (int) user_project.fileIds.count - 1;
+    
+    for (int i = 0; i < file_count; i++) {
+        FileData *new_file     = [[FileData alloc] init];
+        new_file.fileName      = [self interactWithDatabase:user_project.fileIds[i] with:nil at:@"gFileName.php"];
+        new_file.fileId = user_project.fileIds[i];
+        
+        
+        if([user_project fileNamed:new_file.fileName] == nil)
+            [user_project.files addObject:new_file];
     }
     
-    int numberOfPreviews = (int) projectData.files.count;
+    int preview_count = (int) user_project.files.count;
     
-    CGRect rect[numberOfPreviews];
+    CGRect preview_frame[preview_count];
+    int preview_initial_height  = 351;
+    int preview_height          = 350;
     
-    [self changeScrollHeight:(pvHeightInitial * numberOfPreviews)];
+    [self changeScrollHeight:(preview_initial_height * preview_count)];
     
-    int i;
-    
-    for (i = 0; i < numberOfPreviews; i++) {
+    for (int i = 0; i < preview_count; i++) {
         
-        FileData *fd = (FileData *) projectData.files[i];
+        FileData *fd        = (FileData *) user_project.files[i];
+        preview_frame[i]    = CGRectMake(0,  (preview_initial_height * i), view_width, preview_height);
+        previews[i]         = [[FilePreView alloc] initWithFrame:preview_frame[i]];
         
-        rect[i]         = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
-        previews[i]     = [[FilePreView alloc] initWithFrame:rect[i]];
-        
-        [previews[i] setFileName:fd.fileName inProject:projectData withParentView:self];
-        [myFilesView addSubview: previews[i]];
+        [previews[i] setFileName:fd.fileName inProject:user_project withParentView:self];
+        [files_SV addSubview: previews[i]];
         
         // File previews can be edited once tapped on, only if project can also be edited
-        if (self.inEditingMode) [previews[i] enterEditingMode];
+        if (self.in_editing_mode) [previews[i] enterEditingMode];
         
     }
     
-}
-
--(NSMutableArray *) toArray:(NSString *)data
-{
-    NSArray *items = [data componentsSeparatedByString:@" "];
-    NSMutableArray* arrayOfNumbers = [NSMutableArray arrayWithCapacity:items.count];
-    for (NSString* string in items) {
-        [arrayOfNumbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
-    }
-    
-    return arrayOfNumbers;
 }
 
 /*
@@ -258,19 +191,30 @@
  */
 - (void) changeScrollHeight:(int)height
 {
-    myFilesView.contentSize = CGSizeMake(viewWidth, (height + 30));
+    files_SV.contentSize = CGSizeMake(view_width, (height + 30));
+}
+
+-(NSMutableArray *) toArray:(NSString *)data
+{
+    NSArray *items                      = [data componentsSeparatedByString:@" "];
+    NSMutableArray* array_of_numbers    = [NSMutableArray arrayWithCapacity:items.count];
+    for (NSString* string in items) {
+        [array_of_numbers addObject:[NSDecimalNumber decimalNumberWithString:string]];
+    }
+    
+    return array_of_numbers;
 }
 
 - (NSString *) interactWithDatabase: (NSString *) projName with: (NSString *) accId at:(NSString *)path
 {
     NSString *response;
-    NSString *myRequestString;
+    NSString *request_string;
     
     // Create your request string with parameter name as defined in PHP file
-    myRequestString                 = [NSString stringWithFormat:@"projName=%@&accId=%@",projName,accId];
+    request_string                  = [NSString stringWithFormat:@"projName=%@&accId=%@",projName,accId];
     
     // Create Data from request
-    NSData *myRequestData           = [NSData dataWithBytes: [myRequestString UTF8String] length: [myRequestString length]];
+    NSData *request_data            = [NSData dataWithBytes: [request_string UTF8String] length: [request_string length]];
     NSString *url                   = [NSString stringWithFormat:@"http://humanitiesapp.atwebpages.com/%@", path];
     NSMutableURLRequest *request    = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url]];
     
@@ -281,29 +225,24 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
     
     // Set Request Body
-    [request setHTTPBody: myRequestData];
+    [request setHTTPBody: request_data];
     
     // Now send a request and get Response
-    NSData *returnData  = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
+    NSData *return_data = [NSURLConnection sendSynchronousRequest: request returningResponse: nil error: nil];
     
     // Log Response
-    response            = [[NSString alloc] initWithBytes:[returnData bytes] length:[returnData length] encoding:NSUTF8StringEncoding];
+    response            = [[NSString alloc] initWithBytes:[return_data bytes] length:[return_data length] encoding:NSUTF8StringEncoding];
     
     return response;
 }
 
 /*
- This function is called by the doneButton. It is pressed when a user wants to add a project to their account.
+ This function is called by the doneButton. It is pressed when a user wants to add a project to their account, or dismisses the view controller if it is not owned by the user.
  */
 -(void) done
 {
-    UserData *ud = [UserData sharedMyProjects];
-    
-    if (shouldAddProject) {
-        [projects.myProjects addObject:projectData];
-        //NSData *imageData = UIImagePNGRepresentation(projectData.previewImage);
-        //NSString *imageBin = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
-       // NSLog(@"binary: %@", imageBin);
+    if (should_add_project) {
+        [user_data.user_projects addObject:user_project];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -313,18 +252,18 @@
 
 - (UIViewController *) currentTopViewController
 {
-    UIViewController *topVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    UIViewController *top_VC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     
-    while (topVC.presentedViewController)
-        topVC = topVC.presentedViewController;
+    while (top_VC.presentedViewController)
+        top_VC = top_VC.presentedViewController;
     
-    return topVC;
+    return top_VC;
 }
 
 - (void) loadProjectWithData:(ProjectData *) project;
 {
-    _currentProjectName     = project.projectName;
-    _currentProjectId       = project.projectId;
+    _current_project_name     = project.projectName;
+    _current_project_ID       = project.projectId;
 }
 
 
@@ -333,80 +272,79 @@
 
 - (void) enterNewProjectMode
 {
-    nextButton.hidden           = NO;
-    nameTextField.hidden        = NO;
-    myFilesView.hidden          = YES;
-    nameTextField.placeholder   = @"New Project Name";
-    [nameTextField becomeFirstResponder];
+    next_button.hidden          = NO;
+    project_name_TF.hidden      = NO;
+    files_SV.hidden             = YES;
+    project_name_TF.placeholder = @"New Project Name";
+    [project_name_TF becomeFirstResponder];
     
-    projectData = [[ProjectData alloc] init];
+    user_project = [[ProjectData alloc] init];
     
-    [doneButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [done_button setTitle:@"Cancel" forState:UIControlStateNormal];
 }
 
 - (void) enterEditingMode
 {
-    self.inEditingMode          = YES;
-    editingOptionsButton.hidden = NO;
-    myFilesView.hidden          = NO;
+    _in_editing_mode                = YES;
+    editing_options_button.hidden   = NO;
+    files_SV.hidden                 = NO;
 }
 
 - (void) createProject
 {
-    [nameTextField resignFirstResponder];
+    [project_name_TF resignFirstResponder];
     
     // Check to make sure text field is not empty
-    if ([nameTextField.text isEqual:@""])
+    if ([project_name_TF.text isEqual:@""])
     {
-        errorFieldLabel.text   = @"Project name cannot be blank";
-        errorFieldLabel.hidden = NO;
+        error_LBL.text   = @"Project name cannot be blank";
+        error_LBL.hidden = NO;
         
         return;
     }
     
-    errorFieldLabel.hidden = YES;
+    error_LBL.hidden = YES;
     
     // Check to make sure project name doesnt conflict with own project name
     
-    projects = [UserData sharedMyProjects];
+    user_data = [UserData sharedMyProjects];
     
-    ProjectData *pd = [projects projectNamed:nameTextField.text];
+    ProjectData *pd = [user_data userProjectNamed:project_name_TF.text];
     
-    if ([pd.projectName isEqualToString:nameTextField.text]) {
-        errorFieldLabel.text = @"Project name taken";
-        errorFieldLabel.hidden = NO;
+    if ([pd.projectName isEqualToString:project_name_TF.text]) {
+        error_LBL.text = @"Project name taken";
+        error_LBL.hidden = NO;
         return;
     }
     
+    should_add_project = true;
+    [done_button setTitle:@"Save" forState:UIControlStateNormal];
     
-    
-    shouldAddProject = true;
-    [doneButton setTitle:@"Save" forState:UIControlStateNormal];
-    
-    projectData = [[ProjectData alloc] init];
+    user_project = [[ProjectData alloc] init];
     
     // Store Project Name
-    projectData.projectName   = nameTextField.text;
-    projectNameLabel.text     = nameTextField.text;
-    self->_currentProjectName = nameTextField.text;
+    user_project.projectName    = project_name_TF.text;
+    project_name_LBL.text       = project_name_TF.text;
+    self->_current_project_name = project_name_TF.text;
     
-    errorFieldLabel.hidden  = YES;
-    projectNameLabel.hidden = NO;
-    nextButton.hidden       = YES;
-    nameTextField.hidden    = YES;
-    NSString *reply = [self interactWithDatabase:projectData.projectName with: projects.accId at:@"uploadProj.php"];
-    NSString *response = [self interactWithDatabase:projectData.projectName with: projects.accId at:@"setProjId.php"];
-    NSLog(@"%@", response);
-    projectData.projectId = response;
+    error_LBL.hidden        = YES;
+    project_name_LBL.hidden = NO;
+    next_button.hidden      = YES;
+    project_name_TF.hidden  = YES;
+    
+    NSString *response  = [self interactWithDatabase:user_project.projectName with: user_data.account_ID at:@"setProjId.php"];
+    
+    
+    user_project.projectId = response;
     
     [self enterEditingMode];
 }
 
 
-- (void) showEditingOptions
+- (void) presentEditingOptions
 {
     
-    UIAlertController *editOptions = [UIAlertController alertControllerWithTitle:@"Editing Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *editing_options = [UIAlertController alertControllerWithTitle:@"Editing Options" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
@@ -414,39 +352,37 @@
     
     
     
-    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Change Project Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *change_project_name = [UIAlertAction actionWithTitle:@"Change Project Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         
         // Will present a view controller with text field and appropriate buttons
         // Just need to change _currentProjectName and pd.projectName
         
     }];
     
-    UIAlertAction *addFile = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self addFile];}];
+    UIAlertAction *add_file = [UIAlertAction actionWithTitle:@"Add File" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self addFile];}];
     
-    UIAlertAction *changePreview = [UIAlertAction actionWithTitle:@"Change Preview Image" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self changePreviewImage];}];
+    UIAlertAction *change_preview_image = [UIAlertAction actionWithTitle:@"Change Preview Image" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self changePreviewImage];}];
     
     
-    [editOptions addAction:cancel];
-    [editOptions addAction:addFile];
-    [editOptions addAction:changeName];
-    [editOptions addAction:changePreview];
+    [editing_options addAction:cancel];
+    [editing_options addAction:add_file];
+    [editing_options addAction:change_project_name];
+    [editing_options addAction:change_preview_image];
     
-    ProjectData *doesExist = [self->projects projectNamed:self->_currentProjectName];
+    ProjectData *doesExist = [self->user_data userProjectNamed:self->_current_project_name];
     
-    if ([doesExist.projectName isEqualToString:projectData.projectName]) {
-        [editOptions addAction:delete];
+    if ([doesExist.projectName isEqualToString:user_project.projectName]) {
+        [editing_options addAction:delete];
     }
     
     
     UIViewController *currentTopVC = [self currentTopViewController];
-    [currentTopVC presentViewController:editOptions animated:YES completion:nil];
+    [currentTopVC presentViewController:editing_options animated:YES completion:nil];
 }
 
 - (void) deleteProject
 {
-    [self->projects.myProjects removeObject:self->projectData];
-    
-    // *** Have a fail safe delete in case of accidental removal
+    [self->user_data.user_projects removeObject:self->user_project];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -454,31 +390,31 @@
 - (void) changePreviewImage
 {
     
-    previewOptions = [[UIViewController alloc] init];
-    previewOptions.view.backgroundColor = [UIColor whiteColor];
+    preview_image_options_VC                        = [[UIViewController alloc] init];
+    preview_image_options_VC.view.backgroundColor   = [UIColor whiteColor];
     
-    UIButton *takePhotoButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    takePhotoButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), (viewHeight / 3), textFieldWidth, textFieldHeight);
-    takePhotoButton.titleLabel.font = [UIFont systemFontOfSize:30];
-    [takePhotoButton setTitle:@"Take a Photo" forState:UIControlStateNormal];
-    [takePhotoButton addTarget:self action:@selector(openCamera) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *take_photo_button       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    take_photo_button.frame           = CGRectMake((view_width / 2) - (TF_width / 2), (view_height / 3), TF_width, TF_height);
+    take_photo_button.titleLabel.font = [UIFont systemFontOfSize:30];
+    [take_photo_button setTitle:@"Take a Photo" forState:UIControlStateNormal];
+    [take_photo_button addTarget:self action:@selector(openCamera) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *openPhotosButton       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    openPhotosButton.frame           = CGRectMake((viewWidth / 2) - (textFieldWidth / 2), 2 * (viewHeight / 3), textFieldWidth, textFieldHeight);
-    openPhotosButton.titleLabel.font = [UIFont systemFontOfSize:30];
-    [openPhotosButton setTitle:@"Open Photo Roll" forState:UIControlStateNormal];
-    [openPhotosButton addTarget:self action:@selector(openPhotos) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *open_camera_roll_button       = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    open_camera_roll_button.frame           = CGRectMake((view_width / 2) - (TF_width / 2), 2 * (view_height / 3), TF_width, TF_height);
+    open_camera_roll_button.titleLabel.font = [UIFont systemFontOfSize:30];
+    [open_camera_roll_button setTitle:@"Open Photo Roll" forState:UIControlStateNormal];
+    [open_camera_roll_button addTarget:self action:@selector(openPhotos) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
-    cancelButton.frame = doneFrame;
+    UIButton *cancel_button  = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    cancel_button.frame      = CGRectMake(10, 30, 50, 50);
+    [cancel_button setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancel_button addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
     
-    [previewOptions.view addSubview:takePhotoButton];
-    [previewOptions.view addSubview:openPhotosButton];
-    [previewOptions.view addSubview:cancelButton];
+    [preview_image_options_VC.view addSubview:take_photo_button];
+    [preview_image_options_VC.view addSubview:open_camera_roll_button];
+    [preview_image_options_VC.view addSubview:cancel_button];
     
-    [self presentViewController:previewOptions animated:YES completion:nil];
+    [self presentViewController:preview_image_options_VC animated:YES completion:nil];
 }
 
 - (void) openCamera
@@ -487,23 +423,23 @@
     camera.sourceType               = UIImagePickerControllerSourceTypeCamera;
     camera.delegate                 = self;
     
-    [previewOptions presentViewController:camera animated:YES completion:nil];
+    [preview_image_options_VC presentViewController:camera animated:YES completion:nil];
 }
 
 - (void) openPhotos
 {
-    UIImagePickerController *photoRoll  = [[UIImagePickerController alloc] init];
-    photoRoll.sourceType                = UIImagePickerControllerSourceTypePhotoLibrary;
-    photoRoll.delegate                  = self;
+    UIImagePickerController *photo_roll  = [[UIImagePickerController alloc] init];
+    photo_roll.sourceType                = UIImagePickerControllerSourceTypePhotoLibrary;
+    photo_roll.delegate                  = self;
     
-    [previewOptions presentViewController:photoRoll animated:YES completion:nil];
+    [preview_image_options_VC presentViewController:photo_roll animated:YES completion:nil];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     
-    projectData.previewImage = image;
+    user_project.previewImage = image;
     
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -527,51 +463,51 @@
 
 - (void) addFile
 {
-    UIAlertController *fileOptions = [UIAlertController alertControllerWithTitle:@"Choose file type:" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *file_options = [UIAlertController alertControllerWithTitle:@"Choose file type:" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     
-    UIAlertAction *docAction = [UIAlertAction actionWithTitle:@"Document" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:DOCUMENT];}];
+    UIAlertAction *document_action = [UIAlertAction actionWithTitle:@"Document" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:DOCUMENT];}];
     
-    UIAlertAction *presentationAction = [UIAlertAction actionWithTitle:@"Presentation" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:PRESENTATION];}];
+    UIAlertAction *presentation_action = [UIAlertAction actionWithTitle:@"Presentation" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:PRESENTATION];}];
     
-    UIAlertAction *imageAction = [UIAlertAction actionWithTitle:@"Image" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:IMAGE];}];
+    UIAlertAction *image_action = [UIAlertAction actionWithTitle:@"Image" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:IMAGE];}];
     
-    UIAlertAction *audioAction = [UIAlertAction actionWithTitle:@"Audio" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:AUDIO];}];
+    UIAlertAction *audio_action = [UIAlertAction actionWithTitle:@"Audio" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:AUDIO];}];
     
-    UIAlertAction *videoAction = [UIAlertAction actionWithTitle:@"Video" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:VIDEO];}];
+    UIAlertAction *video_action = [UIAlertAction actionWithTitle:@"Video" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:VIDEO];}];
     
-    UIAlertAction *arAction = [UIAlertAction actionWithTitle:@"Augmented Reality" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:AUGMENTED_REALITY];}];
+    UIAlertAction *AR_action = [UIAlertAction actionWithTitle:@"Augmented Reality" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self createFileOfType:AUGMENTED_REALITY];}];
     
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     
-    [fileOptions addAction:docAction];
-    [fileOptions addAction:presentationAction];
-    [fileOptions addAction:imageAction];
-    [fileOptions addAction:audioAction];
-    [fileOptions addAction:videoAction];
-    [fileOptions addAction:arAction];
-    [fileOptions addAction:cancel];
+    [file_options addAction:document_action];
+    [file_options addAction:presentation_action];
+    [file_options addAction:image_action];
+    [file_options addAction:audio_action];
+    [file_options addAction:video_action];
+    [file_options addAction:AR_action];
+    [file_options addAction:cancel];
     
-    UIViewController *currentTopVC = [self currentTopViewController];
-    [currentTopVC presentViewController:fileOptions animated:YES completion:nil];
+    UIViewController *current_top_VC = [self currentTopViewController];
+    [current_top_VC presentViewController:file_options animated:YES completion:nil];
 }
 
 - (void) createFileOfType:(int) type
 {
-    FileView *fileViewController = [[FileView alloc] init];
-    [fileViewController inProject:projectData];
+    FileView *file_VC = [[FileView alloc] init];
+    [file_VC inProject:user_project];
     
-    UIViewController *currentTopVC = [self currentTopViewController];
-    [currentTopVC presentViewController:fileViewController animated:YES completion:nil];
+    UIViewController *current_top_VC = [self currentTopViewController];
+    [current_top_VC presentViewController:file_VC animated:YES completion:nil];
     
-    [fileViewController createFileOfType:type];
+    [file_VC createFileOfType:type];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
     
-    if (textField == nameTextField) {
+    if (textField == project_name_TF) {
         [textField resignFirstResponder];
         [self createProject];
     }

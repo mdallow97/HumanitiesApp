@@ -12,15 +12,14 @@
 
 @interface ViewController : UIViewController <UITextFieldDelegate>
 
-- (void) setup;
 - (UITabBarItem *)tabBarItem;
 - (void) viewDidLoad;
 - (void) didReceiveMemoryWarning;
-- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at:(NSString *)path;
-- (BOOL) textFieldShouldReturn:(UITextField *)textField;
--(NSMutableArray *) toArray:(NSString *)data;
-- (void) createPreView;
-- (void) changeScrollHeight:(int)height;
+- (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at:(NSString *) path;
+- (BOOL) textFieldShouldReturn:(UITextField *) textField;
+- (NSMutableArray *) toArray:(NSString *) data;
+- (void) createFollowerPreviews;
+- (void) changeScrollHeight:(int) height;
 
 @end
 

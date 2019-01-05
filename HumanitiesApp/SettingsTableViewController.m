@@ -18,19 +18,6 @@
     UITableView *tv;
 }
 
-- (UITabBarItem *)tabBarItem
-{
-    UITabBarItem *item;
-    
-    UIImage *homeImage  = [UIImage imageNamed:@"Settings.png"];
-    UIImage *scaled     = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 13) orientation:UIImageOrientationUp];
-    
-    item                = [[UITabBarItem alloc] initWithTitle:@"Settings" image:scaled tag:2];
-    
-    
-    return item;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -72,6 +59,19 @@
     
     return cell;
     
+}
+
+- (UITabBarItem *)tabBarItem
+{
+    UITabBarItem *item;
+    
+    UIImage *homeImage  = [UIImage imageNamed:@"Settings.png"];
+    UIImage *scaled     = [UIImage imageWithCGImage:[homeImage CGImage] scale:(homeImage.scale * 13) orientation:UIImageOrientationUp];
+    
+    item                = [[UITabBarItem alloc] initWithTitle:@"Settings" image:scaled tag:2];
+    
+    
+    return item;
 }
 
 - (void) viewWillAppear:(BOOL)animated {

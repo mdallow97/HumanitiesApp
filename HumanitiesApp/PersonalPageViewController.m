@@ -15,108 +15,59 @@
 
 @implementation PersonalPageViewController
 {
-    int viewWidth, viewHeight;
+    int view_width, view_height;
     
     // Scroll View Variable Declarations
-    UIScrollView *myProjectsView;
-    int scrollHeightInitial, scrollHeight;
-    int scrollWidthInitial, scrollWidth;
-    
-    // Preview Variable Declarations
-    int pvWidthInitial, pvWidth;
-    int pvHeightInitial, pvHeight;
+    UIScrollView *user_projects_SV;
     
     // Username Label Variable Declarations
-    UILabel *usernameLabel;
-    int labelWidthInitial, labelWidth;
-    int labelHeightInitial, labelHeight;
-    CGRect usernameFrame;
+    UILabel *username_LBL;
+    int username_LBL_width;
+    int username_LBL_height;
+    CGRect username_frame;
     
     // New Project Button Variable Declarations
-    UIButton *newProjectButton;
-    int buttonWidthInitial, buttonWidth;
-    int buttonHeightInitial, buttonHeight;
-    CGRect newProjectFrame;
+    UIButton *create_project_button;
     
     // Project Editing View Variable Declarations
-    ProjectView *projectEditingView;
+    ProjectView *project_view;
     ProjectPreView *previews[100]; //***
     
-}
-
-- (void) frameSetup
-{
-    // General Variables
-    viewWidth           = self.view.frame.size.width;
-    viewHeight          = self.view.frame.size.height;
-    
-    
-    // Scroll View Variable initialization
-    scrollHeightInitial = 85;
-    scrollWidthInitial  = 0;
-    scrollWidth         = viewWidth - (2 * scrollWidthInitial);
-    scrollHeight        = viewHeight - scrollHeightInitial;
-    
-    
-    // Preview Variable initialization
-    pvWidthInitial      = 0;
-    pvHeightInitial     = 351;
-    pvHeight            = 350;
-    pvWidth             = viewWidth - pvWidthInitial;
-    
-    
-    // Username Label Variable initialization
-    labelWidth          = 100;
-    labelWidthInitial   = (viewWidth / 2) - (labelWidth / 2);
-    
-    labelHeight         = 30;
-    labelHeightInitial  = 30 + (labelHeight / 2);
-    
-    usernameFrame       = CGRectMake(labelWidthInitial, labelHeightInitial, labelWidth, labelHeight);
-    
-    
-    // New Project Button Variable Initialization
-    buttonWidth         = 30;
-    buttonWidthInitial  = viewWidth - (buttonWidth + 15);
-    
-    buttonHeight        = 30;
-    buttonHeightInitial = 30 + (buttonHeight / 2);
-    
-    newProjectFrame     = CGRectMake(buttonWidthInitial, buttonHeightInitial, buttonWidth, buttonHeight);
 }
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    [self frameSetup];
+    view_width           = self.view.frame.size.width;
+    view_height          = self.view.frame.size.height;
     
     self.view.backgroundColor   = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
     
     // Username Label setup
-    usernameLabel               = [[UILabel alloc] initWithFrame:usernameFrame];
+    username_LBL                = [[UILabel alloc] initWithFrame:CGRectMake((view_width / 2) - 50, 45, 100, 30)];
     UserData *ud                = [UserData sharedMyProjects];
-    usernameLabel.textAlignment = NSTextAlignmentCenter;
-    usernameLabel.text          = ud.username; // This needs to retrieve username from UserData
+    username_LBL.textAlignment  = NSTextAlignmentCenter;
+    username_LBL.text           = ud.username; // This needs to retrieve username from UserData
     
     
     // Project View Setup
-    myProjectsView                  = [[UIScrollView alloc] initWithFrame:CGRectMake(scrollWidthInitial, scrollHeightInitial, scrollWidth, scrollHeight)];
-    myProjectsView.backgroundColor  = [UIColor whiteColor];
-    myProjectsView.contentSize      = CGSizeMake(viewWidth, viewHeight);
+    user_projects_SV                  = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 85, view_width, view_height - 85)];
+    user_projects_SV.backgroundColor  = [UIColor whiteColor];
+    user_projects_SV.contentSize      = CGSizeMake(view_width, view_height);
     
     
     // New Project Button Setup
-    newProjectButton        = [UIButton buttonWithType:UIButtonTypeContactAdd];
-    newProjectButton.frame  = newProjectFrame;
-    [newProjectButton addTarget:self action:@selector(createNewProject) forControlEvents:UIControlEventTouchUpInside];
+    create_project_button        = [UIButton buttonWithType:UIButtonTypeContactAdd];
+    create_project_button.frame  = CGRectMake(view_width - 45, 45, 30, 30);
+    [create_project_button addTarget:self action:@selector(createNewProject) forControlEvents:UIControlEventTouchUpInside];
     
     
     
     // Adding subviews
-    [self.view addSubview:myProjectsView];
-    [self.view addSubview:usernameLabel];
-    [self.view addSubview:newProjectButton];
+    [self.view addSubview:user_projects_SV];
+    [self.view addSubview:username_LBL];
+    [self.view addSubview:create_project_button];
     
     [self createPreviews];
 }
@@ -128,9 +79,9 @@
 /*
  Allows scroll height in the personal page to be changed dynamically.
  */
-- (void) changeScrollHeight:(int)height
+- (void) changeScrollHeight:(int) height
 {
-    myProjectsView.contentSize = CGSizeMake(viewWidth, (height + 40));
+    user_projects_SV.contentSize = CGSizeMake(view_width, (height + 40));
 }
 
 /*
@@ -141,31 +92,33 @@
 - (void) createPreviews
 {
     
-    for (UIView *view in myProjectsView.subviews)
+    for (UIView *view in user_projects_SV.subviews)
         if ([view isKindOfClass:[ProjectPreView class]]) [view removeFromSuperview];
     
-    UserData *projects   = [UserData sharedMyProjects];
-    int numberOfPreviews = (int) projects.myProjects.count;
+    UserData *projects = [UserData sharedMyProjects];
+    int preview_count  = (int) projects.user_projects.count;
     
     
     
-    CGRect rect[numberOfPreviews];
+    CGRect preview_frame[preview_count];
+    int preview_initial_height  = 351;
+    int preview_height          = 350;
     
-    [self changeScrollHeight:(pvHeightInitial * numberOfPreviews)];
+    [self changeScrollHeight:(preview_initial_height * preview_count)];
     
     int i;
     
-    for (i = 0; i < numberOfPreviews; i++) {
+    for (i = 0; i < preview_count; i++) {
         
-        ProjectData *pd = (ProjectData *) projects.myProjects[i];
+        ProjectData *pd = (ProjectData *) projects.user_projects[i];
         
         
         
-        rect[i]         = CGRectMake(pvWidthInitial,  (pvHeightInitial * i), pvWidth, pvHeight);
-        previews[i]     = [[ProjectPreView alloc] initWithFrame:rect[i]];
+        preview_frame[i]         = CGRectMake(0,  (preview_initial_height * i), view_width, preview_height);
+        previews[i]     = [[ProjectPreView alloc] initWithFrame:preview_frame[i]];
         
         [previews[i] setProjectName:pd.projectName andID:nil withParentView:self];
-        [myProjectsView addSubview: previews[i]];
+        [user_projects_SV addSubview: previews[i]];
         
         previews[i].inEditingMode   = true;
         
@@ -179,11 +132,11 @@
 - (void) createNewProject
 {
     
-    UIViewController *currentTopVC  = [self currentTopViewController];
-    projectEditingView              = [[ProjectView alloc] init];
+    UIViewController *current_top_VC    = [self currentTopViewController];
+    project_view                        = [[ProjectView alloc] init];
     
-    [currentTopVC presentViewController:projectEditingView animated:YES completion:nil];
-    [projectEditingView enterNewProjectMode];
+    [current_top_VC presentViewController:project_view animated:YES completion:nil];
+    [project_view enterNewProjectMode];
 }
 
 
@@ -193,12 +146,12 @@
  */
 - (UIViewController *) currentTopViewController
 {
-    UIViewController *topVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    UIViewController *top_VC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     
-    while (topVC.presentedViewController)
-        topVC = topVC.presentedViewController;
+    while (top_VC.presentedViewController)
+        top_VC = top_VC.presentedViewController;
     
-    return topVC;
+    return top_VC;
 }
 
 /*
@@ -208,8 +161,8 @@
 {
     UITabBarItem *item;
     
-    UIImage *projectsImage  = [UIImage imageNamed:@"Files.png"];
-    UIImage *scaled         = [UIImage imageWithCGImage:[projectsImage CGImage] scale:(projectsImage.scale * 15) orientation:UIImageOrientationUp];
+    UIImage *projects_image  = [UIImage imageNamed:@"Files.png"];
+    UIImage *scaled         = [UIImage imageWithCGImage:[projects_image CGImage] scale:(projects_image.scale * 15) orientation:UIImageOrientationUp];
     
     item                    = [[UITabBarItem alloc] initWithTitle:@"My Projects" image:scaled tag:2];
     
