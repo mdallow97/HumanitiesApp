@@ -31,6 +31,7 @@
     UILabel *passLength;
     UILabel *userCreated;
     UIButton *regist;
+    UIButton *back;
     
   
     AppDelegate *parentController;
@@ -69,7 +70,9 @@
     
     y                      += (textFieldHeight + 10);
     CGRect emptyFieldFrame  = CGRectMake(x, y, textFieldWidth, textFieldHeight);
+    CGRect backButtonFrame  = CGRectMake(logX / 12, ((viewHeight / 20) * 2), logInWidth, 35);
     
+    y                      -= textFieldHeight;
     
     // Username Text Field Setup
     usernameTextField                   = [[UITextField alloc] initWithFrame:usernameFrame];
@@ -152,10 +155,20 @@
     [regist setTitle:@"Register" forState:UIControlStateNormal];
     [regist addTarget:self action:@selector(registerNow) forControlEvents:UIControlEventTouchUpInside];
     
+   
+    //back button creation for registration to go back to login
+    back                    = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    back.titleLabel.font    = [UIFont systemFontOfSize:22];
+    back.frame              = backButtonFrame;
+    back.hidden             = YES;
+    [back setTitle:@"Back" forState:UIControlStateNormal];
+    [back addTarget:self action:@selector(registerNow) forControlEvents:UIControlEventTouchUpInside];
+
     
     
     
     [self.view addSubview:regist];
+    [self.view addSubview:back];
     [self.view addSubview:usernameTextField];
     [self.view addSubview:passwordTextField];
     [self.view addSubview:newPasswordTF];
@@ -266,6 +279,7 @@
     int length              = 8;
     newPasswordTF.hidden    = NO;
     regist.hidden           = NO;
+    back.hidden           = NO;
     
     NSString *responseS     = [self interactWithDatabase:usernameTextField.text with:passwordTextField.text at:@"checkuser.php"];
     
@@ -301,6 +315,7 @@
         [self clearLabels];
         newPasswordTF.hidden                = YES;
         regist.hidden                       = YES;
+        back.hidden                       = YES;
         userCreated.hidden                  = NO;
         usernameTextField.text              = nil;
         passwordTextField.text              = nil;
@@ -314,6 +329,14 @@
     
     return false;
     
+}
+
+
+// TODO: Make this actually function
+- (BOOL) backButton
+{
+    back.hidden           = NO;
+    return true;
 }
 
 /*

@@ -20,7 +20,8 @@
 }
 @property (nonatomic, retain) NSString *username;
 
--(BOOL) registerNow;
+- (BOOL) registerNow;
+- (BOOL) backButton;
 - (void) hasParent: (UIResponder *) parent;
 - (BOOL) logIn;
 - (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at: (NSString *)path;
