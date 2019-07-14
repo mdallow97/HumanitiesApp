@@ -21,11 +21,11 @@
 @property (nonatomic, retain) NSString *username;
 
 - (BOOL) registerNow;
-//- (BOOL) backButton;
+- (void) backButton;
 - (void) hasParent: (UIResponder *) parent;
 - (BOOL) logIn;
 - (NSString *) interactWithDatabase: (NSString *) username with: (NSString *) password at: (NSString *)path;
--(NSMutableArray *) toArray: (NSString *) data;
+- (NSMutableArray *) toArray: (NSString *) data;
 
 @end
 

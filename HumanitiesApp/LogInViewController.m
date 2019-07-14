@@ -121,6 +121,7 @@
     notFullLabel.hidden       = YES;
     notFullLabel.text         = @"All Fields Are Required";
     notFullLabel.textColor    = [UIColor redColor];
+    notFullLabel.textAlignment = NSTextAlignmentCenter;
     
     //passwords don't equal set up
     passwordNoMatchLabel            = [[UILabel alloc] initWithFrame:emptyFieldFrame];
@@ -149,7 +150,7 @@
     
     //registration button creation
     regist                    = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    regist.titleLabel.font    = [UIFont systemFontOfSize:25];
+    regist.titleLabel.font    = [UIFont systemFontOfSize:22];
     regist.frame              = logInFrame;
     regist.hidden             = YES;
     [regist setTitle:@"Register" forState:UIControlStateNormal];
@@ -159,10 +160,10 @@
     //back button creation for registration to go back to login
     back                    = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     back.titleLabel.font    = [UIFont systemFontOfSize:22];
-    back.frame              = logInFrame;
+    back.frame              = backButtonFrame;
     back.hidden             = YES;
     [back setTitle:@"< Back" forState:UIControlStateNormal];
-    [back addTarget:self action:@selector(registerNow) forControlEvents:UIControlEventTouchUpInside];
+    [back addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
 
     
     
@@ -335,9 +336,14 @@
 // TODO: Make this actually function
 - (void) backButton
 {
-    back.hidden           = NO;
+    parentController.logInButton.hidden = NO;
+    parentController.regButton.hidden = NO;
     
-    
+    [self clearLabels];
+    newPasswordTF.hidden    = YES;
+    regist.hidden           = YES;
+    back.hidden           = YES;
+    notFullLabel.hidden = YES;
 }
 
 /*
