@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		308883DC22DBDFA800250717 /* loginBackground1.png in Resources */ = {isa = PBXBuildFile; fileRef = 308883DB22DBDFA800250717 /* loginBackground1.png */; };
+		308883DE22DBDFAE00250717 /* loginBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 308883DD22DBDFAD00250717 /* loginBackground.png */; };
 		412FB06420E4697100ECECAD /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 412FB06320E4697100ECECAD /* Settings.png */; };
 		412FB06620E46B0A00ECECAD /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = 412FB06520E46B0900ECECAD /* Home.png */; };
 		412FB06B20E4733500ECECAD /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 412FB06A20E4733500ECECAD /* LogInViewController.m */; };
@@ -52,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		308883DB22DBDFA800250717 /* loginBackground1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBackground1.png; sourceTree = "<group>"; };
+		308883DD22DBDFAD00250717 /* loginBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBackground.png; sourceTree = "<group>"; };
 		412FB06320E4697100ECECAD /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		412FB06520E46B0900ECECAD /* Home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home.png; sourceTree = "<group>"; };
 		412FB06A20E4733500ECECAD /* LogInViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				412FB06520E46B0900ECECAD /* Home.png */,
 				4135659720E31F68009050F2 /* preview.png */,
 				415457C520EC764200B64540 /* Files.png */,
+				308883DD22DBDFAD00250717 /* loginBackground.png */,
+				308883DB22DBDFA800250717 /* loginBackground1.png */,
 				412FB06320E4697100ECECAD /* Settings.png */,
 			);
 			path = HumanitiesApp;
@@ -318,6 +324,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				412FB06620E46B0A00ECECAD /* Home.png in Resources */,
+				308883DE22DBDFAE00250717 /* loginBackground.png in Resources */,
+				308883DC22DBDFA800250717 /* loginBackground1.png in Resources */,
 				4135659820E31F68009050F2 /* preview.png in Resources */,
 				412FB06420E4697100ECECAD /* Settings.png in Resources */,
 				4172C82F20E1D0580065A277 /* LaunchScreen.storyboard in Resources */,

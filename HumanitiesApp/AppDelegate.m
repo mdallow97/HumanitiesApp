@@ -25,7 +25,14 @@
     logInViewController = [[LogInViewController alloc] init];
     self.window.rootViewController = logInViewController;
     
-    logInViewController.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+//    logInViewController.view.backgroundColor = [UIColor colorWithRed:.902 green:.902 blue:.98 alpha:.99];
+    UIGraphicsBeginImageContext(logInViewController.view.frame.size);
+    [[UIImage imageNamed:@"loginBackground.png"] drawInRect:logInViewController.view.bounds];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    logInViewController.view.backgroundColor = [UIColor colorWithPatternImage:image];
+
     
     
     // Setup frames for ViewController

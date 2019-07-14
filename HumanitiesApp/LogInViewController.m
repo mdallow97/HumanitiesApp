@@ -159,9 +159,9 @@
     //back button creation for registration to go back to login
     back                    = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     back.titleLabel.font    = [UIFont systemFontOfSize:22];
-    back.frame              = backButtonFrame;
+    back.frame              = logInFrame;
     back.hidden             = YES;
-    [back setTitle:@"Back" forState:UIControlStateNormal];
+    [back setTitle:@"< Back" forState:UIControlStateNormal];
     [back addTarget:self action:@selector(registerNow) forControlEvents:UIControlEventTouchUpInside];
 
     
@@ -333,10 +333,11 @@
 
 
 // TODO: Make this actually function
-- (BOOL) backButton
+- (void) backButton
 {
     back.hidden           = NO;
-    return true;
+    
+    
 }
 
 /*
